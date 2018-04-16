@@ -1,4 +1,4 @@
-FILENAME = pi
+FILENAME = roundings
 COMPILER = g++
 
 all: run
