@@ -1,4 +1,4 @@
-FILENAME = random_walk
+FILENAME = mc_integration
 COMPILER = g++
 
 all: run
