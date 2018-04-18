@@ -16,7 +16,7 @@ int main() {
         }
     }
 
-    double pi_est = 4 * (double)n / (double)N;
+    double pi_est = 4 * static_cast<double>(n) / static_cast<double>(N);
 
     printf("%f\n", pi_est);
     return 0;
