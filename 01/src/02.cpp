@@ -54,11 +54,16 @@ void a(int p) {
 
 // Aufgabenteil b)
 void b() {
-
+    double pi = 3.14159;
+    double c = 1 / sqrt(pi);
+    double func = 0;
+    for (int i = 0; i < int(1e2); i++){
+        func = c * exp(- i * i);
+    }
 }
 
 int main() {
-    a(8);
+    a(2);
     b();
     return 0;
 }
