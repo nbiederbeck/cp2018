@@ -1,7 +1,7 @@
 FILENAME = mc_integration
 COMPILER = g++
 
-all: run
+all: build/main.pdf bin/$(FILENAME)
 
 again: touch run
 
@@ -23,6 +23,13 @@ bin:
 	mkdir -p bin
 
 clean:
-	rm -rf bin/
+	rm -rf bin/ build/
 
 .PHONY: all clean run touch
+
+build/main.pdf: src/main.tex | build
+	pdflatex --output-directory=build \
+		src/main.tex
+
+build:
+	mkdir -p build
