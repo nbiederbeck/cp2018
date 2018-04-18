@@ -3,13 +3,16 @@
 # include <random>
 
 int main() {
+    // Weglänge
     int N = 10;
+    // Anzahl Wege
     int Cluster = pow(10, 1);
 
     int pos_x, pos_y;
 
     float dir;
 
+    // Random Numbers nach Anleitung
     std::mt19937 rng;
     rng.seed(std::random_device()());
     std::uniform_real_distribution<> dist(0, 1);
@@ -17,6 +20,7 @@ int main() {
     int radii[N];
 
     for (int j = 1; j <= Cluster; j++) {
+        // Setze den Startwert auf die Mitte des Gitters
         pos_x = N/2;
         pos_y = N/2;
 
@@ -26,7 +30,9 @@ int main() {
         /* printf("walk:\n"); */
         pos[pos_x][pos_y] = 1;
         for (int i = 1; i <= N; i++) {
+            // Random Walk!
             if (
+                // Bei einer Sackgasse, brich ab
                 pos[pos_x][pos_y] == 1 &&
                 pos[pos_x][pos_y + 1] == 1 &&
                 pos[pos_x + 1][pos_y] == 1 &&
@@ -36,8 +42,11 @@ int main() {
                 break;
             }
 
+            // Zu laufende Richtung zwischen 0..1
+            // Aufteilen nach Vierteln
             dir = dist(rng);
             if (dir <= 0.25) {
+                // Schritt nur annehmen, wenn Feld noch frei
                 if (pos[pos_x][pos_y + 1] == 0) {
                     /* printf("up "); */
                     /* printf("(Accepted), "); */
@@ -82,8 +91,10 @@ int main() {
                     continue;
                 }
             }
+            // Markiere Feld als schon gelaufen
             pos[pos_x][pos_y] = 1;
         }
+
         float r2 = pow(pos_x-N/2, 2) + pow(pos_y-N/2, 2);
         radii[j] = r2;
         /* printf("j: %d\n", j); */
