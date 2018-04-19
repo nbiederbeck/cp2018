@@ -12,7 +12,7 @@ void a(int p) {
     // Anzahl der Punkte im Kresi n
     // Radius der Kugel radius_sq
     // Zufallszahlen x, y, z
-    int N = pow(10, p);
+    const int N = pow(10, p);
     int n = 0;
     double radius_sq;
     double x, y, z;
@@ -39,13 +39,13 @@ void a(int p) {
     printf("n: %d\n", n);
 
     // Schätze Pi und das Kugelvolumen
-    double pi_est = 6 * (double(n) / double(N));
-    double Vol_est = (4./3.) * pi_est;
+    const double pi_est = 6 * (static_cast<double>(n) / static_cast<double>(N));
+    const double Vol_est = (4./3.) * pi_est;
 
-    double pi = 3.14159;
-    double Vol = (4./3.) * pi;
+    const double pi = 3.14159;
+    const double Vol = (4./3.) * pi;
 
-    double Vol_rel_error = (Vol_est - Vol) / Vol * 100;
+    const double Vol_rel_error = (Vol_est - Vol) / Vol * 100;
 
     printf("Pi estimated: %f\n", pi_est);
     printf("Volumen estimated: %f\n", Vol_est);
@@ -54,16 +54,16 @@ void a(int p) {
 
 // Aufgabenteil b)
 void b() {
-    double pi = 3.14159;
+    const double pi = 3.14159;
     double c = 1 / sqrt(pi);
     double func = 0;
-    for (int i = 0; i < int(1e2); i++){
+    for (int i = 0; i < static_cast<int>(1e2); i++){
         func = c * exp(- i * i);
     }
 }
 
 int main() {
-    a(2);
+    a(7);
     b();
     return 0;
 }
