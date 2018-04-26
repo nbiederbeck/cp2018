@@ -1,10 +1,6 @@
 #include <iostream>
 #include <fstream>
-# include <cstdio>
-# include <cmath>
-# include <random>
-# include <fstream>
-# include <array>
+#include <cmath>
 
 using namespace std;
 
@@ -18,9 +14,10 @@ void linkongen(int32_t r_0, int32_t a, int32_t c, int32_t m, int32_t n, string f
 
 
 	int32_t r = r_0;
-	for(i=0; i<n; i++){
+	for(int32_t i=0; i<n; i++){
 		storage << (double) r/m << endl;
 		r=(a*r+c)%m;
+		if(r<0){cout << "Stop" << endl;}
 	}
 }
 
@@ -28,7 +25,7 @@ void linkongen(int32_t r_0, int32_t a, int32_t c, int32_t m, int32_t n, string f
 int main(){
 	int64_t N=pow(10,5);
 	cout << N << endl;
-	linkongen(1234, 20, 120, 6075, N, "a_1_a.txt")
+	linkongen(1234, 20, 120, 6075, N, "a_1_a.txt");
 
 
 }
