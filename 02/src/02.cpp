@@ -48,6 +48,8 @@ void b(float mu, float sigma2){
 		double Z_1 = 0.;
 		double Z_2 = 0.;
 
+		sigma2 = sqrt(sigma2);
+
 		ofstream myfile ("./build/task2b.txt");
 		if (myfile.is_open()) {
 				for (int i=0; i<pow(10,5); i++){
