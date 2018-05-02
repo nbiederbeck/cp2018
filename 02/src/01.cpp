@@ -2,6 +2,7 @@
 #include <vector>
 #include <cmath>
 #include <fstream>
+#include <set>
 
 using namespace std;
 
@@ -53,6 +54,16 @@ int rand_xor(uint16_t seed, uint16_t a, uint16_t b,
 		}
 }
 
+int Rand_xor(uint16_t seed, uint16_t a, uint16_t b, 
+				uint16_t c, u_int32_t num) {
+		set<uint16_t> rand_num{};
+		for(int i = 0; i<num; i++) {
+				seed = xorshift(seed, a, b, c);
+				rand_num.insert(seed);
+		}
+		return rand_num.size();
+}
+
 int b() {
 		cout << "Aufgabe 1:" << endl;
 		long int num = pow(10,5);
@@ -61,17 +72,34 @@ int b() {
 		rand_pseudo(123456789, 65539, 0, 2147483648, num, "drei.txt");
 		rand_pseudo(1234, 16807, 0, pow(2,31)-1, num, "vier.txt");
 
-		cout << "Make fancy Plots:" << endl;
+		cout << "Make fancy Plots: b)" << endl;
 		system("python ./src/plot.py");
 }
 
-int c() {
+int d() {
 		rand_xor(123, 11, 1, 7, pow(10,5), "Eins.txt");
 		rand_xor(123, 11, 4, 7, pow(10,5), "Zwei.txt");
+		
+		cout << "Make fancy Plots: c)" << endl;
+		system("python ./src/plot2.py");
 }
+
+int e() {
+		ofstream myfile ("./build/1e.txt");
+		if (myfile.is_open()) {
+		for(int b=1; b<=15; b++){
+				for(int c=1; c<=15; c++){
+						int r = Rand_xor(123, 11, b, c, pow(2,16)-1);
+						myfile << b << " " << c << " " << r << endl;
+				}
+		}
+				}
+				myfile.close();
+		}
 
 int main() {
 		/* b(); */
 		/* c(); */
+		e();
 }
 

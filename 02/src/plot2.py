@@ -17,7 +17,7 @@ for label in data.keys():
 i = 223
 for label in data.keys():
     ax = fig.add_subplot(i)
-    ax.scatter(data[label][0::2], data[label][1::2])
+    ax.hist2d(data[label][0::2], data[label][1::2], bins=20)
     ax.set_title(label)
     i += 1
 fig.tight_layout(pad=0)
