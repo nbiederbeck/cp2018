@@ -13,12 +13,20 @@ bin:
 	mkdir -p bin
 
 # LaTeX PDF
+build/main.pdf: build/plot_01.pdf
 build/main.pdf: src/main.tex | build
 	lualatex --output-directory=build \
 		src/main.tex
 
 build:
 	mkdir -p build
+
+build/plot_01.pdf: build/data.txt src/plot.py
+	python src/plot.py
+
+build/data.txt: bin/01
+	rm -f build/data.txt
+	./bin/01
 
 # Abgabe
 abgabe.tar.gz: build/main.pdf src/01.cpp src/02.cpp

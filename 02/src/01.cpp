@@ -1,42 +1,105 @@
-#include <cmath>
+
 #include <iostream>
-#include <array>
+#include <vector>
+#include <cmath>
+#include <fstream>
+#include <set>
 
-std::array<double, 10000+1> linear_congruent_generator(
-        int32_t r0, int32_t a, int32_t c, int32_t m, int32_t N
-    ) {
+using namespace std;
 
-    std::array<double, 10000+1> numbers = {};
-    numbers[0] = r0;
-
-    for (int i = 0; i < N; ++i) {
-        numbers[i+1] = static_cast<double> (static_cast<int>(a * numbers[i] + c) % static_cast<int>(m));
-    }
-    for (int i = 0; i <= N; ++i) {
-        numbers[i] /= m;
-    }
-    for (int i = 0; i <= N; ++i) {
-        printf("%f\n", numbers[i]);
-    }
-    return numbers;
+/* --------------- Methoden fuer Zufallszahlen ----------------------- */
+uint32_t pseu_rand(uint32_t seed, uint32_t a, uint32_t c, uint32_t m){
+		return ( a * seed + c ) % m;
 }
 
+uint16_t xorshift(uint16_t seed, uint16_t a, uint16_t b, 
+				uint16_t c) {
+  seed ^= seed << a;
+  seed ^= seed >> b;
+  seed ^= seed << c;
+  return seed;
+}
+
+/* -------- Zufallszahlen generieren und in file speicheren --------- */
+int rand_pseudo(uint32_t seed, uint32_t a, uint32_t c, 
+				uint32_t m, uint32_t num, string file) {
+		cout << "seed: "<< seed << ", a: " << a 
+				<< ", c: " << c << ", m: " << m <<endl;
+		vector<float> rand_num{};
+		for(int i = 0; i<num; i++) {
+				seed = pseu_rand(seed, a, c, m);
+				rand_num.push_back(seed /(float) m);
+		}
+		ofstream myfile ("./build/" + file);
+		if (myfile.is_open()) {
+				for (int i=0; i<rand_num.size();i++){
+						myfile << rand_num[i] << endl;
+				}
+				myfile.close();
+		}
+}
+
+int rand_xor(uint16_t seed, uint16_t a, uint16_t b, 
+				uint16_t c, u_int32_t num, string file) {
+		vector<uint16_t> rand_num{};
+		for(int i = 0; i<num; i++) {
+				seed = xorshift(seed, a, b, c);
+				rand_num.push_back(seed);
+		}
+		ofstream myfile ("./build/" + file);
+		if (myfile.is_open()) {
+				for (int i=0; i<rand_num.size();i++){
+						myfile << rand_num[i] << endl;
+				}
+				myfile.close();
+		}
+}
+
+int Rand_xor(uint16_t seed, uint16_t a, uint16_t b, 
+				uint16_t c, u_int32_t num) {
+		set<uint16_t> rand_num{};
+		for(int i = 0; i<num; i++) {
+				seed = xorshift(seed, a, b, c);
+				rand_num.insert(seed);
+		}
+		return rand_num.size();
+}
+
+int b() {
+		cout << "Aufgabe 1:" << endl;
+		long int num = pow(10,5);
+		rand_pseudo(1234, 20, 120, 6075, num, "eins.txt");
+		rand_pseudo(1234, 137, 120, 6075, num, "zwei.txt");
+		rand_pseudo(123456789, 65539, 0, 2147483648, num, "drei.txt");
+		rand_pseudo(1234, 16807, 0, pow(2,31)-1, num, "vier.txt");
+
+		cout << "Make fancy Plots: b)" << endl;
+		system("python ./src/plot.py");
+}
+
+int d() {
+		rand_xor(123, 11, 1, 7, pow(10,5), "Eins.txt");
+		rand_xor(123, 11, 4, 7, pow(10,5), "Zwei.txt");
+		
+		cout << "Make fancy Plots: c)" << endl;
+		system("python ./src/plot2.py");
+}
+
+int e() {
+		ofstream myfile ("./build/1e.txt");
+		if (myfile.is_open()) {
+		for(int b=1; b<=15; b++){
+				for(int c=1; c<=15; c++){
+						int r = Rand_xor(123, 11, b, c, pow(2,16)-1);
+						myfile << b << " " << c << " " << r << endl;
+				}
+		}
+				}
+				myfile.close();
+		}
+
 int main() {
-    printf("\n# (i)\n# ===\n");
-    std::array<double, 10000+1> numbers_i = linear_congruent_generator(1234, 20, 120, 6075, 10000);
-    printf("\n# (ii)\n# ====\n");
-    std::array<double, 10000+1> numbers_ii = linear_congruent_generator(1234, 137, 187, 256, 10000);
-    printf("\n# (iii)\n# =====\n");
-    std::array<double, 10000+1> numbers_iii = linear_congruent_generator(123456789, 65539, 0, 2147483648, 10000);
-    printf("\n# (iv)\n# ====\n");
-    std::array<double, 10000+1> numbers_iv = linear_congruent_generator(1234, 16807, 0, 2147483647, 10000);
-
-    // std::fstream fs;
-    // fs.open("build/data.txt", std::fstream::in | std::fstream::out | std::fstream::app);
-    // fs << "# N mean_r\n";
-    // fs << N << " "
-    //    << mean << "\n";
-    // fs.close();
-
-    return 0;
+		/* b(); */
+		/* c(); */
+		e();
 }
