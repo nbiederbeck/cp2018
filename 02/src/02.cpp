@@ -69,6 +69,14 @@ void b(float mu, float sigma2){
 
 
 int main() {
-		/* a(); */
+		cout << "Aufgabe 2" << endl;
+		cout << "=========" << endl;
+
+		cout << "a)" << endl;
+		cout << "--" << endl;
+		a();
+
+		cout << "b)" << endl;
+		cout << "--" << endl;
 		b(3., 4.);
 }
