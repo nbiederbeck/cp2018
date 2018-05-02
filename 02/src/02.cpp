@@ -12,18 +12,19 @@ void a() {
 		// nach Anleitung von Übungsblatt 00
 		mt19937 rng;
 		rng.seed(random_device()());
-		uniform_real_distribution<> dist(1./3., 8./3.);
+		uniform_real_distribution<> dist(0, 1);
 
 		vector<double> randcos;
-		for(int i = 0; i<pow(10,5); i++){
-				double x = dist(rng);
-				randcos.push_back(pow(3.*x,1./3.));
+        double x;
+		for(int i = 0; i<pow(10,6); i++){
+				x = dist(rng);
+				randcos.push_back(asin(x));
 		}
 		
 		uniform_real_distribution<> Dist(-1, 1);
 		vector<double> Randcos;
-		for(int i = 0; i<pow(10,5); i++){
-				double x = Dist(rng);
+		for(int i = 0; i<pow(10,6); i++){
+				x = Dist(rng);
 				Randcos.push_back(asin(x));
 		}
 
