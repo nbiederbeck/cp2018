@@ -66,9 +66,32 @@ void b(float mu, float sigma2){
 		}
 }
 
+void c(){
+		mt19937 rng;
+		rng.seed(random_device()());
+		uniform_real_distribution<> dist(0, 1);
+
+		vector<double> exponential;
+		double x;
+		for(int i = 0; i<pow(10,6); i++){
+				x = dist(rng);
+				exponential.push_back(-log(x));
+		}
+
+		ofstream myfile ("./build/task2c.txt");
+		if (myfile.is_open()) {
+				for (int i=0; i<exponential.size();i++){
+						myfile << exponential[i]<< endl;
+				}
+				myfile.close();
+		}
+
+}
+
 
 
 int main() {
 		/* a(); */
-		b(3., 4.);
+		/* b(3., 4.); */
+		c();
 }
