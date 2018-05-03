@@ -1,13 +1,13 @@
+.NOTPARALLEL:
 all: bin/01 bin/02
 
 BUILDS_01 = $(addprefix build/, $(addsuffix .txt, \
 	eins zwei drei vier 1e Eins Zwei ))
-.NOTPARALLEL: $(BUILDS_01)
 $(BUILDS_01): bin/01
 	./bin/01
+
 BUILDS_02 = $(addprefix build/, $(addsuffix .txt, \
 	task1aI task2aI task2b ))
-.NOTPARALLEL: $(BUILDS_02)
 $(BUILDS_02): bin/02
 	./bin/02
 
