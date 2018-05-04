@@ -7,7 +7,7 @@ $(BUILDS_01): bin/01
 	./bin/01
 
 BUILDS_02 = $(addprefix build/, $(addsuffix .txt, \
-	task1aI task2aI task2b ))
+	task1aI task2aI task2b task2c task2cI))
 $(BUILDS_02): bin/02
 	./bin/02
 
@@ -24,6 +24,8 @@ build/plot_02a.png: build/task2aI.txt src/plot_nr2_a.py
 	python src/plot_nr2_a.py
 build/plot_02b.png: build/task2b.txt src/plot_nr2_b.py
 	python src/plot_nr2_b.py
+build/plot_02c.png: build/task2cI.txt build/task2c.txt src/plot_nr2_c.py
+	python src/plot_nr2_c.py
 
 # C++ Binaries
 bin/01: src/01.cpp | bin build

@@ -12,7 +12,7 @@ uint32_t pseu_rand(uint32_t seed, uint32_t a, uint32_t c, uint32_t m){
 		return ( a * seed + c ) % m;
 }
 
-uint16_t xorshift(uint16_t seed, uint16_t a, uint16_t b, 
+uint16_t xorshift(uint16_t seed, uint16_t a, uint16_t b,
 				uint16_t c) {
   seed ^= seed << a;
   seed ^= seed >> b;
@@ -21,15 +21,18 @@ uint16_t xorshift(uint16_t seed, uint16_t a, uint16_t b,
 }
 
 /* -------- Zufallszahlen generieren und in file speicheren --------- */
-int rand_pseudo(uint32_t seed, uint32_t a, uint32_t c, 
+int rand_pseudo(uint32_t seed, uint32_t a, uint32_t c,
 				uint32_t m, uint32_t num, string file) {
-		cout << "seed: "<< seed << ", a: " << a 
+		cout << "seed: "<< seed << ", a: " << a
 				<< ", c: " << c << ", m: " << m <<endl;
 		vector<float> rand_num{};
+
 		for(int i = 0; i<num; i++) {
 				seed = pseu_rand(seed, a, c, m);
 				rand_num.push_back(seed /(float) m);
 		}
+
+        // Speicherin in Datei
 		ofstream myfile ("./build/" + file);
 		if (myfile.is_open()) {
 				for (int i=0; i<rand_num.size();i++){
@@ -39,13 +42,14 @@ int rand_pseudo(uint32_t seed, uint32_t a, uint32_t c,
 		}
 }
 
-int rand_xor(uint16_t seed, uint16_t a, uint16_t b, 
+int rand_xor(uint16_t seed, uint16_t a, uint16_t b,
 				uint16_t c, u_int32_t num, string file) {
 		vector<uint16_t> rand_num{};
 		for(int i = 0; i<num; i++) {
 				seed = xorshift(seed, a, b, c);
 				rand_num.push_back(seed);
 		}
+        // Speicherin in Datei
 		ofstream myfile ("./build/" + file);
 		if (myfile.is_open()) {
 				for (int i=0; i<rand_num.size();i++){
@@ -55,7 +59,7 @@ int rand_xor(uint16_t seed, uint16_t a, uint16_t b,
 		}
 }
 
-int Rand_xor(uint16_t seed, uint16_t a, uint16_t b, 
+int Rand_xor(uint16_t seed, uint16_t a, uint16_t b,
 				uint16_t c, u_int32_t num) {
 		set<uint16_t> rand_num{};
 		for(int i = 0; i<num; i++) {
@@ -79,6 +83,7 @@ int d() {
 }
 
 int e() {
+    // Speicherin in Datei
 		ofstream myfile ("./build/1e.txt");
 		if (myfile.is_open()) {
 		for(int b=1; b<=15; b++){
