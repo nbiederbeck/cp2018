@@ -41,7 +41,7 @@ bin:
 
 # LaTeX PDF
 build/main.pdf: $(addprefix build/plot_0, $(addsuffix .png, \
-	1a 1b 1d 1e 2a 2b ))
+	1a 1b 1d 1e 2a 2b 2c ))
 build/main.pdf: src/main.tex | build
 	lualatex --output-directory=build \
 		src/main.tex
