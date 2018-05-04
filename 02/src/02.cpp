@@ -91,7 +91,16 @@ void c(){
 
 
 int main() {
-		/* a(); */
-		/* b(3., 4.); */
+		cout << "Aufgabe 2" << endl;
+		cout << "=========" << endl;
+
+		cout << "a)" << endl;
+		cout << "--" << endl;
+		a();
+
+		cout << "b)" << endl;
+		cout << "--" << endl;
+		b(3., 4.);
+		
 		c();
 }
