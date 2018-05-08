@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[])
 {
-    int Schritte = pow(10, 1);
+    int Schritte = pow(10, 0);
 
     // Erstelle mehrere H
     std::vector<double> h = {-4., -3., -2., -1., 0., 1., 2., 3., 4.};
@@ -26,11 +26,11 @@ int main(int argc, char *argv[])
 
             // passe wahrscheinlichkeiten an, jenachdem was H ist
             if (H > 0) {
-                p1 = 1;
-                p2 = 0;
+                p1 = pow(2.71, H) / (pow(2.71, H) + pow(2.71, -H));
+                p2 = pow(2.71, -H) / (pow(2.71, H) + pow(2.71, -H));
             } else if (H < 0) {
-                p1 = 0;
-                p2 = 1;
+                p1 = pow(2.71, -H) / (pow(2.71, H) + pow(2.71, -H));
+                p2 = pow(2.71, H) / (pow(2.71, H) + pow(2.71, -H));
             } else {
                 p1 = 1./2.;
                 p2 = 1./2.;
