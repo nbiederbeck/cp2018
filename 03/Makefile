@@ -1,7 +1,7 @@
 all: bin/01 bin/02
 
 BUILDS_01 = $(addprefix build/, $(addsuffix .txt, \
-			))
+			01_b ))
 $(BUILDS_01): bin/01
 	./bin/01
 
@@ -24,9 +24,12 @@ bin:
 	mkdir -p bin
 
 # LaTeX PDF
-build/main.pdf: src/main.tex | build
+build/main.pdf: build/plot_01_b.png src/main.tex | build
 	lualatex --output-directory=build \
 		src/main.tex
+
+build/plot_01_b.png: src/plot_01_b.py build/01_b.txt
+	python src/plot_01_b.py
 
 build:
 	mkdir -p build
