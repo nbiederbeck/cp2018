@@ -72,7 +72,7 @@ int Rand_xor(uint16_t seed, uint16_t a, uint16_t b,
 int b() {
 		long int num = pow(10,5);
 		rand_pseudo(1234, 20, 120, 6075, num, "eins.txt");
-		rand_pseudo(1234, 137, 120, 6075, num, "zwei.txt");
+		rand_pseudo(1234, 137, 120, 6075, num, "zwei.txt"); // Auf Übungsblatt falsche Parameter verwendet, eigentlich 𝑟0 =1234,𝑎=137,𝑐=187,𝑚=256
 		rand_pseudo(123456789, 65539, 0, 2147483648, num, "drei.txt");
 		rand_pseudo(1234, 16807, 0, pow(2,31)-1, num, "vier.txt");
 }
