@@ -1,75 +1,87 @@
 #include <cmath>
 #include <cstdio>
-#include <vector>
-#include <iostream>
 #include <random>
 #include <fstream>
+#include <iostream>
 
 int main(int argc, char *argv[])
 {
-    int Schritte = pow(10, 5);
+    // start values
+    double s = -1.;
+    const double s_up = 1.;
+    const double s_down = -1.;
+    double H = 1.;
+    double beta = 1.;
+    const double e = M_E;
+    double E = - s * H;
 
-    // Erstelle mehrere H
-    std::vector<double> h = {-5., -4., -3., -2., -1., 0., 1., 2., 3., 4.};
-    double H;
-    int anzahl_H = pow(10, 4);
-
-    // wahrscheinlichkeiten fuer die beiden zustaende
-    double p1, p2;
-
-    // start und endvektor
-    std::vector<double> s0;
-    std::vector<double> s1 = {0., 0.};
-    std::vector<std::vector<double>> M;
+    const double Schritte = pow(10, 4);
+    const double anzahl_H = pow(10, 3);
 
     // Random Numbers
     std::mt19937 rng;
     rng.seed(std::random_device()());
-    std::uniform_real_distribution<double> dist(-5., 5.);
+    std::uniform_real_distribution<double> dist_normal(0., 1.);
+    std::uniform_real_distribution<double> dist_H(-5., 5.);
 
-    std::cout << "Magnetfeld: Wahrscheinlichkeiten Spin = [1 -1]" << std::endl;
+    // Prepare output file
     std::ofstream myfile ("./build/01_b.txt");
     myfile << "# H p(s=1) p(s=-1)" << std::endl;
+
+    // initialize propabilities
+    double p_up, p_down, p_sum;
+
+    std::cout << "Loop over " << anzahl_H << " magnetic fields"
+              << " a " << Schritte << " steps." << std::endl;
     for (int i = 0; i < anzahl_H; i++) {
-        // H = h[i];  // weise H zu
-        H = dist(rng);
-        s0 = {1., 0.};
-        // s0 = {0., 1.};
+        // chose random magnetic field
+        H = dist_H(rng);
+        std::cout << H << " ";
+        // chose random initial spin
+        if (dist_normal(rng) < 0.5) {
+            s = 1.;
+        } else {
+            s = -1.;
+        }
 
-        // passe wahrscheinlichkeiten an, jenachdem was H ist
-        p1 = pow(2.71, H) / (pow(2.71, H) + pow(2.71, -H));
-        p2 = pow(2.71, -H) / (pow(2.71, H) + pow(2.71, -H));
+        for (int j = 0; j < Schritte; j++) {
 
-        // erstelle metropolis matrix
-        M = {{p1, p2},
-             {p1, p2}};
+            // recalculate propability for given magnetic field and current
+            // spin
+            p_sum = pow(e, beta * H * (s_up - s)) + pow(e, beta * H * (s_down - s));
+            p_up = pow(e, beta * H * (s_up - s)) / p_sum;
+            p_down = pow(e, beta * H * (s_down - s)) / p_sum;
 
-        for (int i = 0; i < Schritte; i++) {
-            s1 = {0, 0};
-
-            // matrixmultiplikation
-            for (int i = 0; i < s0.size(); i++) {
-                for (int j = 0; j < s0.size(); j++){
-                    s1[i] += (s0[j] * M[j][i]);
+            // recalculate spin given propability (up/down)
+            // also randomly flip spin, the higher the field the lower
+            // the propability to flip randomly
+            if (p_up > p_down) {
+                s = 1.;
+                if (dist_normal(rng) > p_up) {
+                    s *= -1;
+                }
+            } else if (p_up < p_down) {
+                s = -1.;
+                if (dist_normal(rng) > p_down) {
+                    s *= -1;
+                }
+            } else { // (p_up == p_down) only random spin flip
+                if (dist_normal(rng) > 0.5) {
+                    s *= -1;
                 }
             }
 
-            s0 = s1;
-
         }
 
-        // ausgabe
+        // output to file
         if (myfile.is_open()) {
-            std::cout << "H = " << H << " :  [ ";
             myfile << H << ",";
-            for (int i = 0; i < s1.size(); i++) {
-                std::cout << s1[i] << " " ;  // terminal
-                myfile << s1[i] << ","; // file
-            }
-            std::cout << "]" << std::endl;
+            myfile << p_up - p_down << ",";
+            myfile << p_down << ",";
             myfile << std::endl;
         }
+
     }
-    myfile.close();
+
     return 0;
 }

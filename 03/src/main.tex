@@ -41,11 +41,31 @@ Drei Stimmen fuer Klausur.
 \end{align*}
 
 \subsection*{(b)}
+Es wird ein zufälliges Magnetfeld gezogen.
+Es werden die Wahrscheinlichkeiten
+\begin{align*}
+  p_{\text{sum}} = e^{\beta \cdot H \cdot (s_{\text{up}} - s)} + e^{\beta \cdot H \cdot (s_{\text{down}} - s)} \\
+  \intertext{mit $s_{\text{up}} = 1$ und $s_{\text{down}} = -1$}
+  p_{\text{up}} = \frac{e^{\beta \cdot H \cdot (s_{\text{up}} - s)}}{p_{\text{sum}}} \\
+  p_{\text{down}} = \frac{e^{\beta \cdot H \cdot (s_{\text{down}} - s)}}{p_{\text{sum}}} \\
+\end{align*}
+berechnet und anschließend der Spin entsprechend ausgerichtet.
+Der Spin wird zufällig geflippt (mit der entsprechenden Wahrscheinlichkeit).
+Dies entspricht einem Schritt.
+
+Dies wird für 10000 $H$-Werte in jeweils 100000 Schritten simuliert.
+
+Der Plot 1 zeigt die Wahrscheinlichkeit für die Magnetisierung der entsprechenden Spinzustände.
+Es fällt auf, dass das Ergebnis von dem initialen Spin unabhängig ist.
+
+Weiterhin richten sich wie erwartet die Spins nach dem Magnetfeld aus.
+
+
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.8\linewidth]{build/plot_01_b.png}
   \caption{%
-    Wahrscheinlichkeiten der Spinzustaende in Abhaengigkeit der Magnetfeldstaerke.%
+    Wahrscheinlichkeiten der Magnetisierung in Abhaengigkeit der Magnetfeldstaerke.%
   }%
   \label{fig:plot_01_b}
 \end{figure}
