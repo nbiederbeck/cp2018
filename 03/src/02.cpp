@@ -121,7 +121,7 @@ int main(int argc, char *argv[]) {
 				lattice = sweep(lattice, beta, p, q, m, n);
 				lattice = periodic_lattice(lattice, m, n);
 				file_energy << Energie[x] / (static_cast<double>(n * m)) / 4 << ",";
-				File_Energy << Sum_Spins[x] << ",";
+				File_Energy << Sum_Spins[x]/ (static_cast<double>(n * m)) << ",";
 		}
 		cout << endl << "Simulation beendet." << endl;
 
