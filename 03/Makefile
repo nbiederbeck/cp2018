@@ -16,8 +16,8 @@ bin/01: src/01.cpp | bin build
 	g++ -O2 -o bin/01 \
 		src/01.cpp
 
-bin/02: src/02.cpp | bin
-	g++ -O2 -o bin/02 \
+bin/02: src/02.cpp | bin build
+	g++ -O2 -fopenmp -o bin/02 \
 		src/02.cpp
 
 bin:
@@ -25,8 +25,12 @@ bin:
 
 # LaTeX PDF
 build/main.pdf: build/plot_01_b.png src/main.tex | build
-	lualatex --output-directory=build \
+	latexmk --pdf --output-directory=build \
 		src/main.tex
+
+preview: build/plot_01_b.png src/main.tex | build
+	latexmk --pdf --output-directory=build \
+		src/main.tex --pvc
 
 build/plot_01_b.png: src/plot_01_b.py build/01_b.txt
 	python src/plot_01_b.py

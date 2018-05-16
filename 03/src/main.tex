@@ -34,21 +34,36 @@ Es werden naechste Nachbarn Wechselwirkungen nach
 beruecksichtigt und zufaellige Spins geflippt nach Boltzmann:
 \begin{equation}
   p(\texttt{dist\_uniform}) < e^{-\beta \mathcal{H}}.
+  \label{eq:boltzmann}
 \end{equation}
 
-Hierbei wird ein Spin geflippt, wenn er sich nach dem Flip in einem energetisch niedrigeren Zustand befindet, oder der Zufall nach Gleichung 2 entscheidet.
+Hierbei wird ein Spin geflippt, wenn er sich nach dem Flip in einem energetisch niedrigeren Zustand befindet, oder der Zufall nach Gleichung~\ref{eq:boltzmann} entscheidet.
 \subsection*{a}%
 \label{sub:a}
-Es werden Momentaufnahmen nach $10^5$ Sweeps fuer $k_B T = 1$ (Abbildung 1) und $K_B T = 3$ (Abbildung 2) erstellt.
+Es werden Momentaufnahmen nach $10^5$ Sweeps fuer $k_B T = 1$ und $K_B T = 3$ erstellt fuer jeweils beide Anfangsbedingungen erstellt.
 \begin{figure}[ht]
   \centering
   % \includegraphics[width=0.8\linewidth]{build/moment_1.png}
-  \caption{Momentaufnahme fuer $k_B T = 1$.}
+  \caption{Momentaufnahme fuer $k_B T = 1$, zufaellige Spins.}%
+  % \label{fig:moment_1}
 \end{figure}
 \begin{figure}[ht]
   \centering
   % \includegraphics[width=0.8\linewidth]{build/moment_3.png}
-  \caption{Momentaufnahme fuer $k_B T = 3$.}
+  \caption{Momentaufnahme fuer $k_B T = 3$, zufaellige Spins.}%
+  % \label{fig:moment_3}
+\end{figure}
+\begin{figure}[ht]
+  \centering
+  % \includegraphics[width=0.8\linewidth]{build/moment_1.png}
+  \caption{Momentaufnahme fuer $k_B T = 1$, geordnete Spins.}%
+  % \label{fig:moment_1}
+\end{figure}
+\begin{figure}[ht]
+  \centering
+  % \includegraphics[width=0.8\linewidth]{build/moment_3.png}
+  \caption{Momentaufnahme fuer $k_B T = 3$.}%
+  % \label{fig:moment_3}
 \end{figure}
 
 \subsection*{b}
@@ -57,22 +72,53 @@ Fuer die Aequilibriumsphase wird
   e(t) = \frac{E(t)}{N}
 \end{equation}
 gegen $t$ fuer verschiedene Temperaturen aufgetragen.
+
 \begin{figure}[ht]
   \centering
   % \includegraphics[width=0.8\linewidth]{build/aequi_1.png}
-  \caption{Aequilibrierungsphase fuer $k_b T = 1$.}
+  \caption{Aequilibrierungsphase fuer $k_b T = 1$, geordnete Spins.}
 \end{figure}
 \begin{figure}[ht]
   \centering
   % \includegraphics[width=0.8\linewidth]{build/aequi_2.png}
-  \caption{Aequilibrierungsphase fuer $k_b T = 2$.}
+  \caption{Aequilibrierungsphase fuer $k_b T = 2$, geordnete Spins.}
 \end{figure}
 \begin{figure}[ht]
   \centering
   % \includegraphics[width=0.8\linewidth]{build/aequi_3.png}
-  \caption{Aequilibrierungsphase fuer $k_b T = 3$.}
+  \caption{Aequilibrierungsphase fuer $k_b T = 3$, geordnete Spins.}
+\end{figure}
+\begin{figure}[ht]
+  \centering
+  % \includegraphics[width=0.8\linewidth]{build/aequi_1.png}
+  \caption{Aequilibrierungsphase fuer $k_b T = 1$, zufaellige Spins.}
+\end{figure}
+\begin{figure}[ht]
+  \centering
+  % \includegraphics[width=0.8\linewidth]{build/aequi_2.png}
+  \caption{Aequilibrierungsphase fuer $k_b T = 2$, zufaellige Spins.}
+\end{figure}
+\begin{figure}[ht]
+  \centering
+  % \includegraphics[width=0.8\linewidth]{build/aequi_3.png}
+  \caption{Aequilibrierungsphase fuer $k_b T = 3$, zufaellige Spins.}
 \end{figure}
 \subsection*{c}
+\begin{figure}[ht]
+  \centering
+  % \includegraphics[width=0.8\linewidth]{build/magnet_1.png}
+  \caption{Plots fuer $K_b T = 1$, zufaellige Spins.}
+\end{figure}
+\begin{figure}[ht]
+  \centering
+  % \includegraphics[width=0.8\linewidth]{build/magnet_2.png}
+  \caption{Plots fuer $K_b T = 2$, zufaellige Spins.}
+\end{figure}
+\begin{figure}[ht]
+  \centering
+  % \includegraphics[width=0.8\linewidth]{build/magnet_3.png}
+  \caption{Plots fuer $K_b T = 3$, zufaellige Spins.}
+\end{figure}
 \subsection*{d}
 \subsection*{e}
 
