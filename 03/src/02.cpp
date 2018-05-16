@@ -8,7 +8,7 @@ using namespace std;
 
 int n = 100;
 int m = n;
-int n_sweeps = 1010;
+int n_sweeps = 10000;
 
 mt19937 rng;
 // rng.seed(std::random_device()());
@@ -19,29 +19,37 @@ uniform_real_distribution<double> random_m(1, m+1);
 
 
 // initialize lattice
-int** init_lattice(int m, int n) {
-		mt19937 rng;
-		rng.seed(std::random_device()());
-		discrete_distribution<> random_choice({1, 1});
+int** init_lattice(int m, int n, bool random) {
+    mt19937 rng;
+    rng.seed(std::random_device()());
+    discrete_distribution<> random_choice({1, 1});
 
-		// init (n+2)x(m+2) lattice
-		int **lattice;
-		lattice = new int*[m + 2];
-		for (int i = 0; i < m + 2; ++i)
-				lattice[i] = new int[n + 2];
+    // init (n+2)x(m+2) lattice
+    int **lattice;
+    lattice = new int*[m + 2];
+    for (int i = 0; i < m + 2; ++i)
+        lattice[i] = new int[n + 2];
 
-		// Assign rnadom spin values
-		for(int x = 1; x < m + 1; ++x) {
-				for(int y = 1; y < n + 1; ++y) {
-						if(random_choice(rng) == 0) {
-								lattice[x][y] = -1;
-						}
-						else{
-								lattice[x][y] = 1;
-						}
-				}
-		}
-		return lattice;
+    // Assign rnadom spin values
+    if (random == true) {
+        for(int x = 1; x < m + 1; ++x) {
+            for(int y = 1; y < n + 1; ++y) {
+                if(random_choice(rng) == 0) {
+                    lattice[x][y] = -1;
+                }
+                else {
+                    lattice[x][y] = 1;
+                }
+            }
+        }
+    } else {
+        for(int x = 1; x < m + 1; ++x) {
+            for(int y = 1; y < n + 1; ++y) {
+                lattice[x][y] = 1;
+            }
+        }
+    }
+    return lattice;
 }
 
 // make lattice periodic
@@ -89,13 +97,15 @@ int main(int argc, char *argv[]) {
 		double kbT = 2.27;
 
 		double beta = 1. / kbT;
+		
+		bool random = false;
 
 		int *Energie = new int[n_sweeps];
 		int *Sum_Spins = new int[n_sweeps];
 
 		// init random lattice
 		int** lattice;
-		lattice = init_lattice(m,n);
+		lattice = init_lattice(m,n, random);
 
 		// make periodical boundary conditions
 		lattice = periodic_lattice(lattice, m, n);
