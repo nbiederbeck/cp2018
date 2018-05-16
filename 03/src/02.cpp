@@ -71,8 +71,8 @@ int** sweep(int** old_lattice, int** new_lattice, double beta, int m, int n){
 
 int main(int argc, char *argv[])
 {
-		int m = 5;
-		int n = 5;
+		int m = 100;
+		int n = 100;
 		double beta = 100;
 
 		// init random lattice
@@ -104,8 +104,11 @@ int main(int argc, char *argv[])
 
 		}
 
-		old_lattice = sweep(old_lattice, new_lattice, beta, m, n);
-		
+		for(int x= 0; x<100; x++){
+				old_lattice = sweep(old_lattice, new_lattice, beta, m, n);
+				old_lattice = periodic_lattice(old_lattice, m, n);
+		}
+
 		std::ofstream Myfile("./build/02_sweep.txt");
 		if (myfile.is_open()) {
 				for(int x=0; x<m+2 ; x++){
