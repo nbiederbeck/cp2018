@@ -18,56 +18,120 @@
 \begin{document}
 \maketitle
 
-Drei Stimmen fuer Klausur.
+\subsection*{Aufgabe 2}%
+\label{sec:aufgabe_2}
+Es wird ein $100 \times 100$-Spingitter erstellt.
+Dieses wird mit
+\begin{enumerate}
+  \item zufaelligen Spins
+  \item allen Spins = 1
+\end{enumerate}
+besetzt.
+Es werden naechste Nachbarn Wechselwirkungen nach
+\begin{equation}
+  \mathcal{H} = -J \sum_{i, j \text{n.N.}} s_i s_j
+\end{equation}
+beruecksichtigt und zufaellige Spins geflippt nach Boltzmann:
+\begin{equation}
+  p(\texttt{dist\_uniform}) < e^{-\beta \mathcal{H}}.
+\end{equation}
 
-\section*{Aufgabe 1}
-\subsection*{(a)}
-\begin{align*}
-  s &= \pm 1 \\
-  \mathcal{H} &= -sH \\
-  Z &= \sum_i e^{-\beta \mathcal{H}(i)} \\
-  \beta &= \frac{1}{kT} \\
-  kT &= 1 \Rightarrow \beta = 1 \\
-  Z &= e^{-\mathcal{H}(1)} + e^{\mathcal{H}(2)} \\
-  \left<O\right> &= \sum_{1, 2} \frac{1}{Z} e^{-\beta \mathcal{H} (i)} O(i) \\
-  \intertext{$i$ jeder mgl Zustand}
-                 &= \frac{1}{Z} \left( e^{-H} O(1) + e^H  O(2) \right)\\
-                 &= \frac{1}{e^{-H} + e^H} \left( e^{-H} O(1) + e^H  O(2) \right) \\
-  \intertext{Observable $O$ $\rightarrow$ Magnetisierung $m = s$}
-  \left<m\right> &= \frac{1}{e^{-H} + e^H} \left( e^{-H} \cdot 1 + e^H \cdot (-1) \right)\\
-                 &= \frac{e^{-H} - e^H}{e^{-H} + e^H} \\
-                 &= \frac{-2 \sinh{H}}{2 \cosh{H}} \\
-                 &= -\tanh{H}
-\end{align*}
-
-\subsection*{(b)}
-Es wird ein zufälliges Magnetfeld gezogen.
-Es werden die Wahrscheinlichkeiten
-\begin{align*}
-  p_{\text{sum}} = e^{\beta \cdot H \cdot (s_{\text{up}} - s)} + e^{\beta \cdot H \cdot (s_{\text{down}} - s)} \\
-  \intertext{mit $s_{\text{up}} = 1$ und $s_{\text{down}} = -1$}
-  p_{\text{up}} = \frac{e^{\beta \cdot H \cdot (s_{\text{up}} - s)}}{p_{\text{sum}}} \\
-  p_{\text{down}} = \frac{e^{\beta \cdot H \cdot (s_{\text{down}} - s)}}{p_{\text{sum}}} \\
-\end{align*}
-berechnet und anschließend der Spin entsprechend ausgerichtet.
-Der Spin wird zufällig geflippt (mit der entsprechenden Wahrscheinlichkeit).
-Dies entspricht einem Schritt.
-
-Dies wird für 10000 $H$-Werte in jeweils 100000 Schritten simuliert.
-
-Der Plot 1 zeigt die Wahrscheinlichkeit für die Magnetisierung der entsprechenden Spinzustände.
-Es fällt auf, dass das Ergebnis von dem initialen Spin unabhängig ist.
-
-Weiterhin richten sich wie erwartet die Spins nach dem Magnetfeld aus.
-
-
+Hierbei wird ein Spin geflippt, wenn er sich nach dem Flip in einem energetisch niedrigeren Zustand befindet, oder der Zufall nach Gleichung 2 entscheidet.
+\subsection*{a}%
+\label{sub:a}
+Es werden Momentaufnahmen nach $10^5$ Sweeps fuer $k_B T = 1$ (Abbildung 1) und $K_B T = 3$ (Abbildung 2) erstellt.
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=0.8\linewidth]{build/plot_01_b.png}
-  \caption{%
-    Wahrscheinlichkeiten der Magnetisierung in Abhaengigkeit der Magnetfeldstaerke.%
-  }%
-  \label{fig:plot_01_b}
+  % \includegraphics[width=0.8\linewidth]{build/moment_1.png}
+  \caption{Momentaufnahme fuer $k_B T = 1$.}
 \end{figure}
+\begin{figure}[ht]
+  \centering
+  % \includegraphics[width=0.8\linewidth]{build/moment_3.png}
+  \caption{Momentaufnahme fuer $k_B T = 3$.}
+\end{figure}
+
+\subsection*{b}
+Fuer die Aequilibriumsphase wird
+\begin{equation}
+  e(t) = \frac{E(t)}{N}
+\end{equation}
+gegen $t$ fuer verschiedene Temperaturen aufgetragen.
+\begin{figure}[ht]
+  \centering
+  % \includegraphics[width=0.8\linewidth]{build/aequi_1.png}
+  \caption{Aequilibrierungsphase fuer $k_b T = 1$.}
+\end{figure}
+\begin{figure}[ht]
+  \centering
+  % \includegraphics[width=0.8\linewidth]{build/aequi_2.png}
+  \caption{Aequilibrierungsphase fuer $k_b T = 2$.}
+\end{figure}
+\begin{figure}[ht]
+  \centering
+  % \includegraphics[width=0.8\linewidth]{build/aequi_3.png}
+  \caption{Aequilibrierungsphase fuer $k_b T = 3$.}
+\end{figure}
+\subsection*{c}
+\subsection*{d}
+\subsection*{e}
+
+
+
+
+
+
+
+% \section*{Aufgabe 1}
+% \subsection*{(a)}
+% \begin{align*}
+%   s &= \pm 1 \\
+%   \mathcal{H} &= -sH \\
+%   Z &= \sum_i e^{-\beta \mathcal{H}(i)} \\
+%   \beta &= \frac{1}{kT} \\
+%   kT &= 1 \Rightarrow \beta = 1 \\
+%   Z &= e^{-\mathcal{H}(1)} + e^{\mathcal{H}(2)} \\
+%   \left<O\right> &= \sum_{1, 2} \frac{1}{Z} e^{-\beta \mathcal{H} (i)} O(i) \\
+%   \intertext{$i$ jeder mgl Zustand}
+%                  &= \frac{1}{Z} \left( e^{-H} O(1) + e^H  O(2) \right)\\
+%                  &= \frac{1}{e^{-H} + e^H} \left( e^{-H} O(1) + e^H  O(2) \right) \\
+%   \intertext{Observable $O$ $\rightarrow$ Magnetisierung $m = s$}
+%   \left<m\right> &= \frac{1}{e^{-H} + e^H} \left( e^{-H} \cdot 1 + e^H \cdot (-1) \right)\\
+%                  &= \frac{e^{-H} - e^H}{e^{-H} + e^H} \\
+%                  &= \frac{-2 \sinh{H}}{2 \cosh{H}} \\
+%                  &= -\tanh{H}
+% \end{align*}
+
+% \subsection*{(b)}
+% Es wird ein zufälliges Magnetfeld gezogen.
+% Es werden die Wahrscheinlichkeiten
+% \begin{align*}
+%   p_{\text{sum}} = e^{\beta \cdot H \cdot (s_{\text{up}} - s)} + e^{\beta \cdot H \cdot (s_{\text{down}} - s)} \\
+%   \intertext{mit $s_{\text{up}} = 1$ und $s_{\text{down}} = -1$}
+%   p_{\text{up}} = \frac{e^{\beta \cdot H \cdot (s_{\text{up}} - s)}}{p_{\text{sum}}} \\
+%   p_{\text{down}} = \frac{e^{\beta \cdot H \cdot (s_{\text{down}} - s)}}{p_{\text{sum}}} \\
+% \end{align*}
+% berechnet und anschließend der Spin entsprechend ausgerichtet.
+% Der Spin wird zufällig geflippt (mit der entsprechenden Wahrscheinlichkeit).
+% Dies entspricht einem Schritt.
+
+% Dies wird für 10000 $H$-Werte in jeweils 100000 Schritten simuliert.
+
+% Der Plot 1 zeigt die Wahrscheinlichkeit für die Magnetisierung der entsprechenden Spinzustände.
+% Es fällt auf, dass das Ergebnis von dem initialen Spin unabhängig ist.
+
+% Weiterhin richten sich wie erwartet die Spins nach dem Magnetfeld aus.
+
+
+% \begin{figure}[ht]
+%   \centering
+%   \includegraphics[width=0.8\linewidth]{build/plot_01_b.png}
+%   \caption{%
+%     Wahrscheinlichkeiten der Magnetisierung in Abhaengigkeit der Magnetfeldstaerke.%
+%   }%
+%   \label{fig:plot_01_b}
+% \end{figure}
+
+
 
 \end{document}
