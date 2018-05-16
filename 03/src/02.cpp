@@ -74,10 +74,10 @@ int** sweep(int** old_lattice, int** new_lattice, double beta, int* Energie, int
 
 int main(int argc, char *argv[])
 {
-		int m = 100;
-		int n = 100;
+		int m = 300;
+		int n = 300;
 		double beta = 1./1.0;
-		int N = 200;
+		int N = 20000;
 
 		int *Energie = new int[N];
 
@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
 				int *p = &Energie[x];
 				old_lattice = sweep(old_lattice, new_lattice, beta, p, m, n);
 				old_lattice = periodic_lattice(old_lattice, m, n);
-				MyFile << Energie[x]/(static_cast<double>(n*m)) << ",";
+				MyFile << Energie[x]/(static_cast<double>(n*m))/4 << ",";
 		}
 
 
