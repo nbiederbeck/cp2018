@@ -110,11 +110,11 @@ int main(int argc, char *argv[])
 
 		}
 
+        std::ofstream MyFile("./build/02_Energie.txt");
 		for(int x= 0; x<N; x++){
 				int *p = &Energie[x];
 				old_lattice = sweep(old_lattice, new_lattice, beta, p, m, n);
 				old_lattice = periodic_lattice(old_lattice, m, n);
-				std::ofstream MyFile("./build/02_Energie.txt");
 				MyFile << Energie[x]/(static_cast<double>(n*m)) << ",";
 		}
 
