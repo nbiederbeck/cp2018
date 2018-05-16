@@ -99,7 +99,7 @@ def step(old_field, J=1, kbT=1):
 
 
 # Define Start Values
-steps = int(1e4)
+steps = int(1e5)
 n = 100
 J = 1
 kbT = 1 * J
@@ -115,8 +115,8 @@ for kbT in [1 * J, 2.27 * J, 3 * J]:
     # images = [f]
 
     # Run Model, Save Every Step
-    # for i in range(steps):
-    for i in tqdm(range(steps), ascii=True):
+    for i in range(steps):
+    # for i in tqdm(range(steps), ascii=True):
         # images.append(step(images[-1].copy(), J=J, kbT=kbT))
         final = step(final, J=J, kbT=kbT)
 
