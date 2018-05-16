@@ -17,7 +17,7 @@ bin/01: src/01.cpp | bin build
 		src/01.cpp
 
 bin/02: src/02.cpp | bin
-	g++ -O2 -o bin/02 \
+	g++ -O2 -fopenmp -o bin/02 \
 		src/02.cpp
 
 bin:
