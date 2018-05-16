@@ -43,7 +43,7 @@ int** periodic_lattice(int** lattice, int m, int n){
 		return lattice;
 }
 
-int** sweep(int** old_lattice, int** new_lattice, double beta, int m, int n){
+int** sweep(int** old_lattice, int** new_lattice, double beta, int* Energie, int m, int n){
 		std::mt19937 rng;
 		rng.seed(std::random_device()());
 		std::uniform_real_distribution<double> random_uniform(0, 1);
@@ -52,17 +52,20 @@ int** sweep(int** old_lattice, int** new_lattice, double beta, int m, int n){
 				for(int j=1; j<n+1; j++){
 						int Energy = -old_lattice[i][j] * (old_lattice[i][j-1] + old_lattice[i][j+1] + old_lattice[i-1][j] + old_lattice[i+1][j]);
 						/* cout << Energy << endl; */
+						*Energie += Energy;
 						if(-2 * Energy < 0){
 								/* cout << i << j << "alter eintrag" << old_lattice[i][j] << "new lattice" << new_lattice[i][j] << endl; */
 								new_lattice[i][j] = -1 * old_lattice[i][j];
 						}
-						else{ 
-								if(exp(beta * 2 * Energy) > random_uniform(rng)){
-										new_lattice[i][j] = -1 * old_lattice[i][j];
-								}
-								else{
-										new_lattice[i][j] = old_lattice[i][j];
-								}
+						else if(Energy ==0){
+								new_lattice[i][j] = old_lattice[i][j];
+						}
+						else if(exp(beta * 2 * Energy) > random_uniform(rng)){
+								new_lattice[i][j] = -1 * old_lattice[i][j];
+								*Energie -= 2 * Energy;
+						}
+						else{
+								new_lattice[i][j] = old_lattice[i][j];
 						}
 				}
 		}
@@ -73,7 +76,10 @@ int main(int argc, char *argv[])
 {
 		int m = 100;
 		int n = 100;
-		double beta = 100;
+		double beta = 1./1.0;
+		int N = 200;
+
+		int *Energie = new int[N];
 
 		// init random lattice
 		int** old_lattice;
@@ -104,10 +110,14 @@ int main(int argc, char *argv[])
 
 		}
 
-		for(int x= 0; x<100; x++){
-				old_lattice = sweep(old_lattice, new_lattice, beta, m, n);
+		for(int x= 0; x<N; x++){
+				int *p = &Energie[x];
+				old_lattice = sweep(old_lattice, new_lattice, beta, p, m, n);
 				old_lattice = periodic_lattice(old_lattice, m, n);
+				std::ofstream MyFile("./build/02_Energie.txt");
+				MyFile << Energie[x]/(static_cast<double>(n*m)) << ",";
 		}
+
 
 		std::ofstream Myfile("./build/02_sweep.txt");
 		if (myfile.is_open()) {
@@ -121,12 +131,12 @@ int main(int argc, char *argv[])
 		}
 
 		// print lattice 
-		cout << "flipped lattice" << endl;
-		for(int x=0; x<m+2 ; x++){
-				for(int y=0; y<n+2 ; y++){
-						cout << old_lattice[x][y] << ' ';
-				}
-				cout << endl;
-		}
+		/* cout << "flipped lattice" << endl; */
+		/* for(int x=0; x<m+2 ; x++){ */
+		/* 		for(int y=0; y<n+2 ; y++){ */
+		/* 				cout << old_lattice[x][y] << ' '; */
+		/* 		} */
+		/* 		cout << endl; */
+		/* } */
 		return 0;
 }
