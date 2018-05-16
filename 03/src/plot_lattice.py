@@ -2,8 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-init_file = "build/02_init.txt"
-final_file = "build/02_sweep.txt"
+init_file = "build/02_init_ran_0_kbT_3.txt"
+final_file = "build/02_sweep_ran_0_kbT_3.txt"
 
 init = np.genfromtxt(init_file, delimiter=",")
 n, m = init.shape

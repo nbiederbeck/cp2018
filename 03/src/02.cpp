@@ -99,7 +99,7 @@ int make_process(double kbT, bool random, int n_sweeps) {
 		double beta = 1. / kbT;
 
 		stringstream  stream_filename;
-		stream_filename << "ran_" << random << "_kbT_" << kbT << ".txt";
+		stream_filename << "_ran_" << random << "_kbT_" << kbT << ".txt";
 		cout << "Produce Data with " << endl;
 		cout << "random choice: " << random << ", kbT: " << kbT << 
 				", n_sweeps: "<< n_sweeps << endl;
@@ -151,11 +151,11 @@ int make_process(double kbT, bool random, int n_sweeps) {
 }
 
 int main(int argc, char *argv[]) {
-		make_process(1.0, 	true, 	1000);
-		make_process(2.27, 	true, 	1000);
-		make_process(3.0, 	true, 	1000);
-		make_process(1.0, 	false, 	1000);
-		make_process(2.27, 	false, 	1000);
-		make_process(3.0, 	false, 	1000);
+		make_process(1.0, 	true, 	10000);
+		make_process(2.27, 	true, 	10000);
+		make_process(3.0, 	true, 	10000);
+		make_process(1.0, 	false, 	10000);
+		make_process(2.27, 	false, 	10000);
+		make_process(3.0, 	false, 	10000);
 		return 0;
 }
