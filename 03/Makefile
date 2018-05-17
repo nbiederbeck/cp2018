@@ -25,11 +25,11 @@ bin:
 
 # LaTeX PDF
 build/main.pdf: build/plot_01_b.png src/main.tex | build
-	latexmk --pdf --output-directory=build \
+	latexmk --lualatex --output-directory=build \
 		src/main.tex
 
 preview: build/plot_01_b.png src/main.tex | build
-	latexmk --pdf --output-directory=build \
+	latexmk --lualatex --output-directory=build \
 		src/main.tex --pvc
 
 build/plot_01_b.png: src/plot_01_b.py build/01_b.txt

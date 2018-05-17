@@ -24,7 +24,11 @@ def main():
 
 
 def plot(magnetic_file, energy_file, r, k):
-    filename = "build/magnetic_ran_{r}_kbT_{k}.png".format(r=r, k=k)
+    if k == 2.27:
+        k *= 100
+    filename = "build/magnetic_ran_{r}_kbT_{k:.0f}.png".format(r=r, k=k)
+    if k == 227:
+        k /= 100
     print("plot {}".format(filename))
 
     e = np.genfromtxt(energy_file, delimiter=",")

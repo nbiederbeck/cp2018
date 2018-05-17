@@ -7,18 +7,18 @@
   below,   % unterhalb der Section aber auf der selben Seite ist ok
 ]{placeins}
 
-\title{Übungsblatt 03.1}
+\title{Übungsblatt 03.2}
 \author{%
   Noah Biederbeck, Maximilian Sackel, Jan Spinne
 }
-\date{Abgabe: 11. Mai 2018}
+\date{Abgabe: 18. Mai 2018}
 
 
 
 \begin{document}
 \maketitle
 
-\subsection*{Aufgabe 2}%
+\section*{Aufgabe 2}%
 \label{sec:aufgabe_2}
 Es wird ein $100 \times 100$-Spingitter erstellt.
 Dieses wird mit
@@ -38,7 +38,7 @@ beruecksichtigt und zufaellige Spins geflippt nach Boltzmann:
 \end{equation}
 
 Hierbei wird ein Spin geflippt, wenn er sich nach dem Flip in einem energetisch niedrigeren Zustand befindet, oder der Zufall nach Gleichung~\ref{eq:boltzmann} entscheidet.
-\subsection*{a}%
+\section*{a}%
 \label{sub:a}
 Es werden Momentaufnahmen nach $10^5$ Sweeps fuer $k_B T = 1$ und $K_B T = 3$ erstellt fuer jeweils beide Anfangsbedingungen erstellt.
 \begin{figure}[ht]
@@ -78,61 +78,66 @@ Es werden Momentaufnahmen nach $10^5$ Sweeps fuer $k_B T = 1$ und $K_B T = 3$ er
   % \label{fig:moment_3}
 \end{figure}
 
-\subsection*{b}
+\FloatBarrier
+\newpage
+\section*{b}
 Fuer die Aequilibriumsphase wird
 \begin{equation}
   e(t) = \frac{E(t)}{N}
 \end{equation}
 gegen $t$ fuer verschiedene Temperaturen aufgetragen.
 
+Es wird deutlich, dass 1000 Sweeps eine ausreichende Aequilibriumsphase sind.
+
 \begin{figure}[ht]
   \centering
-  % \includegraphics[width=0.8\linewidth]{build/aequi_1.png}
-  \caption{Aequilibrierungsphase fuer $k_b T = 1$, geordnete Spins.}
+  \includegraphics[width=0.8\linewidth]{build/energy_ran_0.png}
+  \caption{Aequilibrierungsphase fuer geordnete Spins.}
 \end{figure}
 \begin{figure}[ht]
   \centering
-  % \includegraphics[width=0.8\linewidth]{build/aequi_2.png}
-  \caption{Aequilibrierungsphase fuer $k_b T = 2$, geordnete Spins.}
+  \includegraphics[width=0.8\linewidth]{build/energy_ran_1.png}
+  \caption{Aequilibrierungsphase fuer zufaellige Spins.}
+\end{figure}
+\FloatBarrier
+\newpage
+\section*{c}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\linewidth]{build/magnetic_ran_0_kbT_1.png}
+  \caption{Energie, Magnetisierung und absolute Magnetisierung fuer $K_b T = 1$, geordnete Spins.}
 \end{figure}
 \begin{figure}[ht]
   \centering
-  % \includegraphics[width=0.8\linewidth]{build/aequi_3.png}
-  \caption{Aequilibrierungsphase fuer $k_b T = 3$, geordnete Spins.}
+  \includegraphics[width=0.8\linewidth]{build/magnetic_ran_0_kbT_227.png}
+  \caption{Energie, Magnetisierung und absolute Magnetisierung fuer $K_b T = 2.27$, geordnete Spins.}
 \end{figure}
 \begin{figure}[ht]
   \centering
-  % \includegraphics[width=0.8\linewidth]{build/aequi_1.png}
-  \caption{Aequilibrierungsphase fuer $k_b T = 1$, zufaellige Spins.}
+  \includegraphics[width=0.8\linewidth]{build/magnetic_ran_0_kbT_3.png}
+  \caption{Energie, Magnetisierung und absolute Magnetisierung fuer $K_b T = 3$, geordnete Spins.}
 \end{figure}
 \begin{figure}[ht]
   \centering
-  % \includegraphics[width=0.8\linewidth]{build/aequi_2.png}
-  \caption{Aequilibrierungsphase fuer $k_b T = 2$, zufaellige Spins.}
+  \includegraphics[width=0.8\linewidth]{build/magnetic_ran_1_kbT_1.png}
+  \caption{Energie, Magnetisierung und absolute Magnetisierung fuer $K_b T = 1$, zufaellige Spins.}
 \end{figure}
 \begin{figure}[ht]
   \centering
-  % \includegraphics[width=0.8\linewidth]{build/aequi_3.png}
-  \caption{Aequilibrierungsphase fuer $k_b T = 3$, zufaellige Spins.}
-\end{figure}
-\subsection*{c}
-\begin{figure}[ht]
-  \centering
-  % \includegraphics[width=0.8\linewidth]{build/magnet_1.png}
-  \caption{Plots fuer $K_b T = 1$, zufaellige Spins.}
+  \includegraphics[width=0.8\linewidth]{build/magnetic_ran_1_kbT_227.png}
+  \caption{Energie, Magnetisierung und absolute Magnetisierung fuer $K_b T = 2.27$, zufaellige Spins.}
 \end{figure}
 \begin{figure}[ht]
   \centering
-  % \includegraphics[width=0.8\linewidth]{build/magnet_2.png}
-  \caption{Plots fuer $K_b T = 2$, zufaellige Spins.}
+  \includegraphics[width=0.8\linewidth]{build/magnetic_ran_1_kbT_3.png}
+  \caption{Energie, Magnetisierung und absolute Magnetisierung fuer $K_b T = 3$, zufaellige Spins.}
 \end{figure}
-\begin{figure}[ht]
-  \centering
-  % \includegraphics[width=0.8\linewidth]{build/magnet_3.png}
-  \caption{Plots fuer $K_b T = 3$, zufaellige Spins.}
-\end{figure}
-\subsection*{d}
-\subsection*{e}
+\FloatBarrier
+\newpage
+\section*{d}
+\FloatBarrier
+\newpage
+\section*{e}
 
 
 
