@@ -9,7 +9,7 @@ using namespace std;
 
 int n = 100;
 int m = n;
-/* int n_sweeps = 10000; */
+int n_sweeps = 10000;
 
 mt19937 rng;
 // rng.seed(std::random_device()());
@@ -95,7 +95,7 @@ int** sweep(int** lattice, double beta, int* Energie, int* Sum_Spins, int m, int
 }
 
 
-int make_process(double kbT, bool random, int n_sweeps) {
+void make_process(double kbT, bool random, int n_sweeps) {
 		double beta = 1. / kbT;
 
 		stringstream  stream_filename;
@@ -133,7 +133,7 @@ int make_process(double kbT, bool random, int n_sweeps) {
 				int *q = &Sum_Spins[x];
 				lattice = sweep(lattice, beta, p, q, m, n);
 				lattice = periodic_lattice(lattice, m, n);
-				file_energy << Energie[x] / (static_cast<double>(n * m)) / 4 << ",";
+				file_energy << (Energie[x] / (static_cast<double>(n * m))) / 4. << ",";
 				File_Energy << Sum_Spins[x]/ (static_cast<double>(n * m)) << ",";
 		}
 		cout << endl << "Simulation beendet." << endl;
@@ -151,11 +151,11 @@ int make_process(double kbT, bool random, int n_sweeps) {
 }
 
 int main(int argc, char *argv[]) {
-		make_process(1.0, 	true, 	10000);
-		make_process(2.27, 	true, 	10000);
-		make_process(3.0, 	true, 	10000);
-		make_process(1.0, 	false, 	10000);
-		make_process(2.27, 	false, 	10000);
-		make_process(3.0, 	false, 	10000);
+		make_process(1.0, 	true, 	n_sweeps);
+		make_process(2.27, 	true, 	n_sweeps);
+		make_process(3.0, 	true, 	n_sweeps);
+		make_process(1.0, 	false, 	n_sweeps);
+		make_process(2.27, 	false, 	n_sweeps);
+		make_process(3.0, 	false, 	n_sweeps);
 		return 0;
 }
