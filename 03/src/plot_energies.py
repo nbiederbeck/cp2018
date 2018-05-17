@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 
 ran = [0, 1]
 kbT = [1, 2.27, 3]
-snapshots = ["init", "sweep"]
 
 
 def main():

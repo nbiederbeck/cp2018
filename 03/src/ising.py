@@ -146,5 +146,6 @@ def main():
         fig.tight_layout()
         fig.savefig("photos/{}.jpg".format(kbT))
 
+
 if __name__ == "__main__":
     main()
