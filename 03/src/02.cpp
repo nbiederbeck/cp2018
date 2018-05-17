@@ -3,12 +3,13 @@
 #include <random>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
 int n = 100;
 int m = n;
-int n_sweeps = 10000;
+/* int n_sweeps = 10000; */
 
 mt19937 rng;
 // rng.seed(std::random_device()());
@@ -93,13 +94,15 @@ int** sweep(int** lattice, double beta, int* Energie, int* Sum_Spins, int m, int
 		return lattice;
 }
 
-int main(int argc, char *argv[]) {
-		double kbT = 2.27;
 
+int make_process(double kbT, bool random, int n_sweeps) {
 		double beta = 1. / kbT;
-		
-		bool random = false;
 
+		stringstream  stream_filename;
+		stream_filename << "_ran_" << random << "_kbT_" << kbT << ".txt";
+		cout << "Produce Data with " << endl;
+		cout << "random choice: " << random << ", kbT: " << kbT << 
+				", n_sweeps: "<< n_sweeps << endl;
 		int *Energie = new int[n_sweeps];
 		int *Sum_Spins = new int[n_sweeps];
 
@@ -111,7 +114,7 @@ int main(int argc, char *argv[]) {
 		lattice = periodic_lattice(lattice, m, n);
 		cout << "Gitter erstellt" << endl;
 
-		ofstream file_init_lattice("./build/02_init.txt");
+		ofstream file_init_lattice("./build/02_init"+ stream_filename.str());
 		if (file_init_lattice.is_open()) {
 				for(int x = 0; x < m + 2; ++x){
 						for(int y = 0; y < n + 2; ++y){
@@ -121,8 +124,8 @@ int main(int argc, char *argv[]) {
 				}
 		}
 
-		ofstream file_energy("./build/02_Energie.txt");
-		ofstream File_Energy("./build/02_Sum_Spin.txt");
+		ofstream file_energy("./build/02_Energie" + stream_filename.str());
+		ofstream File_Energy("./build/02_Sum_Spin" + stream_filename.str());
 		cout << "Starte " << n_sweeps <<  " Sweeps:" << endl;
 		for(int x = 0; x < n_sweeps; ++x){
 				if (x % static_cast<int>(n_sweeps / 10.) == 0) {cout << ".";}
@@ -136,7 +139,7 @@ int main(int argc, char *argv[]) {
 		cout << endl << "Simulation beendet." << endl;
 
 
-		ofstream file_final_lattice("./build/02_sweep.txt");
+		ofstream file_final_lattice("./build/02_sweep" + stream_filename.str());
 		if (file_final_lattice.is_open()) {
 				for(int x = 0; x < m + 2; ++x){
 						for(int y = 0; y < n + 2; ++y){
@@ -145,14 +148,14 @@ int main(int argc, char *argv[]) {
 						file_final_lattice << endl;
 				}
 		}
+}
 
-		// // print lattice
-		// cout << "flipped lattice" << endl;
-		// for(int x=0; x<m+2 ; ++x){
-		// 		for(int y=0; y<n+2 ; ++y){
-		// 				cout << lattice[x][y] << ' ';
-		// 		}
-		// 		cout << endl;
-		// }
+int main(int argc, char *argv[]) {
+		make_process(1.0, 	true, 	10000);
+		make_process(2.27, 	true, 	10000);
+		make_process(3.0, 	true, 	10000);
+		make_process(1.0, 	false, 	10000);
+		make_process(2.27, 	false, 	10000);
+		make_process(3.0, 	false, 	10000);
 		return 0;
 }
