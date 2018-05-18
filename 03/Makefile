@@ -20,6 +20,7 @@ bin/02: src/02.cpp | bin build
 	g++ -O2 -fopenmp -o bin/02 \
 		src/02.cpp
 
+
 bin:
 	mkdir -p bin
 
@@ -34,6 +35,16 @@ preview: build/plot_01_b.png src/main.tex | build
 
 build/plot_01_b.png: src/plot_01_b.py build/01_b.txt
 	python src/plot_01_b.py
+
+build/energy_plots.png: src/plot_energies.py src/plot_energies_2.py
+	python src/plot_energies.py
+	python src/plot_energies_2.py
+
+build/lattice_plots.png: src/plot_lattice.py 
+	python src/plot_lattice.py
+
+build/magnetic_plots.png: src/plot_magnetics.py 
+	python src/plot_magnetics.py
 
 build:
 	mkdir -p build
