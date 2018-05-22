@@ -1,5 +1,6 @@
 \documentclass{scrartcl}
 \usepackage{graphicx}
+\usepackage{amsmath}
 
 \title{Übungsblatt 01}
 \author{%
@@ -12,12 +13,42 @@
 \maketitle
 
 \section*{Aufgabe 1}
+Random Walk mit $N = 10, 15, \ldots, 60$ Schritten,
+mittlerer Abstand $r$ aus $C = 10^5$ Walks.
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.8\linewidth]{build/plot_01.pdf}
   \caption{Weglänge $N$ aufgetragen gegen mittleren Abstand $r$.}%
   \label{fig:build/plot_01}
 \end{figure}
+
 \section*{Aufgabe 2}
+\subsection*{a.}
+Bestimme zuerst $\pi$:
+Hierfür werden gleichverteilte Zufallszahlen in 3 Dimensionen
+zwischen 0..1 gezogen.
+Ist der Abstand zum Ursprung größer, als der Kugelradius,
+werden sie verworfen:
+\begin{equation}
+  r^2 = x^2 + y^2 + z^2 \le 1
+\end{equation}
+
+Bestimme das Kugelvolumen aus dem Verhältnis aller gezogenen Zahlen $N$
+und der Zahlen innerhalb der Einheitskugel $n$:
+\begin{align}
+  8 \cdot \frac{n}{N} &= \frac{4}{3} \pi r^3 \\
+  \Rightarrow 6 \frac{n}{N} &= \pi
+\end{align}
+
+\subsection*{b.}
+Laut Wolfram Alpha ist
+\begin{align}
+  \int_{-\infty}^{T_i} \frac{1}{\sqrt{\pi}} \exp{\left(-x^2\right)} dx&\\
+  \intertext{für $T_i = \left\{-1, 1.1631, \infty\right\}$}
+  &= \left\{0.078, 0.95, 1\right\}.\\
+  \intertext{Eine MC-Integration mit $N = 10^9$ Punkten liefert}
+  &= \left\{0.078, 0.05, 0\right\}.
+\end{align}
+
 
 \end{document}
