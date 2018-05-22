@@ -99,47 +99,53 @@ def step(old_field, J=1, kbT=1):
 
 
 # Define Start Values
-steps = int(1e5)
-n = 100
+steps = int(1e3)
+n = 10
 J = 1
 kbT = 1 * J
 
-for kbT in [1 * J, 2.27 * J, 3 * J]:
-    print("===========")
-    print("kbT = {:.2f}J".format(kbT))
-    print("===========")
-    first = init(n, random=True)
-    final = first.copy()
 
-    # images = [f]
+def main():
+    for kbT in [1 * J, 2.27 * J, 3 * J]:
+        print("===========")
+        print("kbT = {:.2f}J".format(kbT))
+        print("===========")
+        first = init(n, random=True)
+        final = first.copy()
 
-    # Run Model, Save Every Step
-    for i in range(steps):
-        # for i in tqdm(range(steps), ascii=True):
-        # images.append(step(images[-1].copy(), J=J, kbT=kbT))
-        final = step(final, J=J, kbT=kbT)
+        # images = [f]
 
-    # Display Lattice After MC
-    # first = images[0]
-    # final = images[-1]
+        # Run Model, Save Every Step
+        for i in range(steps):
+            # for i in tqdm(range(steps), ascii=True):
+            # images.append(step(images[-1].copy(), J=J, kbT=kbT))
+            final = step(final, J=J, kbT=kbT)
 
-    fig = plt.figure()
-    fig.set_size_inches([10, 4])
-    ax_first = fig.add_subplot(121)
-    ax_final = fig.add_subplot(122)
+        # Display Lattice After MC
+        # first = images[0]
+        # final = images[-1]
 
-    cmap = plt.get_cmap("binary", 2)
+        fig = plt.figure()
+        fig.set_size_inches([10, 4])
+        ax_first = fig.add_subplot(121)
+        ax_final = fig.add_subplot(122)
 
-    im_first = ax_first.imshow(first[1:n + 1, 1:n + 1], cmap=cmap)
-    im_final = ax_final.imshow(final[1:n + 1, 1:n + 1], cmap=cmap)
+        cmap = plt.get_cmap("binary", 2)
 
-    cbar = fig.colorbar(im_final)
-    cbar.set_ticks([-1, 1])
-    cbar.ax.set_ylabel("Spin")
+        im_first = ax_first.imshow(first[1:n + 1, 1:n + 1], cmap=cmap)
+        im_final = ax_final.imshow(final[1:n + 1, 1:n + 1], cmap=cmap)
 
-    ax_first.set_title("Randomly initialized spins.")
-    ax_final.set_title(
-        "Final spins after {} sweeps, kbT={}J.".format(steps, kbT)
-    )
-    fig.tight_layout()
-    fig.savefig("photos/{}.jpg".format(kbT))
+        cbar = fig.colorbar(im_final)
+        cbar.set_ticks([-1, 1])
+        cbar.ax.set_ylabel("Spin")
+
+        ax_first.set_title("Randomly initialized spins.")
+        ax_final.set_title(
+            "Final spins after {} sweeps, kbT={}J.".format(steps, kbT)
+        )
+        fig.tight_layout()
+        fig.savefig("photos/{}.jpg".format(kbT))
+
+
+if __name__ == "__main__":
+    main()

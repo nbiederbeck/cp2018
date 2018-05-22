@@ -1,28 +1,45 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-energie1 = np.genfromtxt("build/02_Energie_ran_0_kbT_1.txt", delimiter=",")
-energie2 = np.genfromtxt("build/02_Energie_ran_0_kbT_2.27.txt", delimiter=",")
-energie3 = np.genfromtxt("build/02_Energie_ran_0_kbT_3.txt", delimiter=",")
+ran = [0, 1]
+kbT = [1, 2.27, 3]
 
-n = 100
-kbT = 1
 
-energie1 = energie1[:-1] 
-energie2 = energie2[:-1] 
-energie3 = energie3[:-1] 
+def main():
+    for r in ran:
+        energy_files = []
+        for k in kbT:
+            energy_files.append(
+                "build/02_Energie_ran_{r}_kbT_{k}.txt".format(r=r, k=k)
+            )
+        plot(energy_files, r)
 
-fig, ax = plt.subplots()
-print(energie1)
-ax.plot(range(len(energie1)), energie1, "--", label="Energie")
-# ax.plot(range(len(energie2)), energie2, ".-", label="Energie")
-# ax.plot(range(len(energie3)), energie3, ".", label="Energie")
+def plot(energy_files, ran):
+    filename = "build/energy_ran_{r}.png".format(r=ran)
+    print("plot {}".format(filename))
 
-ax.set_xlabel("Sweeps")
-ax.set_ylabel("e(t), m(t), |m|(t)")
-ax.set_xscale("log")
-# ax.set_yscale("log")
-ax.legend()
+    energies = []
+    for f in energy_files:
+        e = np.genfromtxt(f, delimiter=",")
+        e = e[:-1]
+        energies.append(e)
 
-fig.tight_layout(pad=0)
-fig.savefig("build/energies.png")
+    fig, ax = plt.subplots()
+
+    for e, k in zip(energies, [1, 2.27, 3]):
+        ax.plot(range(len(e)), e, label=r"$k_BT=${}".format(k))
+
+    ax.set_xlabel("Sweeps")
+    ax.set_ylabel("e(t)")
+    ax.set_xscale("log")
+    ax.legend()
+
+    ax.set_title(
+        r"Initially {} Spins".format("Aligned" if ran == 0 else "Random")
+    )
+    fig.tight_layout()
+    fig.savefig(filename)
+
+
+if __name__ == "__main__":
+    main()
