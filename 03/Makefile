@@ -19,13 +19,14 @@ bin/01: src/01.cpp | bin build
 bin/02: src/02.cpp | bin build
 	g++ -O2 -fopenmp -o bin/02 \
 		src/02.cpp
+	./bin/02
 
 
 bin:
 	mkdir -p bin
 
 # LaTeX PDF
-build/main.pdf: build/plot_01_b.png src/main.tex | build
+build/main.pdf: build/plot_01_b.png build/magnetic_plots.png build/lattice_plots.png build/lattice_plots.png build/energy_plots.png src/main.tex | build
 	latexmk --lualatex --output-directory=build \
 		src/main.tex
 
@@ -36,14 +37,14 @@ preview: build/plot_01_b.png src/main.tex | build
 build/plot_01_b.png: src/plot_01_b.py build/01_b.txt
 	python src/plot_01_b.py
 
-build/energy_plots.png: src/plot_energies.py src/plot_energies_2.py
+build/energy_plots.png: src/plot_energies.py src/plot_energies_2.py bin/02
 	python src/plot_energies.py
 	python src/plot_energies_2.py
 
-build/lattice_plots.png: src/plot_lattice.py 
+build/lattice_plots.png: src/plot_lattice.py bin/02
 	python src/plot_lattice.py
 
-build/magnetic_plots.png: src/plot_magnetics.py 
+build/magnetic_plots.png: src/plot_magnetics.py bin/02
 	python src/plot_magnetics.py
 
 build:
@@ -52,7 +53,7 @@ build:
 # Abgabe
 abgabe.tar.gz: build/main.pdf src/01.cpp src/02.cpp
 	mkdir -p abgabe/
-	cp build/main.pdf src/01.cpp src/02.cpp abgabe/
+	cp build/main.pdf src/* abgabe/
 	printf "all:\n\tg++ -O2 -o 01.out 01.cpp\n\tg++ -O2 -o 02.out 02.cpp" >> abgabe/Makefile
 	tar czf abgabe.tar.gz abgabe/*
 	rm -rf abgabe/

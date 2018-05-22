@@ -11,7 +11,7 @@ using namespace std;
 // define important values for our simulation
 int n = 100;  // size of lattice
 int m = n;  // quadratic
-int n_sweeps = 100;  // number of MC steps
+int n_sweeps = 101000;  // number of MC steps
 
 // define random number generators
 mt19937 rng;
