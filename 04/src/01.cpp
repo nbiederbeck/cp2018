@@ -41,17 +41,16 @@ Eigen::MatrixXd Hamilton(Eigen::MatrixXd m , double J){
 
 				// nicht mehr random
 				int center = m(x,y);
-				int left_h  = m(x,(Y+y-1)%Y);
-				int right_h = m(x,(Y+y+1)%Y);
-				int above_h = m((X+x-1)%X,y);
-				int below_h = m((X+x+1)%X,y);
 
-				int pos[4] = {left_h, right_h, above_h, below_h};
+				int x_pos[4] = {x, x, (X+x-1)%X, (X+x-1)%X};
+				int y_pos[4] = {(Y+y-1)%Y, (Y+y-1)%Y, y, y};
 
 
 				for(int i=0; i<4; i++){
-						if(center == pos[i]){
-								std::cout << center << " other pos; " << pos[i] << std::endl;
+						if(m(x,y) == m(x_pos[i],y_pos[i])){
+								Vector2d new_pos(x_pos[i], y_pos[i]);
+								n_visited.push_back(new_pos);
+								std::cout << center << " other pos; " << std::endl;
 						}
 				}
 
@@ -59,6 +58,14 @@ Eigen::MatrixXd Hamilton(Eigen::MatrixXd m , double J){
 				/* n_visited.push_back(pos); */
 				/* std::cout << "---" << std::endl; */
 				/* std::cout << n_visited[i] << std::endl; */
+		}
+
+
+				std::cout << "FUUUUUUUUUUUUUUUUUUUUU" << std::endl;
+		for(int i =0; i<n_visited.size(); i++){
+				std::cout << "i = " << i << std::endl;
+				std::cout << n_visited[i] << std::endl;
+				/* std::cout << "---" << std::endl; */
 		}
 
 		/* for(int i =0; i<sizeof(n_visited); i++){ */
