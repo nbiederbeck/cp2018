@@ -2,11 +2,12 @@
 #include <random>
 #include <Eigen/Dense>
 #include <vector>
+#include <algorithm>
 
 using namespace Eigen;
-int q = 3;
-int dim_n = 4;
-int dim_m = 4;
+int q = 6;
+int dim_n = 8;
+int dim_m = 8;
 
 std::mt19937 rng;
 std::uniform_int_distribution<int> random_n(1,q-1);
@@ -33,62 +34,50 @@ Eigen::MatrixXd Hamilton(Eigen::MatrixXd m , double J){
 
 		Vector2d pos(x, y);
 		std::vector <Vector2d> n_visited = {pos};
+		std::vector <Vector2d> visited = {};
 
-		for(int i =0; i<n_visited.size(); i++){
-				x = n_visited[i](0);
-				y = n_visited[i](1);
+		/* std::cout << n_visited.empty() << std::endl; */
+		/* for(int i =0; i<n_visited.size(); i++){ */
+		while(n_visited.empty() != true){
+				std::cout << "FUU" << std::endl;
+				x = n_visited[0](0);
+				y = n_visited[0](1);
 				std::cout << x << std::endl;
 
 				// nicht mehr random
 				int center = m(x,y);
 
-				int x_pos[4] = {x, x, (X+x-1)%X, (X+x-1)%X};
-				int y_pos[4] = {(Y+y-1)%Y, (Y+y-1)%Y, y, y};
-
+				int x_pos[4] = {x, x, (X+x-1)%X, (X+x+1)%X};
+				int y_pos[4] = {(Y+y-1)%Y, (Y+y+1)%Y, y, y};
 
 				for(int i=0; i<4; i++){
+						/* std::cout << "first for i: " << i << std::endl; */
 						if(m(x,y) == m(x_pos[i],y_pos[i])){
+								/* std::cout << "if for i: " << i << std::endl; */
 								Vector2d new_pos(x_pos[i], y_pos[i]);
-								n_visited.push_back(new_pos);
-								std::cout << center << " other pos; " << std::endl;
+								if(std::find(visited.begin(), visited.end(), new_pos) == visited.end()){
+										/* std::cout << "if not in n_i: " << i << std::endl; */
+										n_visited.push_back(new_pos);
+										/* std::cout << "i: " << i << n_visited[i] << std::endl; */
+								}
+								/* std::cout << center << " other pos; " << std::endl; */
 						}
 				}
 
-				/* Vector2d pos(x, y); */
-				/* n_visited.push_back(pos); */
-				/* std::cout << "---" << std::endl; */
-				/* std::cout << n_visited[i] << std::endl; */
+				visited.push_back(n_visited[0]);
+				n_visited.erase(n_visited.begin(), n_visited.begin()+1);
+
+				std::cout << "==========================" << std::endl;
+				for(int i=0; i<visited.size(); i++){
+						std::cout << "--" << std::endl;
+						std::cout << visited[i] << std::endl;
+				}
+				/* 		/1* Vector2d pos(x, y); *1/ */
+				/* 		/1* n_visited.push_back(pos); *1/ */
+				/* 		/1* std::cout << "---" << std::endl; *1/ */
+				/* 		/1* std::cout << n_visited[i] << std::endl; *1/ */
 		}
 
-
-				std::cout << "FUUUUUUUUUUUUUUUUUUUUU" << std::endl;
-		for(int i =0; i<n_visited.size(); i++){
-				std::cout << "i = " << i << std::endl;
-				std::cout << n_visited[i] << std::endl;
-				/* std::cout << "---" << std::endl; */
-		}
-
-		/* for(int i =0; i<sizeof(n_visited); i++){ */
-		/* 		std::printf("%d\n", n_visited[i]); */
-		/* } */
-		// position NN
-		/* int center = m(x,y); */
-		/* int left_h  = m(x,(Y+y-1)%Y); */
-		/* int right_h = m(x,(Y+y+1)%Y); */
-		/* int above_h = m((X+x-1)%X,y); */
-		/* int below_h = m((X+x+1)%X,y); */
-
-		/* // array for better comp */
-		/* int pos[4] = {left_h, right_h, above_h, below_h}; */
-
-		/* int ham = 0; */
-
-		/* for(int i=0; i<4; i++){ */
-		/* 		if(center == pos[i]){ */
-		/* 				ham += J; */
-		/* 		} */
-		/* } */
-		/* std::printf("%d\n", ham); */
 		return m;
 }
 
