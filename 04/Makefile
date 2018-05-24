@@ -5,7 +5,9 @@ EIGENPATH= /home/maximilian/Dokumente/01-Uni/09-Comp.-Phy./04-Dependence/eigen
 
 # C++ Binaries
 bin/01: src/01.cpp | bin build
-	g++ -O2 -o bin/01 -I $(EIGENPATH) \
+	g++ -O2 -o bin/01 \
+			-I $(EIGENPATH) \
+			-std=c++11 \
 		src/01.cpp
 
 
