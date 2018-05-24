@@ -6,9 +6,10 @@
 #include <algorithm>
 
 using namespace Eigen;
-int q = 1;
-int dim_n = 2;
-int dim_m = 2;
+
+int q = 3;
+int dim_n = 5;
+int dim_m = 5;
 
 std::mt19937 rng;
 std::uniform_int_distribution<int> random_n(1,q);
@@ -25,7 +26,6 @@ Eigen::MatrixXd init_m(int dim_m, int dim_n){
 		}
 		return m;
 }
-
 
 std::vector <Vector2d> Hamilton(Eigen::MatrixXd m , double J){
 		int Y = m.cols();
@@ -47,9 +47,7 @@ std::vector <Vector2d> Hamilton(Eigen::MatrixXd m , double J){
 				x = n_visited[0](0);
 				y = n_visited[0](1);
 
-				// nicht mehr random
 				int center = m(x,y);
-
 				int x_pos[4] = {x, x, (X+x-1)%X, (X+x+1)%X};
 				int y_pos[4] = {(Y+y-1)%Y, (Y+y+1)%Y, y, y};
 
@@ -57,8 +55,8 @@ std::vector <Vector2d> Hamilton(Eigen::MatrixXd m , double J){
 						if(m(x,y) == m(x_pos[i],y_pos[i])){
 								Vector2d new_pos(x_pos[i], y_pos[i]);
 								if(std::find(visited.begin(), visited.end(), new_pos) == visited.end() &&
-									std::find(n_visited.begin(), n_visited.end(), new_pos) == n_visited.end()
-									){
+												std::find(n_visited.begin(), n_visited.end(), new_pos) == n_visited.end()
+								  ){
 										if(rand_annehmen(rng) < prop){
 												std::cout << "Angenommen" << std::endl;
 												n_visited.push_back(new_pos);
@@ -69,30 +67,35 @@ std::vector <Vector2d> Hamilton(Eigen::MatrixXd m , double J){
 								}
 						}
 				}
-
 				visited.push_back(n_visited[0]);
 				n_visited.erase(n_visited.begin(), n_visited.begin()+1);
-
 		}
-
-		/* std::cout << "==========================" << std::endl; */
-		/* for(int i=0; i<visited.size(); i++){ */
-		/* 		std::cout << "--" << std::endl; */
-		/* 		std::cout << visited[i] << std::endl; */
-		/* } */
-		/* std::cout << "==========================" << std::endl; */
-
 		return visited;
 }
 
 
+Eigen::MatrixXd swap(Eigen::MatrixXd m, std::vector <Vector2d> cluster){
+		int spin = m(cluster[0](0), cluster[0](1));
+		std::cout << "pos: (" << cluster[0](0) << "," << cluster[0](1) << ") has spin: " << spin << std::endl;
+		int old_spin = spin;
+		while(old_spin == spin){
+				spin = random_n(rng);
+		}
+		std::cout << "new spin: " << spin << std::endl;
+		for(int i=0; i<cluster.size(); i++){
+				m(cluster[i](0), cluster[i](1)) = spin;
+		}
+		return m;
+}
+
 int main() {
 		Eigen::MatrixXd m = init_m(dim_m,dim_m);
 		std::vector <Vector2d> cluster = Hamilton(m, 1.0);
-		std::cout << "Here is the matrix m:\n" << m << std::endl;
+		std::cout << "the old matrix m:\n" << m << std::endl;
 		std::cout << "==========================" << std::endl;
-		for(int i=0; i<cluster.size(); i++){
-				std::cout << "Vector i: " << i << std::endl;
-				std::cout <<  cluster[i] << std::endl;
-		}
+
+		m = swap(m, cluster);
+		std::cout << "==========================" << std::endl;
+		std::cout << "the new matrix m:\n" << m << std::endl;
+
 }
