@@ -6,14 +6,15 @@
 #include <algorithm>
 
 using namespace Eigen;
-int q = 4;
-int dim_n = 4;
-int dim_m = 4;
+int q = 1;
+int dim_n = 2;
+int dim_m = 2;
 
 std::mt19937 rng;
 std::uniform_int_distribution<int> random_n(1,q);
 std::uniform_int_distribution<int> x_coordi(0,dim_n-1);
 std::uniform_int_distribution<int> y_coordi(0,dim_m-1);
+std::uniform_real_distribution<> rand_annehmen(0.0, 1.0);
 
 Eigen::MatrixXd init_m(int dim_m, int dim_n){
 		Eigen::MatrixXd m = Eigen::MatrixXd(dim_m, dim_n);
@@ -26,7 +27,7 @@ Eigen::MatrixXd init_m(int dim_m, int dim_n){
 }
 
 
-Eigen::MatrixXd Hamilton(Eigen::MatrixXd m , double J){
+std::vector <Vector2d> Hamilton(Eigen::MatrixXd m , double J){
 		int Y = m.cols();
 		int X = m.rows();
 
@@ -55,8 +56,16 @@ Eigen::MatrixXd Hamilton(Eigen::MatrixXd m , double J){
 				for(int i=0; i<4; i++){
 						if(m(x,y) == m(x_pos[i],y_pos[i])){
 								Vector2d new_pos(x_pos[i], y_pos[i]);
-								if(std::find(visited.begin(), visited.end(), new_pos) == visited.end()){
-										n_visited.push_back(new_pos);
+								if(std::find(visited.begin(), visited.end(), new_pos) == visited.end() &&
+									std::find(n_visited.begin(), n_visited.end(), new_pos) == n_visited.end()
+									){
+										if(rand_annehmen(rng) < prop){
+												std::cout << "Angenommen" << std::endl;
+												n_visited.push_back(new_pos);
+										}
+										else{
+												std::cout << "Abgelehnt" << std::endl;
+										}
 								}
 						}
 				}
@@ -64,25 +73,26 @@ Eigen::MatrixXd Hamilton(Eigen::MatrixXd m , double J){
 				visited.push_back(n_visited[0]);
 				n_visited.erase(n_visited.begin(), n_visited.begin()+1);
 
-				/* 		/1* Vector2d pos(x, y); *1/ */
-				/* 		/1* n_visited.push_back(pos); *1/ */
-				/* 		/1* std::cout << "---" << std::endl; *1/ */
-				/* 		/1* std::cout << n_visited[i] << std::endl; *1/ */
 		}
 
-		std::cout << "==========================" << std::endl;
-		for(int i=0; i<visited.size(); i++){
-				std::cout << "--" << std::endl;
-				std::cout << visited[i] << std::endl;
-		}
-		std::cout << "==========================" << std::endl;
+		/* std::cout << "==========================" << std::endl; */
+		/* for(int i=0; i<visited.size(); i++){ */
+		/* 		std::cout << "--" << std::endl; */
+		/* 		std::cout << visited[i] << std::endl; */
+		/* } */
+		/* std::cout << "==========================" << std::endl; */
 
-		return m;
+		return visited;
 }
 
 
 int main() {
 		Eigen::MatrixXd m = init_m(dim_m,dim_m);
-		Eigen::MatrixXd H = Hamilton(m, 1.0);
-		std::cout << "Here is the matrix m:\n" << H << std::endl;
+		std::vector <Vector2d> cluster = Hamilton(m, 1.0);
+		std::cout << "Here is the matrix m:\n" << m << std::endl;
+		std::cout << "==========================" << std::endl;
+		for(int i=0; i<cluster.size(); i++){
+				std::cout << "Vector i: " << i << std::endl;
+				std::cout <<  cluster[i] << std::endl;
+		}
 }
