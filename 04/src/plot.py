@@ -1,14 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# init = np.genfromtxt("build/test.txt")
-# n, m = init.shape
-
-# lattice = []
-# for x in range(int(n/m)):
-#     lattice.append(init[m*x:m*(x+1), :m])
-
-# q = len(np.unique(init))
 class lattice:
     def __init__(self, filename):
         self.lattice = None
@@ -21,7 +13,6 @@ class lattice:
         self.lattice = []
         for x in range(int(n/self.m)):
             self.lattice.append(init[self.m*x:self.m*(x+1), :self.m])
-        # q = len(np.unique(init))
     
         return lattice, self.m
     
@@ -41,8 +32,8 @@ class lattice:
         fig.tight_layout()
         fig.savefig(filename)
 
-if _name__ == '__main__':
+if __name__ == '__main__':
     lattice_q3 = lattice("build/test.txt")
     lattice_q3.read_lattice()
     for x in [0,100,150,700]:
-        lattice_q3.plot_lattice(x, 'test'+str(x)+'.png')
+        lattice_q3.plot_lattice(x, 'build/q_3_'+str(x)+'.png')
