@@ -5,12 +5,17 @@
 #include <vector>
 #include <algorithm>
 #include <fstream>
+#include <complex>
 
 using namespace Eigen;
 
-int q = 3;
-int dim_n = 100;
-int dim_m = 100;
+int q = 2;
+int dim_n = 10;
+int dim_m = 10;
+
+// for magnetic comp calc
+double Pi = std::acos(-1);
+std::complex<double> li (0,1);
 
 std::mt19937 rng;
 std::uniform_int_distribution<int> random_n(1,q);
@@ -18,11 +23,29 @@ std::uniform_int_distribution<int> x_coordi(0,dim_n-1);
 std::uniform_int_distribution<int> y_coordi(0,dim_m-1);
 std::uniform_real_distribution<> rand_annehmen(0.0, 1.0);
 
-Eigen::MatrixXd init_m(int dim_m, int dim_n){
+void save_matrix(Eigen::MatrixXd m, const char *filename){
+		std::ofstream file (filename, std::ios_base::app);
+		file << m << std::endl;
+}
+
+void save_magn(std::vector <double> srg_magn, const char *filename){
+		std::ofstream file (filename);
+		for(int i=0; i<srg_magn.size(); i++){
+				file << srg_magn[i] << std::endl;
+		}
+}
+
+std::complex<double> calc_magn(int s){
+		double phi = 2*Pi/q*s;
+		return std::exp(li * phi);
+}
+
+Eigen::MatrixXd init_m(int dim_m, int dim_n, std::complex<double>* magn){
 		Eigen::MatrixXd m = Eigen::MatrixXd(dim_m, dim_n);
 		for(int x=0; x<m.rows(); x++){
 				for(int y=0; y<m.cols(); y++){
 						m(x,y) = random_n(rng);
+						*magn += calc_magn(m(x,y));
 				}
 		}
 		return m;
@@ -59,11 +82,7 @@ std::vector <Vector2d> Hamilton(Eigen::MatrixXd m , double J){
 												std::find(n_visited.begin(), n_visited.end(), new_pos) == n_visited.end()
 								  ){
 										if(rand_annehmen(rng) < prop){
-												/* std::cout << "Angenommen" << std::endl; */
 												n_visited.push_back(new_pos);
-										}
-										else{
-												/* std::cout << "Abgelehnt" << std::endl; */
 										}
 								}
 						}
@@ -75,7 +94,7 @@ std::vector <Vector2d> Hamilton(Eigen::MatrixXd m , double J){
 }
 
 
-Eigen::MatrixXd swap(Eigen::MatrixXd m, std::vector <Vector2d> cluster){
+Eigen::MatrixXd swap(Eigen::MatrixXd m, std::vector <Vector2d> cluster, std::complex<double>* pmagn){
 		int spin = m(cluster[0](0), cluster[0](1));
 		/* std::cout << "pos: (" << cluster[0](0) << "," << cluster[0](1) << ") has spin: " << spin << std::endl; */
 		int old_spin = spin;
@@ -86,25 +105,26 @@ Eigen::MatrixXd swap(Eigen::MatrixXd m, std::vector <Vector2d> cluster){
 		for(int i=0; i<cluster.size(); i++){
 				m(cluster[i](0), cluster[i](1)) = spin;
 		}
+
+		// aenderung der magn 
+		std::complex<double> clustersize (cluster.size(), cluster.size());
+		*pmagn -= (calc_magn(old_spin) - calc_magn(spin))*clustersize;
 		return m;
 }
 
-void save_matrix(Eigen::MatrixXd m, const char *filename){
-		std::ofstream file (filename, std::ios_base::app);
-		file << m << std::endl;
-}
-
 int main() {
-		Eigen::MatrixXd m = init_m(dim_m,dim_m);
-		for(int i=0; i<1000; i++){
-				std::cout << i << std::endl;
-		std::vector <Vector2d> cluster = Hamilton(m, 1.0);
-		/* std::cout << "the old matrix m:\n" << m << std::endl; */
-		/* std::cout << "==========================" << std::endl; */
+		std::complex<double> magn (0,0);
+		std::complex<double>* pmagn = &magn;
+		std::vector <double> srg_magn;
 
-		m = swap(m, cluster);
-		/* std::cout << "==========================" << std::endl; */
-		/* std::cout << "the new matrix m:\n" << m << std::endl; */
-		save_matrix(m, "build/test.txt");
+		Eigen::MatrixXd m = init_m(dim_m,dim_m, pmagn);
+
+		for(int i=0; i<40; i++){
+				std::cout << i << std::endl;
+				std::vector <Vector2d> cluster = Hamilton(m, 1.0);
+				m = swap(m, cluster, pmagn);
+				srg_magn.push_back(std::norm(magn)/dim_m/dim_n);
+				save_matrix(m, "build/test.txt");
 		}
+		save_magn(srg_magn, "build/magn.txt");
 }
