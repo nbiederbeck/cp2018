@@ -33,7 +33,10 @@ class lattice:
         fig.savefig(filename)
 
 if __name__ == '__main__':
-    lattice_q3 = lattice("build/test.txt")
+    lattice_q2 = lattice("build/q_2.txt")
+    lattice_q3 = lattice("build/q_3.txt")
+    lattice_q2.read_lattice()
     lattice_q3.read_lattice()
-    for x in [0,100,150,700]:
-        lattice_q3.plot_lattice(x, 'build/q_3_'+str(x)+'.png')
+    for x in [0,30,100,250,999]:
+        lattice_q2.plot_lattice(x, 'build/q_2_'+str(x)+'.pdf')
+        lattice_q3.plot_lattice(x, 'build/q_3_'+str(x)+'.pdf')

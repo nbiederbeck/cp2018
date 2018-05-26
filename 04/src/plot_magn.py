@@ -16,8 +16,18 @@ class lattice:
                 self.data)
         fig.tight_layout()
         fig.savefig(filename)
+        plt.close()
 
 if __name__ == '__main__':
     magn = lattice("build/magn.txt")
     magn.read_magn()
     magn.plot_magn('build/magn.pdf')
+    magn3 = lattice("build/magn3.txt")
+    magn3.read_magn()
+    magn3.plot_magn('build/magn3.pdf')
+    magn6 = lattice("build/magn6.txt")
+    magn6.read_magn()
+    magn6.plot_magn('build/magn6.pdf')
+    magn20 = lattice("build/magn20.txt")
+    magn20.read_magn()
+    magn20.plot_magn('build/magn20.pdf')

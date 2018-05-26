@@ -10,12 +10,9 @@
 using namespace Eigen;
 
 int q = 2;
-int dim_n = 10;
-int dim_m = 10;
-
-// for magnetic comp calc
-double Pi = std::acos(-1);
-std::complex<double> li (0,1);
+int num = 10000;
+int dim_n = 100;
+int dim_m = 100;
 
 std::mt19937 rng;
 std::uniform_int_distribution<int> random_n(1,q);
@@ -23,15 +20,20 @@ std::uniform_int_distribution<int> x_coordi(0,dim_n-1);
 std::uniform_int_distribution<int> y_coordi(0,dim_m-1);
 std::uniform_real_distribution<> rand_annehmen(0.0, 1.0);
 
+// for magnetic comp calc
+double Pi = std::acos(-1);
+std::complex<double> li (0,1);
+
+
 void save_matrix(Eigen::MatrixXd m, const char *filename){
 		std::ofstream file (filename, std::ios_base::app);
 		file << m << std::endl;
 }
 
-void save_magn(std::vector <double> srg_magn, const char *filename){
+void save_array(std::vector <double> array, const char *filename){
 		std::ofstream file (filename);
-		for(int i=0; i<srg_magn.size(); i++){
-				file << srg_magn[i] << std::endl;
+		for(int i=0; i<array.size(); i++){
+				file << array[i] << std::endl;
 		}
 }
 
@@ -41,6 +43,7 @@ std::complex<double> calc_magn(int s){
 }
 
 Eigen::MatrixXd init_m(int dim_m, int dim_n, std::complex<double>* magn){
+		// Gitter initalisieren und magn messen
 		Eigen::MatrixXd m = Eigen::MatrixXd(dim_m, dim_n);
 		for(int x=0; x<m.rows(); x++){
 				for(int y=0; y<m.cols(); y++){
@@ -48,8 +51,30 @@ Eigen::MatrixXd init_m(int dim_m, int dim_n, std::complex<double>* magn){
 						*magn += calc_magn(m(x,y));
 				}
 		}
+
 		return m;
 }
+
+
+double meas_ener(Eigen::MatrixXd m){
+		int X = m.rows();
+		int Y = m.cols();
+		double energy = 0;
+		for(int x=0; x<X; x++){
+				for(int y=0; y<Y; y++){
+						int center = m(x,y);
+						int x_pos[4] = {x, x, (X+x-1)%X, (X+x+1)%X};
+						int y_pos[4] = {(Y+y-1)%Y, (Y+y+1)%Y, y, y};
+						for(int i=0; i<4; i++){
+								if(m(x,y) == m(x_pos[i],y_pos[i])){
+										energy += 1;
+								}
+						}
+				}
+		}
+		return energy;
+}
+
 
 std::vector <Vector2d> Hamilton(Eigen::MatrixXd m , double J){
 		int Y = m.cols();
@@ -60,8 +85,6 @@ std::vector <Vector2d> Hamilton(Eigen::MatrixXd m , double J){
 
 		double beta_crit = 1./J*std::log(1. + std::sqrt(q));
 		double prop = 1. - std::exp(-2. * beta_crit * J);
-		/* std::cout << "critical beta: " << beta_crit << std::endl; */
-		/* std::cout << "prop: " << prop << std::endl; */
 
 		Vector2d pos(x, y);
 		std::vector <Vector2d> n_visited = {pos};
@@ -96,12 +119,10 @@ std::vector <Vector2d> Hamilton(Eigen::MatrixXd m , double J){
 
 Eigen::MatrixXd swap(Eigen::MatrixXd m, std::vector <Vector2d> cluster, std::complex<double>* pmagn){
 		int spin = m(cluster[0](0), cluster[0](1));
-		/* std::cout << "pos: (" << cluster[0](0) << "," << cluster[0](1) << ") has spin: " << spin << std::endl; */
 		int old_spin = spin;
 		while(old_spin == spin){
 				spin = random_n(rng);
 		}
-		/* std::cout << "new spin: " << spin << std::endl; */
 		for(int i=0; i<cluster.size(); i++){
 				m(cluster[i](0), cluster[i](1)) = spin;
 		}
@@ -112,19 +133,31 @@ Eigen::MatrixXd swap(Eigen::MatrixXd m, std::vector <Vector2d> cluster, std::com
 		return m;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+
 		std::complex<double> magn (0,0);
 		std::complex<double>* pmagn = &magn;
+
 		std::vector <double> srg_magn;
+		std::vector <double> srg_energie;
 
 		Eigen::MatrixXd m = init_m(dim_m,dim_m, pmagn);
 
-		for(int i=0; i<40; i++){
+		for(int i=0; i<num; i++){
+				if(i%10 == 0){
 				std::cout << i << std::endl;
+				}
 				std::vector <Vector2d> cluster = Hamilton(m, 1.0);
+
 				m = swap(m, cluster, pmagn);
+
 				srg_magn.push_back(std::norm(magn)/dim_m/dim_n);
-				save_matrix(m, "build/test.txt");
+				srg_energie.push_back(meas_ener(m)/dim_m/dim_n);
+
+				save_matrix(m, "build/q_2.txt");
 		}
-		save_magn(srg_magn, "build/magn.txt");
+
+		save_array(srg_magn, "build/magn.txt");
+		save_array(srg_energie, "build/energie.txt");
+
 }
