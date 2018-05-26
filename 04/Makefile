@@ -87,10 +87,9 @@ build:
 	mkdir -p build
 
 # Abgabe
-abgabe.tar.gz: build/main.pdf src/01.cpp 
+abgabe.tar.gz: build/main.pdf 
 	mkdir -p abgabe/
-	cp build/main.pdf src/01.cppabgabe/
-	printf "all:\n\tg++ -O2 -o 01.out 01.cpp" >> abgabe/Makefile
+	cp build/main.pdf src/01* src/plot_* ./Makefile abgabe/
 	tar czf abgabe.tar.gz abgabe/*
 	rm -rf abgabe/
 
