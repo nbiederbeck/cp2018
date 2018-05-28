@@ -31,8 +31,10 @@ archive.tar.gz: src/01.cpp src/02.cpp build/main.pdf Makefile
 clean:
 	rm -rf build bin archive.tar.gz
 
+end: archive.tar.gz
+
 run: bin/01.out bin/02.out
 	./bin/01.out
 	./bin/02.out
 
-.PHONY: all clean
+.PHONY: all clean end run
