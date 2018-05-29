@@ -1,7 +1,8 @@
 // Aufgabe 1: Diagonalisierung per Hand
 #include <iostream>
 
-using namespace std;
+using std::cout;
+using std::endl;
 
 int main(int argc, char *argv[])
 {
