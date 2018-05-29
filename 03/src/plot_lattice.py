@@ -5,7 +5,6 @@ ran = [0, 1]
 kbT = [1, 2.27, 3]
 snapshots = ["init", "sweep"]
 
-
 def main():
     for r in ran:
         for k in kbT:

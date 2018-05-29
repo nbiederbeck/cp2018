@@ -3,3 +3,4 @@ build/
 *.tar.gz
 abgabe/
 .ipynb_checkpoints/
+.DS_Store
