@@ -1,5 +1,6 @@
 // Aufgabe 2: 1D Heisenbergkette
 #include <iostream>
+#include <Eigen/Dense>
 
 using std::cout;
 using std::endl;
