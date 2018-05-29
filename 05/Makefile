@@ -4,7 +4,7 @@
 # $^ : all prerequisites
 # $< : first prerequisite
 
-EIGENPATH=~/Downloads/Eigen
+EIGENPATH=../Eigen
 
 all: run
 
