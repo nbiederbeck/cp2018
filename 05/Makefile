@@ -20,12 +20,26 @@ bin/02.out: src/02.cpp | bin
 build:
 	mkdir -p build
 
-build/main.pdf: src/main.tex | build
+build/main.pdf: src/main.tex build/eigensolver_eigenvalues.png build/hand_eigenvalues.png | build
 	lualatex \
 		--output-directory=build \
 		--interaction=nonstopmode \
 		--halt-on-error \
 	$<
+
+build/eigensolver_eigenvalues.txt: bin/01.out | build
+	./bin/01.out
+
+build/eigensolver_eigenvalues.png: build/eigensolver_eigenvalues.txt src/plot_eigenvalues.py
+	sed -i 's/,/ /g;s/[()]//g' build/eigensolver_eigenvalues.txt
+	python src/plot_eigenvalues.py
+
+build/hand_eigenvalues.txt: bin/01.out | build
+	./bin/01.out
+
+build/hand_eigenvalues.png: build/eigensolver_eigenvalues.txt src/plot_eigenvalues.py
+	sed -i 's/,/ /g;s/[()]//g' build/hand_eigenvalues.txt
+	python src/plot_eigenvalues.py
 
 archive.tar.gz: src/01.cpp src/02.cpp build/main.pdf Makefile
 	tar czf $@ $^
@@ -35,7 +49,7 @@ clean:
 
 end: archive.tar.gz
 
-run: bin/01.out bin/02.out
+run: bin/01.out bin/02.out | build
 	./bin/01.out
 	./bin/02.out
 
