@@ -10,5 +10,7 @@ int main(int argc, char *argv[])
     cout << "====================================" << endl;
     cout << "Aufgabe 1: Diagonalisierung per Hand" << endl;
     cout << "====================================" << endl << endl;
+
+	MatrixXd m(n,n);
     return 0;
 }
