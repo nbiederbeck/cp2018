@@ -9,6 +9,7 @@ using std::endl;
 
 using namespace Eigen;
 using Eigen::EigenSolver;
+using Eigen::MatrixXd;
 
 void eigen_solve(MatrixXd M);
 void save_eigenvalues(MatrixXcd ev, const char *filename);
@@ -20,13 +21,12 @@ int main(int argc, char *argv[])
     cout << "====================================" << endl << endl;
 
     // Define Test Matrix
-    MatrixXd M(5, 5);
-    M << 1, 1, 1, 1, 1,
-         1, 2, 1, 1, 1,
-         1, 1, 3, 1, 1,
-         1, 1, 1, 4, 1,
-         1, 1, 1, 1, 5;
+	int N = 5;
+	MatrixXd M = MatrixXd::Constant(N, N, 1.0);
+	MatrixXd d(N,1);
+	d << 1, 2, 3, 4, 5;
 
+	M.diagonal() = d;
     cout << M << endl;
 
     eigen_solve(M);
