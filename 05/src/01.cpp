@@ -30,11 +30,11 @@ void householder(MatrixXd M) {
 
 		act_row = 0;
 		a = M.row(act_row);
-		if(signbit(a(act_row+1)) == 0){
-				alpha = a.tail(dim-act_row-1).squaredNorm();
+		if(signbit(a(act_row+1)) != 0){
+				alpha = std::sqrt(a.tail(dim-act_row-1).squaredNorm());
 		}
 		else{
-				alpha = -1.0 * a.tail(dim-act_row-1).squaredNorm();
+				alpha = -1.0 * sqrt(a.tail(dim-act_row-1).squaredNorm());
 		};
 		r = std::sqrt(0.5*(std::pow(alpha, 2)-a(act_row+1)*alpha));
 		v(0) = 0.;
@@ -45,7 +45,6 @@ void householder(MatrixXd M) {
 		
 		P.diagonal() = MatrixXd::Ones(dim, 1);
 		P -= 2*v*v.transpose();
-		// std::cout << "v*v^t: " << v*v.transpose() << std::endl;
 		M = P.transpose()*M*P;
 
 		std::cout <<  "alpha:" << alpha << std::endl;
