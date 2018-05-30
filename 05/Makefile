@@ -45,7 +45,7 @@ build/eigenvalues.png: build/hand_eigenvalues.txt build/eigensolver_eigenvalues.
 	sed -i 's/,/ /g;s/[()]//g' build/hand_eigenvalues.txt
 	python src/plot_eigenvalues.py
 
-archive.tar.gz: src/01.cpp src/02.cpp build/main.pdf Makefile
+archive.tar.gz: $(wildcard src/*) build/main.pdf Makefile
 	tar czf $@ $^
 
 clean:
