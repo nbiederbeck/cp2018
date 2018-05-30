@@ -20,6 +20,19 @@ using Eigen::VectorXd;
 void eigen_solve(MatrixXd M);
 void save_matrices_to_file(MatrixXcd ev, const char *filename);
 
+MatrixXd prune_matrix(MatrixXd M, double eps = 1e-15) {
+    const int dim = M.rows();
+    for (int i = 0; i < dim; ++i) {
+        for (int j = 0; j < dim; ++j) {
+            if (abs(M(i, j)) < eps) {
+                M(i, j) = 0;
+            }
+        }
+    }
+    return M;
+}
+
+
 MatrixXd householder(MatrixXd M) {
     cout << "Householder Algorithm: " << endl;
     cout << "====================================" << endl << endl;
@@ -51,59 +64,47 @@ MatrixXd householder(MatrixXd M) {
         P -= 2 * v * v.transpose();
         M = P.transpose() * M * P;
 
-        for (int i = 0; i < dim; ++i) {
-            for (int j = 0; j < dim; ++j) {
-                if (abs(M(i, j)) < 1e-8) {
-                    M(i, j) = 0;
-                }
-            }
-        }
     }
 
-    cout << "Tridiagonalematrix nach Householder-Algorithmus:" << endl;
+    // cout << "Tridiagonalematrix nach Householder-Algorithmus:" << endl;
+    // cout << M << endl;
 
-    cout << M << endl;
-    return M;
+    return prune_matrix(M);
 }
 
 MatrixXd jacobi_rotation(MatrixXd M) {
     const int dim = M.rows();
-    const double eps = 1e-0;
+    const double eps = 1e-16;
     int q;
     double theta, t, c, s;
     int jacobicounter = 0;
 
     while (((M.cwiseProduct(M)).sum() - (M.cwiseProduct(M)).trace()) > eps) {
         ++jacobicounter;
-        for (int p = 0; p < dim - 1; ++p) {
-            q = p + 1;
-            theta = (M(q, q) - M(p, p)) / (2.0 * M(p, q));
-
-            t = copysign(1.0, theta) / (abs(theta) + sqrt(pow(theta, 2.0) + 1.0));
-            c = 1.0 / sqrt(1.0 + pow(t, 2.0));
-            s = t * c;
-
-            MatrixXd P = MatrixXd::Zero(dim, dim);
-            P.diagonal() = MatrixXd::Ones(dim, 1);
-            P(p, p) = c;
-            P(q, q) = c;
-            P(p, q) = s;
-            P(q, p) = -s;
-
-            M = P.transpose() * M * P;
-
-            for (int i = 0; i < dim; ++i) {
-                for (int j = 0; j < dim; ++j) {
-                    if (abs(M(i, j)) < 1e-8) {
-                        M(i, j) = 0.0;
-                    }
+        for (int p = 0; p < dim; ++p) {
+            for (int q = 0; q < dim; ++q) {
+                if (p == q) {
+                    break;
                 }
+                theta = (M(q, q) - M(p, p)) / (2.0 * M(p, q));
+
+                t = copysign(1.0, theta) / (abs(theta) + sqrt(pow(theta, 2.0) + 1.0));
+                c = 1.0 / sqrt(1.0 + pow(t, 2.0));
+                s = t * c;
+
+                MatrixXd P = MatrixXd::Zero(dim, dim);
+                P.diagonal() = MatrixXd::Ones(dim, 1);
+                P(p, p) = c;
+                P(q, q) = c;
+                P(p, q) = s;
+                P(q, p) = -s;
+
+                M = P.transpose() * M * P;
             }
-            std::cout << M << std::endl;
         }
     }
     cout << "# of Jacobi-Rotations ('Sweeps'): " << jacobicounter << endl;
-    return M;
+    return prune_matrix(M);
 }
 
 int main(int argc, char *argv[])
@@ -112,31 +113,36 @@ int main(int argc, char *argv[])
     cout << "Aufgabe 1: Diagonalisierung per Hand" << endl;
     cout << "====================================" << endl << endl;
 
-    int N;
-    // Define Test Matrix
-    N = 4;
-    MatrixXd M;
-    M = MatrixXd::Constant(N, N, 1.0);
-    M << 4, 1, -2, 2, 1, 2, 0, 1, -2, 0, 3, -2, 2, 1, -2, -1;
+    MatrixXd M, H, J_M, J_H;
 
-    N = 5;
+    int N = 5;
     M = MatrixXd::Constant(N, N, 1.0);
     MatrixXd d(N,1);
     d << 1, 2, 3, 4, 5;
     M.diagonal() = d;
 
-    cout << M << endl;
+    cout << "M = " << endl;
+    cout << M << endl << endl;
 
     // Aufgabenteil (b)
     eigen_solve(M);
 
     // Aufgabenteil (a)
-    M = householder(M);
-    save_matrices_to_file(M, "build/householder.txt");
+    H = householder(M);
+    cout << "H = " << endl;
+    cout << H << endl << endl;
+    save_matrices_to_file(H, "build/householder.txt");
 
-    M = jacobi_rotation(M);
+    cout << "H: ";
+    J_H = jacobi_rotation(H);
+    cout << "J_H = " << endl;
+    cout << J_H << endl << endl;
+    save_matrices_to_file(J_H.diagonal(), "build/hand_eigenvalues.txt");
 
-    save_matrices_to_file(M.diagonal(), "build/hand_eigenvalues.txt");
+    cout << "M: ";
+    J_M = jacobi_rotation(H);
+    cout << "J_M = " << endl;
+    cout << J_M << endl << endl;
 
     return 0;
 }
@@ -148,7 +154,7 @@ void eigen_solve(MatrixXd M) {
     MatrixXcd ev = es.eigenvalues();
 
     cout << "Eigenwerte der Matrix M, geloest durch Eigen::EigenSolver" << endl;
-    cout << ev << endl;
+    cout << ev << endl << endl;
 
     save_matrices_to_file(ev, "build/eigensolver_eigenvalues.txt");
 }

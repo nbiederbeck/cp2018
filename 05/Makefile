@@ -12,10 +12,10 @@ bin:
 	mkdir -p bin
 
 bin/01.out: src/01.cpp | bin
-	c++ -O1 -std=c++11 -I $(EIGENPATH) -o $@ $^
+	c++ -O2 -fopenmp -std=c++11 -I $(EIGENPATH) -o $@ $^
 
 bin/02.out: src/02.cpp | bin
-	c++ -O2 -std=c++11 -I $(EIGENPATH) -o $@ $^
+	c++ -O2 -fopenmp -std=c++11 -I $(EIGENPATH) -o $@ $^
 
 build:
 	mkdir -p build
