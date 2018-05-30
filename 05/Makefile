@@ -6,16 +6,16 @@
 
 EIGENPATH=../Eigen
 
-all: run
+all: end
 
 bin:
 	mkdir -p bin
 
 bin/01.out: src/01.cpp | bin
-	c++ -O2 -fopenmp -std=c++11 -I $(EIGENPATH) -o $@ $^
+	g++ -O2 -fopenmp -std=c++11 -I $(EIGENPATH) -o $@ $^
 
 bin/02.out: src/02.cpp | bin
-	c++ -O2 -fopenmp -std=c++11 -I $(EIGENPATH) -o $@ $^
+	g++ -O2 -fopenmp -std=c++11 -I $(EIGENPATH) -o $@ $^
 
 build:
 	mkdir -p build
@@ -51,7 +51,13 @@ archive.tar.gz: src/01.cpp src/02.cpp build/main.pdf Makefile
 clean:
 	rm -rf build bin archive.tar.gz
 
-end: archive.tar.gz
+end: info archive.tar.gz
+
+info:
+	@echo "This Makefile uses"
+	@echo "  latexmk with lualatex"
+	@echo "  python with matplotlib, numpy"
+	@echo "  g++ with eigen"
 
 run: bin/01.out bin/02.out | build
 	./bin/01.out
