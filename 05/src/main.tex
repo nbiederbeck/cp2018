@@ -19,6 +19,7 @@ below,   % unterhalb der Section aber auf der selben Seite ist ok
 \maketitle
 
 \section*{Aufgabe 1: Diagonalisierung per Hand}
+<<<<<<< HEAD
 Matrix aus der Aufgabe:
 \begin{equation}
   \label{eq:M}
@@ -37,10 +38,33 @@ Matrix nach dem Householder-Algorithmus:
     \input{build/householder_final.txt}
 \end{matrix}\right)
 \end{equation}
+||||||| merged common ancestors
+\subsection*{(a)}
+=======
+Matrix aus der Aufgabe:
+\begin{equation}
+  \label{eq:M}
+  \mathbf{M} = \left(\begin{matrix}
+      1 & 1 & 1 & 1 & 1 \\
+      1 & 2 & 1 & 1 & 1 \\
+      1 & 1 & 3 & 1 & 1 \\
+      1 & 1 & 1 & 4 & 1 \\
+      1 & 1 & 1 & 1 & 5
+  \end{matrix}\right)
+\end{equation}
+Matrix nach dem Householder-Algorithmus:
+\begin{equation}
+  \label{eq:H}
+  \mathbf{H} = \left(\begin{matrix}
+    \input{build/householder_final.txt}
+\end{matrix}\right)
+\end{equation}
+>>>>>>> origin/noah
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.8\linewidth]{build/eigenvalues.png}
   \caption{Eigenwerte der Matrix $\mathbf{M}$~\eqref{eq:M}, berechnet durch \texttt{Eigen::EigenSolver()} (blau) und selbstimplementiert (orange).}%
   \label{fig:eigenvalues}
 \end{figure}
+Es macht keinen Unterschied in der Anzahl Sweeps, ob die Jacobi-Rotation mit $\mathbf{M}$ oder $\mathbf{H}$ durchgefuehrt wird.
 \end{document}
