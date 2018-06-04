@@ -20,7 +20,7 @@ bin/02.out: src/02.cpp | bin
 build:
 	mkdir -p build
 
-build/main.pdf: src/main.tex build/eigenvalues.png build/householder_final.txt | build
+build/main.pdf: src/main.tex build/eigenvalues.png build/householder_final.txt build/hamiltonian.png | build
 	latexmk --lualatex \
 		--output-directory=build \
 		--interaction=nonstopmode \
@@ -44,6 +44,12 @@ build/eigenvalues.png: build/hand_eigenvalues.txt build/eigensolver_eigenvalues.
 	sed -i 's/,/ /g;s/[()]//g' build/eigensolver_eigenvalues.txt
 	sed -i 's/,/ /g;s/[()]//g' build/hand_eigenvalues.txt
 	python src/plot_eigenvalues.py
+
+build/hamiltonian.png: src/plot_hamiltonian.py build/hamiltonian.txt
+	python $^
+
+build/hamiltonian.txt: bin/02.out | build
+	./bin/02.out
 
 archive.tar.gz: src/01.cpp src/02.cpp build/main.pdf Makefile
 	tar czf $@ $^
