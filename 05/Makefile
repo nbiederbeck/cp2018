@@ -6,7 +6,7 @@
 
 EIGENPATH=../Eigen
 
-all: end
+all: archive.tar.gz
 
 bin:
 	mkdir -p bin
@@ -20,7 +20,7 @@ bin/02.out: src/02.cpp | bin
 build:
 	mkdir -p build
 
-build/main.pdf: src/main.tex build/eigenvalues.png build/householder_final.txt | build
+build/main.pdf: src/main.tex build/eigenvalues.png build/householder_final.txt build/hamiltonian.png | build
 	latexmk --lualatex \
 		--output-directory=build \
 		--interaction=nonstopmode \
@@ -45,19 +45,19 @@ build/eigenvalues.png: build/hand_eigenvalues.txt build/eigensolver_eigenvalues.
 	sed -i 's/,/ /g;s/[()]//g' build/hand_eigenvalues.txt
 	python src/plot_eigenvalues.py
 
-archive.tar.gz: $(wildcard src/*) build/main.pdf Makefile
+build/hamiltonian.png: src/plot_hamiltonian.py build/hamiltonian.txt
+	python $^
+
+build/hamiltonian.txt: bin/02.out | build
+	./bin/02.out
+
+archive.tar.gz: src/01.cpp src/02.cpp build/main.pdf Makefile
 	tar czf $@ $^
 
 clean:
 	rm -rf build bin archive.tar.gz
 
-end: info archive.tar.gz
-
-info:
-	@echo "This Makefile uses"
-	@echo "  latexmk with lualatex"
-	@echo "  python with matplotlib, numpy"
-	@echo "  g++ with eigen"
+end: archive.tar.gz
 
 run: bin/01.out bin/02.out | build
 	./bin/01.out
