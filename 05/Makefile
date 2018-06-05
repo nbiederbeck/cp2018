@@ -20,7 +20,7 @@ bin/02.out: src/02.cpp | bin
 build:
 	mkdir -p build
 
-build/main.pdf: src/main.tex build/eigenvalues.png build/householder_final.txt build/hamiltonian.png build/hamiltonian_eigenvalues.png | build
+build/main.pdf: src/main.tex build/eigenvalues.png build/householder_final.txt build/hamiltonian.png build/hamiltonian_eigenvalues.png build/hamilton_eigenvalues_N.png | build
 	latexmk --lualatex \
 		--output-directory=build \
 		--interaction=nonstopmode \
@@ -59,6 +59,12 @@ build/hamiltonian_eigenvalues_final.txt: build/hamiltonian_eigenvalues.txt
 
 build/hamiltonian_eigenvalues.png: build/hamiltonian_eigenvalues_final.txt src/plot_hamiltonian_eigenvalues.py
 	python src/plot_hamiltonian_eigenvalues.py
+
+build/hamilton_eigenvalues_N.txt: bin/02.out | build
+	./bin/02.out
+
+build/hamilton_eigenvalues_N.png: build/hamilton_eigenvalues_N.txt src/plot_hamiltonian_N.py | build
+	python src/plot_hamiltonian_N.py
 
 archive.tar.gz: src/01.cpp src/02.cpp build/main.pdf Makefile
 	tar czf $@ $^
