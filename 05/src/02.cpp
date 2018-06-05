@@ -41,7 +41,6 @@ int main() {
 
     save_matrices_to_file(H, "build/hamiltonian.txt");
 
-    // f = d.cast <float> ()
     EigenSolver<MatrixXd> es(H.cast<double>());
 
     MatrixXcd ev = es.eigenvalues();
