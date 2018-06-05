@@ -13,6 +13,10 @@ using std::vector;
 using Eigen::VectorXi;
 using Eigen::MatrixXi;
 
+using Eigen::EigenSolver;
+using Eigen::MatrixXd;
+using Eigen::MatrixXcd;
+
 MatrixXi init_zustaende(int); // Erstelle Alle Spins in Binaerschreibweise
 MatrixXi spin_sum(MatrixXi m , int spin); // Berechne Spinsumme der Zustaende
 int zustandssumme(VectorXi);
@@ -36,6 +40,13 @@ int main() {
     H = hamilton_matrix_from_spins(spins);
 
     save_matrices_to_file(H, "build/hamiltonian.txt");
+
+    // f = d.cast <float> ()
+    EigenSolver<MatrixXd> es(H.cast<double>());
+
+    MatrixXcd ev = es.eigenvalues();
+    std::ofstream file ("build/hamiltonian_eigenvalues.txt");
+    file << ev << endl;
 
     return 0;
 }
