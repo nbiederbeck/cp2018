@@ -10,7 +10,7 @@ def plot_hamiltonian():
     fig, ax = plt.subplots()
 
     grid = np.meshgrid(range(len(H)), range(len(H)))
-    cmap = plt.get_cmap("RdBu", 2 * absmax + 1)
+    cmap = plt.get_cmap("RdBu", 2 * absmax)
     hamiltonian = ax.pcolormesh(*grid, H, cmap=cmap, vmin=-absmax, vmax=absmax)
 
     ax.set_xlabel(r"# des Eingangsvektors $\vec{e}$")
