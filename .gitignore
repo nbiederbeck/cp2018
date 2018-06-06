@@ -3,4 +3,8 @@ build/
 *.tar.gz
 abgabe/
 .ipynb_checkpoints/
+<<<<<<< HEAD
 .DS_Store
+=======
+.DS_Store
+>>>>>>> noah

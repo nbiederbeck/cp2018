@@ -11,7 +11,7 @@ using namespace std;
 // define important values for our simulation
 int n = 100;  // size of lattice
 int m = n;  // quadratic
-int n_sweeps = 101000;  // number of MC steps
+int n_sweeps = 101;  // number of MC steps
 
 // define random number generators
 mt19937 rng;
@@ -58,15 +58,15 @@ int** init_lattice(int m, int n, bool random) {
 // make lattice periodic
 // just copy the adjacent rows and columns
 int** periodic_lattice(int** lattice, int m, int n) {
-    for(int i = 1; i < m + 1; ++i) {
-        lattice[0][i] = lattice[m][i];
-        lattice[m+1][i] = lattice[1][i];
-    }
-    for(int i = 1; i < n + 1; ++i) {
-        lattice[i][0] = lattice[i][n];
-        lattice[i][n+1] = lattice[i][1];
-    }
-    return lattice;
+		for(int i = 1; i < m + 1; ++i) {
+				lattice[0][i] = lattice[m][i];
+				lattice[m+1][i] = lattice[1][i];
+		}
+		for(int i = 1; i < n + 1; ++i) {
+				lattice[i][0] = lattice[i][n];
+				lattice[i][n+1] = lattice[i][1];
+		}
+		return lattice;
 }
 
 // perform one sweep with n*m possible spin flips

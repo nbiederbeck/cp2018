@@ -14,7 +14,6 @@ def main():
             )
         plot(energy_files, r)
 
-
 def plot(energy_files, ran):
     filename = "build/energy_ran_{r}.png".format(r=ran)
     print("plot {}".format(filename))
