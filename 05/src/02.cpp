@@ -52,7 +52,7 @@ void run_b(int N) {
 
     save_matrices_to_file(H, "build/hamiltonian.txt");
 
-    EigenSolver<MatrixXd> es(H.cast<double>());
+    EigenSolver<MatrixXd> es(H);
 
     MatrixXcd ev = es.eigenvalues();
     std::ofstream file ("build/hamiltonian_eigenvalues.txt");
@@ -63,7 +63,7 @@ void run_c() {
     std::ofstream file ("build/hamilton_eigenvalues_N.txt");
 
     cout << "Code being run per iteration and time measurement: " << endl;
-    cout << "EigenSolver<MatrixXd> es(H.cast<double>());" << endl;
+    cout << "EigenSolver<MatrixXd> es(H);" << endl;
     cout << "es.eigenvalues();" << endl;
 
     for (int N = 2; N <= 14; N+=2) {
@@ -75,7 +75,7 @@ void run_c() {
         H = hamilton_matrix_from_spins(spins);
 
         clock_t begin = clock();
-        EigenSolver<MatrixXd> es(H.cast<double>());
+        EigenSolver<MatrixXd> es(H);
         es.eigenvalues();
         clock_t end = clock();
         double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
