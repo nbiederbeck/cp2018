@@ -4,14 +4,20 @@
 #include <fstream>
 #include <vector>
 #include <Eigen/Dense>
+#include <ctime>
 
 using std::cout;
 using std::endl;
 using std::pow;
 using std::vector;
+using std::clock;
 
 using Eigen::VectorXi;
 using Eigen::MatrixXi;
+
+using Eigen::EigenSolver;
+using Eigen::MatrixXd;
+using Eigen::MatrixXcd;
 
 MatrixXi init_zustaende(int); // Erstelle Alle Spins in Binaerschreibweise
 MatrixXi spin_sum(MatrixXi m , int spin); // Berechne Spinsumme der Zustaende
@@ -21,12 +27,21 @@ MatrixXi hamilton_matrix_from_spins(MatrixXi);
 int spin_encoder(MatrixXi, int);
 void test();
 void save_matrices_to_file(MatrixXi, const char *filename);
+void run_b();
+void run_c();
 
 int main() {
     cout << "=============================" << endl;
     cout << "Aufgabe 2: 1D Heisenbergkette" << endl;
     cout << "=============================" << endl << endl;
 
+    run_b();
+    run_c();
+
+    return 0;
+}
+
+void run_b() {
     int N = 10;
     MatrixXi spins;
     spins = init_zustaende(N);
@@ -37,7 +52,31 @@ int main() {
 
     save_matrices_to_file(H, "build/hamiltonian.txt");
 
-    return 0;
+    EigenSolver<MatrixXd> es(H.cast<double>());
+
+    MatrixXcd ev = es.eigenvalues();
+    std::ofstream file ("build/hamiltonian_eigenvalues.txt");
+    file << ev << endl;
+}
+
+void run_c() {
+    std::ofstream file ("build/hamilton_eigenvalues_N.txt");
+
+    for (int N = 2; N <= 14; N+=2) {
+        MatrixXi spins;
+        spins = init_zustaende(N);
+        spins = spin_sum(spins, 0);
+
+        MatrixXi H;
+        H = hamilton_matrix_from_spins(spins);
+
+        clock_t begin = clock();
+        EigenSolver<MatrixXd> es(H.cast<double>());
+        clock_t end = clock();
+        double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+
+        file << N << " " << elapsed_secs << endl;
+    }
 }
 
 // Eine Testfunktion

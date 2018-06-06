@@ -11,7 +11,7 @@ below,   % unterhalb der Section aber auf der selben Seite ist ok
 \author{%
 		Noah Biederbeck, Maximilian Sackel, Jan Spinne
 }
-\date{Abgabe: 01. Juni 2018}
+\date{Abgabe: 08. Juni 2018}
 
 
 
@@ -45,4 +45,30 @@ Matrix nach dem Householder-Algorithmus:
 \end{figure}
 Es macht keinen Unterschied in der Anzahl Sweeps, ob die Jacobi-Rotation mit $\mathbf{M}$ oder $\mathbf{H}$ durchgefuehrt wird.
 
+\section*{Aufgabe 2: 1D-Hamiltonkette}
+\subsection*{(a)}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\linewidth]{build/hamiltonian.png}
+  \caption{Hamiltonmatrix der 1D-Hamiltonkette.}%
+  \label{fig:hamiltonkette}
+\end{figure}
+
+\subsection*{(b)}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\linewidth]{build/hamiltonian_eigenvalues.png}
+  \caption{Eigenwerte der Hamiltonmatrix der 1D-Hamiltonkette.}%
+  \label{fig:hamiltonkette_eigenvalues}
+\end{figure}
+
+\subsection*{(c)}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\linewidth]{build/hamilton_eigenvalues_N.png}
+  \caption{%
+    Laufzeiten der Diagonalisierung mit \texttt{Eigen::EigenSolver()} für verschiedene Dimensionen der Hamiltonmatrix $N$.
+  }%
+  \label{fig:build/hamilton_eigenvalues_N}
+\end{figure}
 \end{document}

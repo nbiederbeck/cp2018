@@ -21,7 +21,7 @@ def plot_hamiltonian():
     cbar.ax.set_ylabel(r"Wert des Eintrages")
 
     ax.set_aspect(1)
-    fig.tight_layout()
+    fig.tight_layout(pad=0)
     fig.savefig("build/hamiltonian.png")
 
 
