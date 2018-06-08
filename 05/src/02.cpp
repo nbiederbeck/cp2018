@@ -19,13 +19,12 @@ using Eigen::EigenSolver;
 using Eigen::MatrixXd;
 using Eigen::MatrixXcd;
 
-MatrixXi init_zustaende(int); // Erstelle Alle Spins in Binaerschreibweise
-MatrixXi spin_sum(MatrixXi m , int spin); // Berechne Spinsumme der Zustaende
-int zustandssumme(VectorXi);
-VectorXi permutation(VectorXi, int);
+MatrixXi init_zustaende(int);               // Erstelle Alle Spins in Binaerschreibweise
+MatrixXi spin_sum(MatrixXi m , int spin);   // Berechne Spinsumme der Zustaende
+int zustandssumme(VectorXi);                // Berechnet die Zustandsumme 
+VectorXi permutation(VectorXi, int);        // Permutiert zwei benachbarten Spins des Zustande
 MatrixXd hamilton_matrix_from_spins(MatrixXi, double J = 1.0);
-int spin_encoder(MatrixXi, int);
-void test();
+int spin_encoder(MatrixXi, int);            // Encoded Spinsumme in Spinzustaende
 void save_matrices_to_file(MatrixXd, const char *filename);
 void run_b(int);
 void run_c();
@@ -39,8 +38,8 @@ int main() {
     run_b(N);
     run_c();
 
-    MatrixXi H;
-    H = hamilton_matrix_from_spins(spins);
+    return 0;
+}
 
 void run_b(int N) {
     MatrixXi spins;
@@ -85,35 +84,13 @@ void run_c() {
     }
 }
 
-// Eine Testfunktion
-void test() {
-    int N = 4;
-    VectorXi v(N);
-    VectorXi v_perm(N);
-    int s;
-
-    v << 1, 0, 1, 0;
-    cout << "Vektor:" << endl << v << endl;
-
-    s = zustandssumme(v);
-    cout << "Spinzustandsdarstellung: |" << s << ">" << endl;
-
-    int i = 0;
-    for (i = 0; i<N; i++) {
-        v_perm = permutation(v, i);
-        cout << "Vektor nach Permutation " << i << ", " << i+1 << ": " << endl << v_perm << endl;
-        s = zustandssumme(v_perm);
-        cout << "Spinzustandsdarstellung: |" << s << ">" << endl;
-    }
-}
-
 // Erstelle Alle Spins in Binaerschreibweise
 MatrixXi init_zustaende(int N) {
     int dim = (int)pow(2,N);
     MatrixXi mat(dim, N);
     for(int d = 0; d < dim; d++) {
         for(int n = 0; n < N; n++) {
-            mat(d, N - n - 1) = d / (int)pow(2, n) % 2;
+            mat(d, N - n - 1) = d / (int)pow(2, n) % 2; // Binaer Zahlen Zerlegung
         }
     }
     return mat;
@@ -123,6 +100,7 @@ MatrixXi init_zustaende(int N) {
 MatrixXi spin_sum(MatrixXi m , int spin) {
     // Spins have value 0 or 1 and not +-1/2
     double bias = m.cols() / 2;
+    // addiere deswegen bias drauf
     VectorXi m_spin = m.rowwise().sum().array() - (int)bias;
 
     vector<int> z;
@@ -131,6 +109,7 @@ MatrixXi spin_sum(MatrixXi m , int spin) {
             z.push_back(i);
         }
     }
+
     MatrixXi spinsums(z.size(), m.cols());
     for(int i = 0; i < z.size(); i++) {
         spinsums.row(i) = m.row(z[i]);
