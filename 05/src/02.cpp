@@ -4,23 +4,31 @@
 #include <fstream>
 #include <vector>
 #include <Eigen/Dense>
+#include <ctime>
 
 using std::cout;
 using std::endl;
 using std::pow;
 using std::vector;
+using std::clock;
 
 using Eigen::VectorXi;
 using Eigen::MatrixXi;
+
+using Eigen::EigenSolver;
+using Eigen::MatrixXd;
+using Eigen::MatrixXcd;
 
 MatrixXi init_zustaende(int); // Erstelle Alle Spins in Binaerschreibweise
 MatrixXi spin_sum(MatrixXi m , int spin); // Berechne Spinsumme der Zustaende
 int zustandssumme(VectorXi);
 VectorXi permutation(VectorXi, int);
-MatrixXi hamilton_matrix_from_spins(MatrixXi);
+MatrixXd hamilton_matrix_from_spins(MatrixXi, double J = 1.0);
 int spin_encoder(MatrixXi, int);
 void test();
-void save_matrices_to_file(MatrixXi, const char *filename);
+void save_matrices_to_file(MatrixXd, const char *filename);
+void run_b(int);
+void run_c();
 
 int main() {
     cout << "=============================" << endl;
@@ -28,16 +36,53 @@ int main() {
     cout << "=============================" << endl << endl;
 
     int N = 10;
-    MatrixXi spins;
-    spins = init_zustaende(N);
-    spins = spin_sum(spins, 0);
+    run_b(N);
+    run_c();
 
     MatrixXi H;
     H = hamilton_matrix_from_spins(spins);
 
+void run_b(int N) {
+    MatrixXi spins;
+    spins = init_zustaende(N);
+    spins = spin_sum(spins, 0);
+
+    MatrixXd H;
+    H = hamilton_matrix_from_spins(spins);
+
     save_matrices_to_file(H, "build/hamiltonian.txt");
 
-    return 0;
+    EigenSolver<MatrixXd> es(H);
+
+    MatrixXcd ev = es.eigenvalues();
+    std::ofstream file ("build/hamiltonian_eigenvalues.txt");
+    file << ev << endl;
+}
+
+void run_c() {
+    std::ofstream file ("build/hamilton_eigenvalues_N.txt");
+
+    cout << "Code being run per iteration and time measurement: " << endl;
+    cout << "EigenSolver<MatrixXd> es(H);" << endl;
+    cout << "es.eigenvalues();" << endl;
+
+    for (int N = 2; N <= 14; N+=2) {
+        MatrixXi spins;
+        spins = init_zustaende(N);
+        spins = spin_sum(spins, 0);
+
+        MatrixXd H;
+        H = hamilton_matrix_from_spins(spins);
+
+        clock_t begin = clock();
+        EigenSolver<MatrixXd> es(H);
+        es.eigenvalues();
+        clock_t end = clock();
+        double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+
+        cout << "N=" << N << ", t=" << elapsed_secs << "s" << endl;
+        file << N << " " << elapsed_secs << endl;
+    }
 }
 
 // Eine Testfunktion
@@ -95,24 +140,18 @@ MatrixXi spin_sum(MatrixXi m , int spin) {
 }
 
 // Berechne die Hamiltonmatrix aus gegebenen Spins
-MatrixXi hamilton_matrix_from_spins(MatrixXi spins) {
+MatrixXd hamilton_matrix_from_spins(MatrixXi spins, double J) {
     int dim = spins.rows();
-    MatrixXi H(dim, dim) ;
-    H = MatrixXi::Zero(dim, dim);
+    MatrixXd H(dim, dim) ;
+    H = MatrixXd::Zero(dim, dim);
 
     int y;
-
-    // An welcher Stelle in der Hamiltonmatrix steht der permutierte Vektor
-    // (spin_encoder) ?
-    // An dieser Stelle die Hamiltonmatrix um den entsprechenden Faktor erhoehen
-    // Dafuer jede Permutation von jedem Spinvektor berechnen, um die
-    // entsprechenden Faktoren zu erhalten.
 
     for (int i = 0; i < dim; i++) {
         for (int j = 0; j < spins.cols(); j++) {
             y = spin_encoder(spins, zustandssumme(permutation(spins.row(i), j)));
-            H(i, y) += 2;  // Permutationsteil von $H = sum( 2P - 1 )$
-            H(i, i) -= 1;  // -1 Teil vom Hamiltonian
+            H(i, y) += J / 4.0 * 2.0;  // Permutationsteil von $H = J/4 sum( 2P - 1 )$
+            H(i, i) -= J / 4.0 * 1.0;  // -1 Teil vom Hamiltonian
         }
     }
 
@@ -155,7 +194,7 @@ VectorXi permutation(VectorXi vec, int i) {
 }
 
 // Save Matrix to Filename
-void save_matrices_to_file(MatrixXi mat, const char *filename) {
+void save_matrices_to_file(MatrixXd mat, const char *filename) {
     std::ofstream file (filename);
     file << mat << endl;
 }

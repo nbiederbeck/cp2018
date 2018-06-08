@@ -6,21 +6,21 @@
 
 EIGENPATH=../Eigen
 
-all: run
+all: archive.tar.gz
 
 bin:
 	mkdir -p bin
 
 bin/01.out: src/01.cpp | bin
-	g++ -O2 -fopenmp -std=c++11 -I $(EIGENPATH) -o $@ $^
+	g++ -O2 -std=c++11 -I $(EIGENPATH) -o $@ $^
 
 bin/02.out: src/02.cpp | bin
-	g++ -O2 -fopenmp -std=c++11 -I $(EIGENPATH) -o $@ $^
+	g++ -O2 -std=c++11 -I $(EIGENPATH) -o $@ $^
 
 build:
 	mkdir -p build
 
-build/main.pdf: src/main.tex build/eigenvalues.png build/householder_final.txt build/hamiltonian.png | build
+build/main.pdf: src/main.tex build/eigenvalues.png build/householder_final.txt build/hamiltonian.png build/hamiltonian_eigenvalues.png build/hamilton_eigenvalues_N.png | build
 	latexmk --lualatex \
 		--output-directory=build \
 		--interaction=nonstopmode \
@@ -31,7 +31,7 @@ build/householder.txt: bin/01.out | build
 	./bin/01.out
 
 build/householder_final.txt: build/householder.txt
-	sed -i 's/\,/\&/g;s/0)//g;s/(//g;' $^ && \
+	sed -itxt 's/\,/\&/g;s/0)//g;s/(//g;' $^ && \
 	sed 'a\\\\\\' $^ > $@
 
 build/eigensolver_eigenvalues.txt: bin/01.out | build
@@ -41,8 +41,8 @@ build/hand_eigenvalues.txt: bin/01.out | build
 	./bin/01.out
 
 build/eigenvalues.png: build/hand_eigenvalues.txt build/eigensolver_eigenvalues.txt src/plot_eigenvalues.py
-	sed -i 's/,/ /g;s/[()]//g' build/eigensolver_eigenvalues.txt
-	sed -i 's/,/ /g;s/[()]//g' build/hand_eigenvalues.txt
+	sed -itxt 's/,/ /g;s/[()]//g' build/eigensolver_eigenvalues.txt
+	sed -itxt 's/,/ /g;s/[()]//g' build/hand_eigenvalues.txt
 	python src/plot_eigenvalues.py
 
 build/hamiltonian.png: src/plot_hamiltonian.py build/hamiltonian.txt
@@ -50,6 +50,21 @@ build/hamiltonian.png: src/plot_hamiltonian.py build/hamiltonian.txt
 
 build/hamiltonian.txt: bin/02.out | build
 	./bin/02.out
+
+build/hamiltonian_eigenvalues.txt: bin/02.out | build
+	./bin/02.out
+
+build/hamiltonian_eigenvalues_final.txt: build/hamiltonian_eigenvalues.txt
+	sed 's/.*(//;s/,.*//' build/hamiltonian_eigenvalues.txt > build/hamiltonian_eigenvalues_final.txt
+
+build/hamiltonian_eigenvalues.png: build/hamiltonian_eigenvalues_final.txt src/plot_hamiltonian_eigenvalues.py
+	python src/plot_hamiltonian_eigenvalues.py
+
+build/hamilton_eigenvalues_N.txt: bin/02.out | build
+	./bin/02.out
+
+build/hamilton_eigenvalues_N.png: build/hamilton_eigenvalues_N.txt src/plot_hamiltonian_N.py | build
+	python src/plot_hamiltonian_N.py
 
 archive.tar.gz: src/01.cpp src/02.cpp build/main.pdf Makefile
 	tar czf $@ $^
