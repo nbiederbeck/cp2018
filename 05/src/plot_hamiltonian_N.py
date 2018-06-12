@@ -28,7 +28,7 @@ def main():
     # ax.set_ylim([1e-6, np.max(t) * 1.2])
 
     ax.set_xlabel(r"$N$")
-    ax.set_ylabel(r"$t \:\:/\:\: 1000 \mu s$")
+    ax.set_ylabel(r"$t \:\:/\:\: s$")
     ax.legend(loc="best")
 
     fig.tight_layout(pad=0)
