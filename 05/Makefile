@@ -27,6 +27,15 @@ build/main.pdf: src/main.tex build/eigenvalues.png build/householder_final.txt b
 		--halt-on-error \
 	$<
 
+preview: FORCE | build
+	latexmk --lualatex \
+		--output-directory=build \
+		--interaction=nonstopmode \
+		--halt-on-error \
+	src/main.tex -pvc
+
+FORCE:
+
 build/householder.txt: bin/01.out | build
 	./bin/01.out
 
