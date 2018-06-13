@@ -1,0 +1,64 @@
+\documentclass{scrartcl}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{subcaption}
+\usepackage{physics}
+\usepackage[
+  section, % Floats innerhalb der Section halten
+  below,   % unterhalb der Section aber auf der selben Seite ist ok
+]{placeins}
+
+\title{Übungsblatt 06}
+\author{%
+		Noah Biederbeck, Maximilian Sackel, Jan Spinne
+}
+\date{Abgabe: 15. Juni 2018}
+
+
+
+\begin{document}
+\maketitle
+\section*{Aufgabe 1: Matrixdiagonalisierung}
+\subsection*{(a)}
+Für das Lanczos-Verfahren wird iterativ folgendes bestimmt:
+\begin{align}
+  A \vec{q}_{i} &= \beta_{i+1} \vec{q}_{i+1} + \alpha_{i} \vec{q}_{i} + \beta_{i} \vec{q}_{i-1} \\
+  \alpha_{i} &= \vec{q}_{i}^{\dagger} A \vec{q}_{i} \\
+  \beta_{i+1} &= \vec{q}_{i+1} A \vec{q}_{i}
+\end{align}
+Es wird die Matrix
+\begin{align}
+  Q_{N} &= \left\{ \vec{q}_{1} \cdots \vec{q}_{n} \right\}
+\end{align}
+bestimmt, die die Tridiagonalmatrix liefert:
+\begin{align}
+  A Q_{n} &= Q_{n} T_{n} \\
+  T_{n} &= 
+    \left(\begin{matrix}
+        \alpha_{1} & \beta_{2}  & 0          & 0         & 0           & \vdots     \\
+        \beta_{2}  & \alpha_{2} & \beta_{3}  & 0         & 0           & \vdots     \\
+        0          & \beta_{3}  & \alpha_{3} & \beta_{4} & 0           & \vdots     \\
+        \cdots     & \cdots     & \cdots     & \cdots    & \beta_{n-1} & \alpha_{_{}n} \\
+    \end{matrix}\right) \\
+  Q_{n}^{\dagger} A Q_{n} &= T_{n}
+\end{align}
+Da dies eine Ähnlichkeitstransformation ist, haben $A$ und $T_{n}$ dieselben Eigenwerte.
+
+% So ist mit
+% \begin{align}
+%   \vec{q}_{0} &= \input{build/q0.tex} \\
+%   T_{0} &= \input{build/T0.tex} \\
+%   \vec{q}_{1} &= \input{build/q1.tex} \\
+%   T_{1} &= \input{build/T1.tex}
+% \end{align}
+
+Für mehr siehe \texttt{Mitschrift.pdf} Seite 98.
+
+\subsection*{(b)}
+\subsection*{(c)}
+\section*{Aufgabe 2: Anharmonischer Oszillator}
+\subsection*{(a)}
+\subsection*{(b)}
+\subsection*{(c)}
+\subsection*{(d)}
+\end{document}
