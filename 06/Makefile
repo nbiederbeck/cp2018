@@ -50,7 +50,7 @@ run: bin/01.out bin/02.out build
 	./bin/01.out
 	./bin/02.out
 
-archive.tar.gz: src/01.cpp src/02.cpp build/main.pdf Makefile src/1b.py src/1c.py src/2b.py
+archive.tar.gz: build/main.pdf Makefile $(wildcard src/*)
 	tar czf $@ $^
 
 clean:
