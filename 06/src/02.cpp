@@ -8,6 +8,7 @@
 
 using std::cout;
 using std::endl;
+using std::pow;
 
 
 double kronecker(int i, int j) {
@@ -31,16 +32,35 @@ Eigen::MatrixXd hamiltonian(double lambda, double L, double delta_xi) {
         next = first + n * delta_xi;
         for (int m = 0; m < static_cast<int>(dim); m++) {
             H(n, m) =
-                - (1.0 / std::pow(delta_xi, 2))
+                - (1.0 / pow(delta_xi, 2))
                 * (kronecker(n, m-1) + kronecker(n, m+1) - 2 * kronecker(n, m))
                 + (
-                        std::pow(delta_xi, 2) * std::pow(next, 2)
-                        + lambda * std::pow(delta_xi, 4) * std::pow(next, 4)
+                        pow(delta_xi, 2) * pow(n, 2)
+                        + lambda * pow(delta_xi, 4) * pow(n, 4)
                   ) * kronecker(n, m);
         }
     }
     return H;
 }
+
+// calculate hamiltonian from equations (3,4)
+// Eigen::MatrixXd epsilon4(int N, int M) {
+
+//     Eigen::MatrixXd H = Eigen::MatrixXd::Zero(N, M);
+
+//     for (int n = 0; n < N; n++) {
+//         for (int m = 0; m < M; m++) {
+//             H(n, m) =
+//                 - (1.0 / pow(delta_xi, 2))
+//                 * (kronecker(n, m-1) + kronecker(n, m+1) - 2 * kronecker(n, m))
+//                 + (
+//                         pow(delta_xi, 2) * pow(next, 2)
+//                         + lambda * pow(delta_xi, 4) * pow(next, 4)
+//                   ) * kronecker(n, m);
+//         }
+//     }
+//     return H;
+// }
 
 
 Eigen::VectorXd lowest_ev(Eigen::VectorXd ev, int N = 10) {
@@ -58,7 +78,7 @@ void b() {
 
     double lambda = 0.0;
     double L = 10.0;
-    double delta_xi = 0.1;
+    double delta_xi = 0.01;
 
     Eigen::MatrixXd H_0 = hamiltonian(lambda, L, delta_xi);
     Eigen::EigenSolver<Eigen::MatrixXd> ES_0(H_0);
