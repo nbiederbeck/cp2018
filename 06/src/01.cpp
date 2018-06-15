@@ -74,7 +74,7 @@ Eigen::MatrixXd qr_iteration(Eigen::MatrixXd A, Eigen::MatrixXd T) {
 
     Eigen::MatrixXd temp = A;
 
-    double eps = 1e-2;
+    double eps = 1e2;
 
     while (((A.cwiseProduct(A)).sum() - (A.cwiseProduct(A)).trace()) > eps) {
     // for (int i = 0; i < 5; i++) {
