@@ -35,8 +35,8 @@ Eigen::MatrixXd hamiltonian(double lambda, double L, double delta_xi) {
                 - (1.0 / pow(delta_xi, 2))
                 * (kronecker(n, m-1) + kronecker(n, m+1) - 2 * kronecker(n, m))
                 + (
-                        pow(delta_xi, 2) * pow(n, 2)
-                        + lambda * pow(delta_xi, 4) * pow(n, 4)
+                        pow(delta_xi, 2) * pow(next, 2)
+                        + lambda * pow(delta_xi, 4) * pow(next, 4)
                   ) * kronecker(n, m);
         }
     }
@@ -78,9 +78,11 @@ void b() {
 
     double lambda = 0.0;
     double L = 10.0;
-    double delta_xi = 0.01;
+    double delta_xi = 1;
 
     Eigen::MatrixXd H_0 = hamiltonian(lambda, L, delta_xi);
+    cout << "hamiliton matrix:" << endl;
+    cout << H_0 << endl;
     Eigen::EigenSolver<Eigen::MatrixXd> ES_0(H_0);
     Eigen::VectorXd EV_0 = ES_0.eigenvalues().real();
 
