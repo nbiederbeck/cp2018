@@ -49,9 +49,13 @@ Eigen::MatrixXd hamiltonian_new(double lambda, int dim, double delta_xi) {
     for (int n = 0; n < dim; n++) {
         for (int m = 0; m < dim; m++) {
             H(n, m) =
-                - (1.0 / std::pow(delta_xi, 2))
-                * (kronecker(n, m-1) + kronecker(n, m+1) - 2 * kronecker(n, m))
-                + 0.25 * (
+                0.5 * (
+                        std::sqrt(n * (n-1)) * kronecker(n-2, m)
+                        + std::sqrt((n+1) * (n+1)) * kronecker(n, m)
+                        + std::sqrt(n * n) * kronecker(n, m)
+                        + std::sqrt((n+1) * (n+2)) * kronecker(n+2, m)
+                )
+                + lambda * 0.25 * (
                         std::sqrt(m * (m-1) * (m-2) * (m-3)) * kronecker(n, m-4)
                         + std::sqrt((m+1) * (m+2) * (m+3) * (m+4)) * kronecker(n, m+4)
                         + std::sqrt(m * (m-1)) * (4 * m - 2) * kronecker(n, m-2)
@@ -106,7 +110,7 @@ void b() {
 void c() {
     std::ofstream file ("build/task2c.txt");
 
-    double lambda = 0.2;
+    double lambda = 0.0;
     double L = 10;
     int N = 50;
     double delta_xi = 2 * L / N;
@@ -126,7 +130,7 @@ void d() {
     std::ofstream file ("build/task2d.txt");
     std::ofstream file_new ("build/task2d_new.txt");
 
-    double lambda = 0.2;
+    double lambda = 0.0;
     double L = 10;
     double delta_xi = 0;
 
@@ -140,12 +144,12 @@ void d() {
         delta_xi = 2 * L / N;
         H = hamiltonian(lambda, L, delta_xi);
         Eigen::EigenSolver<Eigen::MatrixXd> ES(H);
-        cout << N << " " << lowest_ev(ES.eigenvalues().real()) << endl << endl;
+        // cout << N << " " << lowest_ev(ES.eigenvalues().real()) << endl << endl;
         file << N << endl << lowest_ev(ES.eigenvalues().real()) << endl;
 
         H = hamiltonian_new(lambda, N, delta_xi);
         Eigen::EigenSolver<Eigen::MatrixXd> ES_new(H);
-        cout << N << " " << lowest_ev(ES_new.eigenvalues().real()) << endl << endl;
+        // cout << N << " " << lowest_ev(ES_new.eigenvalues().real()) << endl << endl;
         file_new << N << endl << lowest_ev(ES_new.eigenvalues().real()) << endl;
     }
 

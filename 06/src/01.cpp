@@ -66,17 +66,20 @@ Eigen::MatrixXd lanczos(Eigen::MatrixXd A, Eigen::VectorXd q) {
 }
 
 
-Eigen::MatrixXd qr_decomposition(Eigen::MatrixXd A) {
-    Eigen::MatrixXd Q;
-    return A;
-}
-
-
 Eigen::MatrixXd qr_iteration(Eigen::MatrixXd A, Eigen::MatrixXd T) {
-    // A = Q R, R = T  =>  Q = A R^t
-    Eigen::MatrixXd Q = A * T.transpose();
+    // QR von Eigen, sorry
+    Eigen::HouseholderQR<Eigen::MatrixXd> hqr(A.rows(), A.cols());
+
+    Eigen::MatrixXd Q;
+
     Eigen::MatrixXd temp = A;
-    for (int i = 0; i < 10; i++) {
+
+    double eps = 1e-2;
+
+    while (((A.cwiseProduct(A)).sum() - (A.cwiseProduct(A)).trace()) > eps) {
+    // for (int i = 0; i < 5; i++) {
+        hqr.compute(temp);
+        Q = hqr.householderQ();
         A = Q.transpose() * temp * Q;
         temp = A;
     }
@@ -146,6 +149,7 @@ void b() {
     Eigen::MatrixXd T = lanczos(M, q);
 
     Eigen::MatrixXd QR = qr_iteration(M, T);
+    cout << QR << endl;
     Eigen::EigenSolver<Eigen::MatrixXd> ES(M);
     Eigen::MatrixXd EV = ES.eigenvalues().real();
 
@@ -178,7 +182,7 @@ void c() {
 
     cout << "# N Lanczos Householder EigenSolver" << endl;
     file << "# N Lanczos Householder EigenSolver" << endl;
-    for (int N = 3; N <= 20; N++) {
+    for (int N = 3; N < 20; N++) {
         for (int i = 0; i < 50; i++) {
             // cout << N << " " << i+1 << endl;
             Random = Eigen::DenseBase<Eigen::MatrixXd>::Random(N, N);
