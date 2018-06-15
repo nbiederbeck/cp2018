@@ -20,7 +20,7 @@ bin/02.out: src/02.cpp | bin
 build:
 	mkdir -p build
 
-build/main.pdf: src/main.tex replace_matrices build/plot1c.png build/plot1b.png build/plot2b.png | build
+build/main.pdf: src/main.tex replace_matrices build/plot1c.png build/plot1b.png build/plot2b.png build/plot2d.png | build
 	latexmk --lualatex \
 		--output-directory=build \
 		--interaction=nonstopmode \
@@ -42,9 +42,13 @@ build/plot1b.png: build/task1b.txt src/1b.py
 build/plot2b.png: build/task2b.txt src/2b.py
 	python src/2b.py
 
+build/plot2d.png: build/task2d.txt src/2d.py
+	python src/2d.py
+
 build/task1c.txt: run
 build/task1b.txt: run
 build/task2b.txt: run
+build/task2d.txt: run
 
 run: bin/01.out bin/02.out build
 	./bin/01.out
