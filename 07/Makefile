@@ -20,7 +20,10 @@ bin/02.out: src/02.cpp | bin build
 build:
 	mkdir -p build
 
-build/euler.pdf: src/plot_1.py | build/01.out
+build/euler.txt: bin/01.out
+	./bin/01.out
+
+build/euler.pdf: src/plot_1.py build/euler.txt
 	python src/plot_1.py
 
 build/main.pdf: src/main.tex build/euler.pdf | build
