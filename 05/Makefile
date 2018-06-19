@@ -12,10 +12,10 @@ bin:
 	mkdir -p bin
 
 bin/01.out: src/01.cpp | bin
-	g++ -O2 -fopenmp -std=c++11 -I $(EIGENPATH) -o $@ $^
+	g++ -O2 -std=c++11 -I $(EIGENPATH) -o $@ $^
 
 bin/02.out: src/02.cpp | bin
-	g++ -O2 -fopenmp -std=c++11 -I $(EIGENPATH) -o $@ $^
+	g++ -O2 -std=c++11 -I $(EIGENPATH) -o $@ $^
 
 build:
 	mkdir -p build
@@ -27,11 +27,20 @@ build/main.pdf: src/main.tex build/eigenvalues.png build/householder_final.txt b
 		--halt-on-error \
 	$<
 
+preview: FORCE | build
+	latexmk --lualatex \
+		--output-directory=build \
+		--interaction=nonstopmode \
+		--halt-on-error \
+	src/main.tex -pvc
+
+FORCE:
+
 build/householder.txt: bin/01.out | build
 	./bin/01.out
 
 build/householder_final.txt: build/householder.txt
-	sed -i 's/\,/\&/g;s/0)//g;s/(//g;' $^ && \
+	sed -itxt 's/\,/\&/g;s/0)//g;s/(//g;' $^ && \
 	sed 'a\\\\\\' $^ > $@
 
 build/eigensolver_eigenvalues.txt: bin/01.out | build
@@ -41,8 +50,8 @@ build/hand_eigenvalues.txt: bin/01.out | build
 	./bin/01.out
 
 build/eigenvalues.png: build/hand_eigenvalues.txt build/eigensolver_eigenvalues.txt src/plot_eigenvalues.py
-	sed -i 's/,/ /g;s/[()]//g' build/eigensolver_eigenvalues.txt
-	sed -i 's/,/ /g;s/[()]//g' build/hand_eigenvalues.txt
+	sed -itxt 's/,/ /g;s/[()]//g' build/eigensolver_eigenvalues.txt
+	sed -itxt 's/,/ /g;s/[()]//g' build/hand_eigenvalues.txt
 	python src/plot_eigenvalues.py
 
 build/hamiltonian.png: src/plot_hamiltonian.py build/hamiltonian.txt
