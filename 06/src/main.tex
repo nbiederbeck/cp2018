@@ -58,6 +58,7 @@ Für mehr siehe \texttt{Mitschrift.pdf} Seite 98.
 
 \subsection*{(b)}
 Die QR-Iteration wird verwendet, um Eigenwerte zu berechnen.
+Die Genauigkeit wird auf $\varepsilon = 100$ gestellt, um Zeit zu sparen fuer die Abgabe (sorry).
 Diese werden in Abbildung~\ref{fig:1b} mit denen von \texttt{Eigen::Eigensolver()} berechneten verglichen.
 \begin{figure}[ht]
 		\centering
@@ -115,7 +116,6 @@ Die Laufzeiten der Verfahren wird über 50 zufällige Matrizen gemittelt und in 
 
 \subsection*{(c)}
 
-\subsection*{(d)}
 \begin{align}
 		\xi^2 &= \frac{(a + a^\dagger)(a + a^\dagger)}{2} \\
 			  &= \frac{1}{2} (
@@ -123,6 +123,11 @@ Die Laufzeiten der Verfahren wird über 50 zufällige Matrizen gemittelt und in 
 		&+ \sqrt{n \cdot n} \delta_\text{m,n} +  \sqrt{(n+1)(n+2)}
 		\delta_\text{m,n+2} )
 \end{align}
+
+\subsection*{(d)}
+Fuer hohe $N$ konvergieren die Eigenwerte.
+Dies bedeutet, dass die Berechnungen genauer werden.
+In Abbildung~\ref{fig:2d} sind die drei kleinsten Eigenwerte beispielhaft dargestellt.
 \begin{figure}[ht]
 		\centering
 		\includegraphics[width=0.8\linewidth]{build/plot2d.png}
