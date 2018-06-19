@@ -23,10 +23,10 @@ build:
 build/euler.txt: bin/01.out
 	./bin/01.out
 
-build/euler.pdf: src/plot_1.py build/euler.txt
+build/euler.png: src/plot_1.py build/euler.txt
 	python src/plot_1.py
 
-build/main.pdf: src/main.tex build/euler.pdf | build
+build/main.pdf: src/main.tex build/euler.png | build
 	latexmk --lualatex \
 		--output-directory=build \
 		--interaction=nonstopmode \

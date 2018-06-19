@@ -61,8 +61,9 @@ struct solutions euler(double h, int T, Eigen::VectorXd r_0, Eigen::VectorXd v_0
         joined_v_i << v_i, v_n;
         v_i = joined_v_i;
     }
-    solutions eul;
-    eul.r_i = r_i; eul.v_i = v_i;
+    struct solutions eul;
+    eul.r_i = r_i;
+    eul.v_i = v_i;
     return eul;
 }
 
@@ -96,8 +97,9 @@ struct solutions rungekutta_2(double h, int T, Eigen::VectorXd r_0, Eigen::Vecto
         joined_v_i << v_i, v_n;
         v_i = joined_v_i;
     }
-    solutions rk2;
-    rk2.r_i = r_i; rk2.v_i = v_i;
+    struct solutions rk2;
+    rk2.r_i = r_i;
+    rk2.v_i = v_i;
     return rk2;
 }
 
