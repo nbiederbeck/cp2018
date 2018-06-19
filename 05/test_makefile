@@ -1,0 +1,9 @@
+EIGENPATH=../Eigen
+all: bin/test.out
+	./bin/test.out
+
+bin:
+	mkdir -p bin
+
+bin/test.out: src/test.cpp | bin
+	c++ -O2 -std=c++11 -I $(EIGENPATH) -o $@ $^

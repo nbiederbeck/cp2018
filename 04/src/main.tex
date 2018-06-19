@@ -3,13 +3,13 @@
 \usepackage{amsmath}
 \usepackage{subcaption}
 \usepackage[
-  section, % Floats innerhalb der Section halten
-  below,   % unterhalb der Section aber auf der selben Seite ist ok
+section, % Floats innerhalb der Section halten
+below,   % unterhalb der Section aber auf der selben Seite ist ok
 ]{placeins}
 
 \title{Übungsblatt 02}
 \author{%
-  Noah Biederbeck, Maximilian Sackel, Jan Spinne
+		Noah Biederbeck, Maximilian Sackel, Jan Spinne
 }
 \date{Abgabe: 04. Mai 2018}
 
@@ -19,99 +19,119 @@
 \maketitle
 
 \section*{Aufgabe 1}
-\subsection*{b)}
-Es werden Zufallszahlen nach der Vorschrift $r_{n+1} = (a \cdot r_n + c)\% m$ generiert.
-Diese werden anschliessend durch $m$ geteilt, um gleichverteilte Zahlen in $\left[0, 1\right[$ zu erhalten.
-Für vier Parametersätze wird der Generator getestet, die gleichverteilten Zufallszahlen sind in Abbildung~1 aufgetragen.
-Man erkennt eine gute Gleichverteilung bei allein vier Generatoren.
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.8\linewidth]{build/plot_01a.png}
-  \caption{Pseudo Zufallsgeneratoren für vier Parametersätze.}%
-  \label{fig:1}
-\end{figure}
-
-\subsection*{c)}
-Es wird auf Korrelationen zwischen den jeweils aufeinanderfolgenden Zufallszahlen geprüft, indem sie gegeneinander in einem 2d-Histogramm aufgetragen werden (Abbildung 2).
-Es werden Hyperebenen sichtbar, dies bedeutet, dass die Zufallszahlen korreliert sind (Parametersätze 1 und 2).
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.8\linewidth]{build/plot_01b.png}
-  \caption{Korrelationen der Zufallszahlen der vier Generatoren.}%
-  \label{fig:2}
-\end{figure}
-
-\subsection*{d)}
-Das gleiche Vorgehen wie in b) und c) wird für den XOR-Shift-Algorithmus angewendet.
-Es ist zu erkennen, dass das zweite Tupel $(11, 4, 7)$ keine Gleichverteilung erzeugt und aufeinanderfolgende Zufallszahlen miteinander korrelieren (Abbildung 3).
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.8\linewidth]{build/plot_01d.png}
-  \caption{Histogramme und Korrelationen der XOR-Shift Algorithmen.}%
-  \label{fig:3}
-\end{figure}
-\subsection*{e)}
-Es wird eine Gridsearch für die Parameter $(11, b, c)$ durchgeführt, um herauszufinden, welche eine niedrige Rekursionsrate (= hohe Rekursionslänge) haben.
-Dies gilt für die gelben Punkte in Abbildung 4.
-Ein Beispiel für die Parameter eines guten XOR-Shift Algorithmus ist $(11, 1, 7)$, wie er auch in d) überprüft wurde.
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.8\linewidth]{build/plot_01e.png}
-  \caption{Gridsearch der besten Parameter des XOR-Shift Algorithmus für 16-Bit-Integer.}%
-  \label{fig:4}
-\end{figure}
-
-\section*{Aufgabe 2}
 \subsection*{a)}
-Es wird die folgende Transformationsmethode verwendet:
-\begin{align*}
-  f(x) &= \cos(x) \\
-  F(x) &= \int f(x)dx = \sin(x) := y \\
-  \intertext{$y$ gleichverteilt $\in \left[0, 1\right[$}
-  \Rightarrow x &= \arcsin(y) \\
-  \intertext{$y$ cosinusverteilt $\in \left[\arcsin(0) = 0, \arcsin(1) = \frac{\pi}{2}\right[$.}
-\end{align*}
-Es werden in Abbildung 5 die Histogramme der Verteilungen (i), (ii) aufgetragen zwischen 0 und $\frac{\pi}{2}$,
-da dies einen Vergleich zulässt.
-Ausserdem ist die Differenz der Histogramme zur analytischen Funktion dargestellt, um die beiden Intervalle zu vergleichen.
-Man erkennt, dass die Verteilungen gleich genau sind.
-Der Unterschied zwischen den Eingangsintervallen ergibt den Unterschied in den transformierten Intervallen (nicht dargestellt, wegen Normierung):
-\begin{align*}
-  \left[0, 1\right[ &\rightarrow \left[0, \frac{\pi}{2}\right[ \\
-  \left[-1, 1\right[ &\rightarrow \left[-\frac{\pi}{2}, \frac{\pi}{2}\right[
-\end{align*}
+
+Der Gleichgewichtszustand tritt bei eine System mit kleineren $q$ schneller ein.
 \begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.8\linewidth]{build/plot_02a.png}
-  \caption{Histogramme nach $\cos(x)$ und Abweichung von (i) und (ii) von der analytischen Funktion.}%
-  \label{fig:5}
-\end{figure}
-\subsection*{b)}
-Es werden gleichverteilte Zufallszahlen $U_{1,2}$ in $\left[0, 1\right[$ erzeugt und nach 
-\begin{align*}
-  Z_{1} &= \mu + {\sqrt {-2\ln U_{1}}}\cos(2\pi U_{2}) \cdot \sigma\\
-  Z_{2} &= \mu + {\sqrt {-2\ln U_{1}}}\sin(2\pi U_{2}) \cdot \sigma
-\end{align*}
-(Box-Muller Algorithmus) transformiert.
-Das Histogramm der Zahlen sowie die analytische Form der Gaußkurve sind in Abbildung 6 aufgetragen.
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.8\linewidth]{build/plot_02b.png}
-  \caption{Box-Muller Algorithmus.}%
-  \label{fig:6}
-\end{figure}
-\subsection*{c)}
-Es wird eine Exponentialverteilung aus gleichverteilten Zufallszahlen in $\left[0, 1\right[$ erzeugt.
-Dann wird für jede dieser Zahlen ein $y$-Wert aus einer Gleichverteilung zwischen $\left[0, k \cdot \exp(-x)\right[$ gezogen.
-Ist dieser Wert kleiner als die Gaußfunktion an dieser Stelle, wird der Wert behalten.
-So wird eine Gaußverteilung mit dem Neumannschen Rückweisungsverfahren generiert.
-Es wird $k = 0.7$ gewählt.
-In Abbildung 7 sind die normierten Histogramme der Verteilungen, die analytischen Funktionen und einige der gezogenen Zahlen abgebildet.
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.8\linewidth]{build/plot_02c.png}
-  \caption{Neumannsches Rückweisungsverfahren.}%
-  \label{fig:7}
+		\centering
+		\begin{subfigure}[b]{0.3\textwidth}
+				\begin{center}
+						\includegraphics[width=\linewidth]{build/q_2_0.pdf}
+				\end{center}
+				\caption{0 Schritte}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.3\textwidth}
+				\begin{center}
+						\includegraphics[width=\linewidth]{build/q_2_30.pdf}
+				\end{center}
+				\caption{30 Schritte}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.3\textwidth}
+				\begin{center}
+						\includegraphics[width=\linewidth]{build/q_2_100.pdf}
+				\end{center}
+				\caption{10000 Schritte}
+		\end{subfigure}
+		\caption{Fuer ein zwei Spin Zustand System}%
+		\label{fig:1}
 \end{figure}
 
+\begin{figure}[ht]
+		\centering
+		\begin{subfigure}[b]{0.3\textwidth}
+				\begin{center}
+						\includegraphics[width=\linewidth]{build/q_3_0.pdf}
+				\end{center}
+				\caption{0 Schritte}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.3\textwidth}
+				\begin{center}
+						\includegraphics[width=\linewidth]{build/q_3_250.pdf}
+				\end{center}
+				\caption{250 Schritte}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.3\textwidth}
+				\begin{center}
+						\includegraphics[width=\linewidth]{build/q_3_999.pdf}
+				\end{center}
+				\caption{10000 Schritte}
+		\end{subfigure}
+		\caption{Fuer ein drei Spin zustand System}%
+		\label{fig:1}
+\end{figure}
+
+\subsection*{b)}
+In den Plots ist die Magnetisierung gegen die MC-Schritte aufgetragen. 
+Ebenso stellt sich die Gleichgewichtsenergie bei kleinen $q$ schneller ein.
+\begin{figure}[ht]
+		\centering
+		\begin{subfigure}[b]{0.49\textwidth}
+				\begin{center}
+						\includegraphics[width=\linewidth]{build/energy2.pdf}
+				\end{center}
+				\caption{q=2}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.49\textwidth}
+				\begin{center}
+						\includegraphics[width=\linewidth]{build/energy3.pdf}
+				\end{center}
+				\caption{q=3}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.49\textwidth}
+				\begin{center}
+						\includegraphics[width=\linewidth]{build/energy6.pdf}
+				\end{center}
+				\caption{q=6}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.49\textwidth}
+				\begin{center}
+						\includegraphics[width=\linewidth]{build/energy20.pdf}
+				\end{center}
+				\caption{q=20}
+		\end{subfigure}
+		\caption{Energie gegen Monte-Carlo Schritte.}%
+		\label{fig:1}
+\end{figure}
+
+Bei einem $q$-Wert von 20 faellt auf das der Gleichgewichtszustand trotz $10^4$
+Monte-Carlo Schritten nicht erreicht wird.
+\begin{figure}[ht]
+		\centering
+		\begin{subfigure}[b]{0.49\textwidth}
+				\begin{center}
+						\includegraphics[width=\linewidth]{build/magn.pdf}
+				\end{center}
+				\caption{q=2}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.49\textwidth}
+				\begin{center}
+						\includegraphics[width=\linewidth]{build/magn3.pdf}
+				\end{center}
+				\caption{q=3}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.49\textwidth}
+				\begin{center}
+						\includegraphics[width=\linewidth]{build/magn6.pdf}
+				\end{center}
+				\caption{q=6}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.49\textwidth}
+				\begin{center}
+						\includegraphics[width=\linewidth]{build/magn20.pdf}
+				\end{center}
+				\caption{q=20}
+		\end{subfigure}
+		\caption{Magnetisierung gegen MC-Schritte.}%
+		\label{fig:1}
+\end{figure}
 \end{document}
