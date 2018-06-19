@@ -3,13 +3,15 @@
 #include <fstream>
 #include <Eigen/Dense>
 #include <cmath>
-#include <ctime>
 #include <vector>
+#include <string>
 
 
 using std::cout;
 using std::endl;
 using std::vector;
+using Eigen::VectorXf;
+using Eigen::MatrixXf;
 
 vector<double> diskretisierung(double t_0, double T, int h){
     vector<double> t = {t_0};
@@ -19,74 +21,85 @@ vector<double> diskretisierung(double t_0, double T, int h){
     return t;
 }
 
-double func(double x){
-    return std::pow(x,2);
-}
-
 double stepsize(vector<double> t, int i){
     return t[i] - t[i-1];
 }
 
 struct solutions {
-    vector<double> r_i;
-    vector<double> v_i;
+    MatrixXf r_i;
+    MatrixXf v_i;
 };
 
-struct solutions euler(vector<double> t_i, double r_0, double v_0){
-    vector<double> r_i = {r_0};
-    vector<double> v_i = {v_0};
+struct solutions euler(vector<double> t_i, VectorXf r_0, VectorXf v_0){
+    MatrixXf r_i = r_0;
+    MatrixXf v_i = v_0;
 
     double omega = 1.;
 
+    int r = r_i.rows();
+    VectorXf r_n(r);
+    VectorXf v_n(r);
+
     for(int i=1; i<t_i.size(); i++){
-        v_i.push_back(
-                v_i[i-1] - stepsize(t_i,i) * pow(omega,2) * r_i[i-1]
-                );
-        r_i.push_back(
-                r_i[i-1] + stepsize(t_i,i) * pow(omega,2) * v_i[i-1]
-                );
+        // init help var
+        MatrixXf joined_r_i(r, i+1);
+        MatrixXf joined_v_i(r, i+1);
+
+        // physics
+        r_n << r_i.col(i-1) - stepsize(t_i,i) * pow(omega,2) * v_i.col(i-1);
+        v_n << v_i.col(i-1) + stepsize(t_i,i) * pow(omega,2) * r_i.col(i-1);
+       
+        // fill old var with new values
+        joined_r_i << r_i, r_n;
+        r_i = joined_r_i;
+        joined_v_i << v_i, v_n;
+        v_i = joined_v_i;
     }
     solutions s_euler ;
     s_euler.r_i = r_i; s_euler.v_i = v_i;
     return s_euler;
 }
 
-struct solutions runge(vector<double> t_i, double r_0, double v_0){
-    vector<double> r_i = {r_0};
-    vector<double> v_i = {v_0};
+void save(struct solutions sol, double T, const std::string &filename){
+    std::string path = "build/"+ filename + "/";
+    std::system(("mkdir -p "+path).c_str());
+    std::ofstream file; 
 
-    double omega = 1.;
+    file.open(path+"T.txt");
+    file << T << std::endl;
+    file.close();
 
-    for(int i=1; i<t_i.size(); i++){
-        v_i.push_back(
-                v_i[i-1] - stepsize(t_i,i) * pow(omega,2) * r_i[i-1]
-                );
-        r_i.push_back(
-                r_i[i-1] + stepsize(t_i,i) * pow(omega,2) * v_i[i-1]
-                );
-    }
-    solutions s_euler ;
-    s_euler.r_i = r_i; s_euler.v_i = v_i;
-    return s_euler;
+    file.open(path+"r_i.txt");
+    file << sol.r_i << std::endl;
+    file.close();
+    
+
+    file.open(path+"v_i.txt");
+    file << sol.v_i << std::endl;
+    file.close();
 }
+
 
 int main(int argc, char *argv[])
 {
 
+    // setze Start/Rand-bedingugen
     double t_0 = 0;
     double T = 10.;
     int h = 20;
+    int dim = 3;
+
+    // initaliziere Startvektoren
+    VectorXf r_0(dim);
+    VectorXf v_0(dim);
+    r_0 << 1, 0, 0;
+    v_0 << 0, 0, 0;
 
     // euler solution
     vector<double> t_i = diskretisierung(t_0, T, h);
-    struct solutions s_euler = euler(t_i, 0, 1);
+    struct solutions s_euler = euler(t_i, r_0, v_0);
+    save(s_euler, T, "euler");
 
-    // save data
-    std::ofstream file ("build/euler.txt");
-    file << T << "; " << std::endl;
-    for(unsigned i = 0; i< s_euler.r_i.size(); ++i) {
-        file << s_euler.r_i[i] << "; " << s_euler.v_i[i] << std::endl;
-    }
     
     return 0;
 }
