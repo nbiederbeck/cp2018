@@ -19,12 +19,15 @@ class plotter:
         ax.set_ylabel('Amplitude')
         ax.legend(loc='best')
         ax.set_title(title)
+        ax.grid()
         fig.tight_layout(pad=0)
         fig.savefig(path)
 
 def main():
     p_euler = plotter('build/euler/')
     p_euler.make_plot('build/euler.pdf', 'Euler Verfahren', 0)
+    p_runge= plotter('build/runge/')
+    p_runge.make_plot('build/runge.pdf', 'Runge Verfahren', 0)
 
 if __name__ == '__main__':
     main()

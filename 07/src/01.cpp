@@ -32,12 +32,11 @@ struct solutions {
 
 VectorXf func(double t, VectorXf x_i){
     // die funktion haengt explizit nicht von t ab
-    double omega = 1.;
+    double omega = 1;
 
     return pow(omega,2) * x_i;
 }
 
-// VectorXf stepk
 
 struct solutions euler(vector<double> t_i, VectorXf r_0, VectorXf v_0){
     MatrixXf r_i = r_0;
@@ -67,7 +66,7 @@ struct solutions euler(vector<double> t_i, VectorXf r_0, VectorXf v_0){
     return s_euler;
 }
 
-struct solutions runge_kutta_2(vector<double> t_i, VectorXf r_0, VectorXf v_0){
+struct solutions runge_kutta_4(vector<double> t_i, VectorXf r_0, VectorXf v_0){
     MatrixXf r_i = r_0;
     MatrixXf v_i = v_0;
 
@@ -75,14 +74,28 @@ struct solutions runge_kutta_2(vector<double> t_i, VectorXf r_0, VectorXf v_0){
     VectorXf r_n(r);
     VectorXf v_n(r);
 
+    VectorXf k_1(r);
+    VectorXf k_2(r);
+    VectorXf k_3(r);
+    VectorXf k_4(r);
+
     for(int i=1; i<t_i.size(); i++){
         // init help var
         MatrixXf joined_r_i(r, i+1);
         MatrixXf joined_v_i(r, i+1);
 
         // physics
-        r_n << r_i.col(i-1) - stepsize(t_i,i) * func(t_i[i], v_i.col(i-1)); 
-        v_n << v_i.col(i-1) + stepsize(t_i,i) * func(t_i[i], r_i.col(i-1)); 
+        k_1 << func(t_i[i], v_i.col(i-1));
+        k_2 << func(t_i[i] + 1./2* stepsize(t_i,i), v_i.col(i-1) + stepsize(t_i,i)*1./2*k_1);
+        k_3 << func(t_i[i] + 1./2* stepsize(t_i,i), v_i.col(i-1) + stepsize(t_i,i)*1./2*k_2);
+        k_4 << func(t_i[i] + 2./2* stepsize(t_i,i), v_i.col(i-1) + stepsize(t_i,i)*2./2*k_3);
+        r_n << r_i.col(i-1) - stepsize(t_i,i) * (1./6 * k_1 + 1./3 * k_2 + 1./3 * k_3 + 1./6 * k_4); 
+
+        k_1 << func(t_i[i], r_i.col(i-1));
+        k_2 << func(t_i[i] + 1./2* stepsize(t_i,i), r_i.col(i-1) +stepsize(t_i,i)*1./2*k_1);
+        k_3 << func(t_i[i] + 1./2* stepsize(t_i,i), r_i.col(i-1) +stepsize(t_i,i)*1./2*k_2);
+        k_4 << func(t_i[i] + 2./2* stepsize(t_i,i), r_i.col(i-1) +stepsize(t_i,i)*2./2*k_3);
+        v_n << v_i.col(i-1) + stepsize(t_i,i) * (1./6 * k_1 + 1./3 * k_2 + 1./3 * k_3 + 1./6 * k_4); 
        
         // fill old var with new values
         joined_r_i << r_i, r_n;
@@ -120,8 +133,8 @@ int main(int argc, char *argv[])
 
     // setze Start/Rand-bedingugen
     double t_0 = 0;
-    double T = 100.;
-    int h = 20000;
+    double T = 80*M_PI;
+    int h = 10000;
     int dim = 3;
 
     // initaliziere Startvektoren
@@ -135,6 +148,8 @@ int main(int argc, char *argv[])
     struct solutions s_euler = euler(t_i, r_0, v_0);
     save(s_euler, T, "euler");
 
+    struct solutions s_runge= runge_kutta_4(t_i, r_0, v_0);
+    save(s_runge, T, "runge");
     
     return 0;
 }
