@@ -30,11 +30,18 @@ struct solutions {
     MatrixXf v_i;
 };
 
+VectorXf func(double t, VectorXf x_i){
+    // die funktion haengt explizit nicht von t ab
+    double omega = 1.;
+
+    return pow(omega,2) * x_i;
+}
+
+// VectorXf stepk
+
 struct solutions euler(vector<double> t_i, VectorXf r_0, VectorXf v_0){
     MatrixXf r_i = r_0;
     MatrixXf v_i = v_0;
-
-    double omega = 1.;
 
     int r = r_i.rows();
     VectorXf r_n(r);
@@ -46,8 +53,36 @@ struct solutions euler(vector<double> t_i, VectorXf r_0, VectorXf v_0){
         MatrixXf joined_v_i(r, i+1);
 
         // physics
-        r_n << r_i.col(i-1) - stepsize(t_i,i) * pow(omega,2) * v_i.col(i-1);
-        v_n << v_i.col(i-1) + stepsize(t_i,i) * pow(omega,2) * r_i.col(i-1);
+        r_n << r_i.col(i-1) - stepsize(t_i,i) * func(t_i[i], v_i.col(i-1)); 
+        v_n << v_i.col(i-1) + stepsize(t_i,i) * func(t_i[i], r_i.col(i-1)); 
+       
+        // fill old var with new values
+        joined_r_i << r_i, r_n;
+        r_i = joined_r_i;
+        joined_v_i << v_i, v_n;
+        v_i = joined_v_i;
+    }
+    solutions s_euler ;
+    s_euler.r_i = r_i; s_euler.v_i = v_i;
+    return s_euler;
+}
+
+struct solutions runge_kutta_2(vector<double> t_i, VectorXf r_0, VectorXf v_0){
+    MatrixXf r_i = r_0;
+    MatrixXf v_i = v_0;
+
+    int r = r_i.rows();
+    VectorXf r_n(r);
+    VectorXf v_n(r);
+
+    for(int i=1; i<t_i.size(); i++){
+        // init help var
+        MatrixXf joined_r_i(r, i+1);
+        MatrixXf joined_v_i(r, i+1);
+
+        // physics
+        r_n << r_i.col(i-1) - stepsize(t_i,i) * func(t_i[i], v_i.col(i-1)); 
+        v_n << v_i.col(i-1) + stepsize(t_i,i) * func(t_i[i], r_i.col(i-1)); 
        
         // fill old var with new values
         joined_r_i << r_i, r_n;
@@ -85,8 +120,8 @@ int main(int argc, char *argv[])
 
     // setze Start/Rand-bedingugen
     double t_0 = 0;
-    double T = 10.;
-    int h = 20;
+    double T = 100.;
+    int h = 20000;
     int dim = 3;
 
     // initaliziere Startvektoren

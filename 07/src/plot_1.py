@@ -24,7 +24,7 @@ class plotter:
 
 def main():
     p_euler = plotter('build/euler/')
-    p_euler.make_plot('build/euler.pdf', 'Euler Algo', 0)
+    p_euler.make_plot('build/euler.pdf', 'Euler Verfahren', 0)
 
 if __name__ == '__main__':
     main()
