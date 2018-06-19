@@ -1,15 +1,28 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-s_euler= np.genfromtxt('./build/euler.txt', delimiter=';')
+class plotter:
+    def __init__(self, path):
+        data = np.genfromtxt(path, delimiter=';')
+        self.T = data[0,0]
+        self.r_i = data[1:,0]
+        self.v_i = data[:,1]
 
-T = s_euler[0,0]
-r_i = s_euler[1:,0]
-v_i = s_euler[:,1]
+    def make_plot(self, path, title):
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.plot(np.linspace(0,self.T,len(self.r_i)), self.r_i, label='r(t)')
+        ax.plot(np.linspace(0,self.T,len(self.v_i)), self.v_i, label='v(t)')
+        ax.set_xlabel('time')
+        ax.set_ylabel('Amplitude')
+        ax.legend(loc='best')
+        ax.set_title(title)
+        fig.tight_layout(pad=0)
+        fig.savefig(path)
 
-fig = plt.figure()
-ax = fig.add_subplot(111)
-ax.plot(np.linspace(0,T,len(r_i)), r_i, label='r(t)')
-ax.plot(np.linspace(0,T,len(v_i)), v_i, label='v(t)')
-ax.legend(loc='best')
-fig.savefig('build/euler.pdf')
+def main():
+    p_euler = plotter('build/euler.txt')
+    p_euler.make_plot('build/euler.pdf', 'Euler Algo')
+
+if __name__ == '__main__':
+    main()
