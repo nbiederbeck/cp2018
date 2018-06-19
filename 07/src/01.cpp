@@ -53,7 +53,44 @@ struct solutions euler(vector<double> t_i, VectorXf r_0, VectorXf v_0){
 
         // physics
         r_n << r_i.col(i-1) - stepsize(t_i,i) * func(t_i[i], v_i.col(i-1)); 
-        v_n << v_i.col(i-1) + stepsize(t_i,i) * func(t_i[i], r_i.col(i-1)); 
+        // v_n << v_i.col(i-1) + stepsize(t_i,i) * func(t_i[i], r_i.col(i-1)); 
+        v_n << v_i.col(i-1) + stepsize(t_i,i) * func(t_i[i], r_n); 
+       
+        // fill old var with new values
+        joined_r_i << r_i, r_n;
+        r_i = joined_r_i;
+        joined_v_i << v_i, v_n;
+        v_i = joined_v_i;
+    }
+    solutions s_euler ;
+    s_euler.r_i = r_i; s_euler.v_i = v_i;
+    return s_euler;
+}
+
+struct solutions runge_kutta_2(vector<double> t_i, VectorXf r_0, VectorXf v_0){
+    MatrixXf r_i = r_0;
+    MatrixXf v_i = v_0;
+
+    int r = r_i.rows();
+    VectorXf r_n(r);
+    VectorXf v_n(r);
+
+    VectorXf k_1(r);
+    VectorXf k_2(r);
+
+    for(int i=1; i<t_i.size(); i++){
+        // init help var
+        MatrixXf joined_r_i(r, i+1);
+        MatrixXf joined_v_i(r, i+1);
+
+        // physics
+        k_1 << func(t_i[i], v_i.col(i-1));
+        k_2 << func(t_i[i] + 1./2* stepsize(t_i,i), v_i.col(i-1) + stepsize(t_i,i)*1./2*k_1);
+        r_n << r_i.col(i-1) - stepsize(t_i,i) * (k_2); 
+
+        k_1 << func(t_i[i], r_n);
+        k_2 << func(t_i[i] + 1./2* stepsize(t_i,i), r_n + stepsize(t_i,i)*1./2*k_1);
+        v_n << v_i.col(i-1) + stepsize(t_i,i) * (k_2); 
        
         // fill old var with new values
         joined_r_i << r_i, r_n;
@@ -91,10 +128,10 @@ struct solutions runge_kutta_4(vector<double> t_i, VectorXf r_0, VectorXf v_0){
         k_4 << func(t_i[i] + 2./2* stepsize(t_i,i), v_i.col(i-1) + stepsize(t_i,i)*2./2*k_3);
         r_n << r_i.col(i-1) - stepsize(t_i,i) * (1./6 * k_1 + 1./3 * k_2 + 1./3 * k_3 + 1./6 * k_4); 
 
-        k_1 << func(t_i[i], r_i.col(i-1));
-        k_2 << func(t_i[i] + 1./2* stepsize(t_i,i), r_i.col(i-1) +stepsize(t_i,i)*1./2*k_1);
-        k_3 << func(t_i[i] + 1./2* stepsize(t_i,i), r_i.col(i-1) +stepsize(t_i,i)*1./2*k_2);
-        k_4 << func(t_i[i] + 2./2* stepsize(t_i,i), r_i.col(i-1) +stepsize(t_i,i)*2./2*k_3);
+        k_1 << func(t_i[i], r_n);
+        k_2 << func(t_i[i] + 1./2* stepsize(t_i,i), r_n + stepsize(t_i,i)*1./2*k_1);
+        k_3 << func(t_i[i] + 1./2* stepsize(t_i,i), r_n +stepsize(t_i,i)*1./2*k_2);
+        k_4 << func(t_i[i] + 2./2* stepsize(t_i,i), r_n +stepsize(t_i,i)*2./2*k_3);
         v_n << v_i.col(i-1) + stepsize(t_i,i) * (1./6 * k_1 + 1./3 * k_2 + 1./3 * k_3 + 1./6 * k_4); 
        
         // fill old var with new values
@@ -133,23 +170,26 @@ int main(int argc, char *argv[])
 
     // setze Start/Rand-bedingugen
     double t_0 = 0;
-    double T = 80*M_PI;
-    int h = 10000;
+    double T = 2*M_PI;
+    int h = 2 * T;
     int dim = 3;
 
     // initaliziere Startvektoren
     VectorXf r_0(dim);
     VectorXf v_0(dim);
-    r_0 << 1, 0, 0;
-    v_0 << 0, 0, 0;
+    r_0 << 0, 0, 0;
+    v_0 << 1, 0, 0;
 
     // euler solution
     vector<double> t_i = diskretisierung(t_0, T, h);
     struct solutions s_euler = euler(t_i, r_0, v_0);
     save(s_euler, T, "euler");
 
-    struct solutions s_runge= runge_kutta_4(t_i, r_0, v_0);
-    save(s_runge, T, "runge");
+    struct solutions s_runge2 = runge_kutta_2(t_i, r_0, v_0);
+    save(s_runge2, T, "runge2");
+
+    struct solutions s_runge4 = runge_kutta_4(t_i, r_0, v_0);
+    save(s_runge4, T, "runge4");
     
     return 0;
 }

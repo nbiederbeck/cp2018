@@ -13,8 +13,10 @@ class plotter:
     def make_plot(self, path, title, dim):
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        ax.plot(np.linspace(0,self.T,len(self.r_i[dim,:])), self.r_i[dim,:], label='r(t)')
-        ax.plot(np.linspace(0,self.T,len(self.v_i[dim,:])), self.v_i[dim,:], label='v(t)')
+        ax.plot(np.linspace(0,self.T,len(self.r_i[dim,:])), self.r_i[dim,:],
+                'x-', label='r(t)')
+        ax.plot(np.linspace(0,self.T,len(self.v_i[dim,:])), self.v_i[dim,:],
+        'x-', label='v(t)')
         ax.set_xlabel('time')
         ax.set_ylabel('Amplitude')
         ax.legend(loc='best')
@@ -26,8 +28,9 @@ class plotter:
 def main():
     p_euler = plotter('build/euler/')
     p_euler.make_plot('build/euler.pdf', 'Euler Verfahren', 0)
-    p_runge= plotter('build/runge/')
-    p_runge.make_plot('build/runge.pdf', 'Runge Verfahren', 0)
-
+    p_runge= plotter('build/runge2/')
+    p_runge.make_plot('build/runge2.pdf', 'Runge Verfahren 2 Ordn.', 0)
+    p_runge= plotter('build/runge4/')
+    p_runge.make_plot('build/runge4.pdf', 'Runge Verfahren 4 Ordn.', 0)
 if __name__ == '__main__':
     main()
