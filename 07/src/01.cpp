@@ -145,6 +145,8 @@ struct solutions runge_kutta_4(vector<double> t_i, VectorXf r_0, VectorXf v_0){
     return s_euler;
 }
 
+
+
 void save(struct solutions sol, double T, const std::string &filename){
     std::string path = "build/"+ filename + "/";
     std::system(("mkdir -p "+path).c_str());
@@ -164,6 +166,14 @@ void save(struct solutions sol, double T, const std::string &filename){
     file.close();
 }
 
+VectorXf energy(struct solutions sol){
+    int dim = sol.r_i.cols();
+    VectorXf energy(dim);
+    for(int i=0; i<dim; i++){
+        energy(i) = pow(sol.r_i.col(i).sum(),2) + pow(sol.v_i.col(i).sum(),2);
+    }
+    return energy;
+}
 
 int main(int argc, char *argv[])
 {
@@ -183,6 +193,10 @@ int main(int argc, char *argv[])
     // euler solution
     vector<double> t_i = diskretisierung(t_0, T, h);
     struct solutions s_euler = euler(t_i, r_0, v_0);
+
+    VectorXf eng = energy(s_euler);
+    cout << eng << endl;
+
     save(s_euler, T, "euler");
 
     struct solutions s_runge2 = runge_kutta_2(t_i, r_0, v_0);
