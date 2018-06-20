@@ -6,6 +6,7 @@
 
 EIGENPATH=../Eigen
 
+temporary: build/kepler.png
 all: archive.tar.gz
 
 bin:
@@ -22,6 +23,12 @@ build:
 
 build/euler.txt: bin/01.out
 	./bin/01.out
+
+build/kepler/r_i.txt: bin/02.out
+	./bin/02.out
+
+build/kepler.png: build/kepler/r_i.txt src/plot_2.py
+	python src/plot_2.py
 
 build/euler.png: src/plot_1.py build/euler.txt
 	python src/plot_1.py
