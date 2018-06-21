@@ -6,7 +6,7 @@
 
 EIGENPATH=../Eigen
 
-temporary: build/kepler.png
+temporary: build/kepler_moon.png
 all: archive.tar.gz
 
 bin:
@@ -15,8 +15,8 @@ bin:
 bin/01.out: src/01.cpp | bin build
 	g++ -O2 -std=c++11 -I $(EIGENPATH) -o $@ $^
 
-bin/02.out: src/02.cpp | bin build
-	g++ -O2 -std=c++11 -I $(EIGENPATH) -o $@ $^
+bin/02.out: src/02.cpp src/euler.h src/rungekutta.h src/rungekutta_moon.h | bin build
+	g++ -O2 -std=c++11 -I $(EIGENPATH) -o $@ $<
 
 build:
 	mkdir -p build
@@ -29,6 +29,12 @@ build/kepler/r_i.txt: bin/02.out
 
 build/kepler.png: build/kepler/r_i.txt src/plot_2.py
 	python src/plot_2.py
+
+build/kepler_moon/r_i.txt: bin/02.out
+	./bin/02.out
+
+build/kepler_moon.png: build/kepler_moon/r_i.txt src/plot_2d.py
+	python src/plot_2d.py
 
 build/euler.png: src/plot_1.py build/euler.txt
 	python src/plot_1.py

@@ -3,13 +3,6 @@
 /* #include <solutions.h> */
 
 
-struct solutions {
-    Eigen::MatrixXd r_i;
-    Eigen::MatrixXd v_i;
-    Eigen::VectorXd energy;
-};
-
-
 struct solutions euler(
         double h,  // schrittlaenge
         int T,  // obere integrationsgrenze
