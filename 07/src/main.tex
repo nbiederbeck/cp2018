@@ -69,15 +69,15 @@ In Abbildungen~\ref{fig:b1} bis~\ref{fig:b3} sind verschiedene Anfangsbedingunge
 \end{figure}
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=0.8\linewidth]{build/b1.png}
+  \includegraphics[width=0.8\linewidth]{build/b2.png}
   \caption{$r(0)$ beliebig, $v(0)$ beliebig}%
-  \label{fig:b1}
+  \label{fig:b2}
 \end{figure}
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=0.8\linewidth]{build/b1.png}
+  \includegraphics[width=0.8\linewidth]{build/b3.png}
   \caption{$r(0)$ senkrecht $v(0)$}%
-  \label{fig:b1}
+  \label{fig:b3}
 \end{figure}
 
 \section*{Aufgabe 2: Kepler-Ellipsen}
@@ -89,7 +89,7 @@ Es werden $T= 24$h simuliert mit einer Schrittweite von $h = \frac{1}{5000}$.
 Es ist $r(0) = (1, 0, 0)$ und $v(0) = (0.27, 1, 0)$
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=0.8\linewidth]{build/kepler.png}
+  \includegraphics[width=0.8\linewidth]{build/kepler_rk.png}
   \caption{Planetenbahn und Energie-/Impulserhaltung.}%
   \label{fig:kepler}
 \end{figure}
@@ -121,11 +121,11 @@ Deswegen wird die wirkende Kraft
 \begin{align}
   r &= r_2 - r_1 \\
   F &= - G \cdot \left(\frac{- m_1 \cdot m_2 \cdot r}{r^3} + \frac{m_1 \cdot m_{\text{sun}} \cdot
-    r_1}{r_1^3}\right)
+    r_1}{r_1^3}\right)\text{,}
 \end{align}
-, siehe \texttt{src/rungekutta_moon.h}.
-Hierbei ist der Index ${}_1$ der \enquote{eigene} Körper,
-der Index ${}_2$ der \enquote{andere}.
+siehe \texttt{src/rungekutta\_moon.h}.
+Hierbei ist der Index ${}_1$ der "eigene" Körper,
+der Index ${}_2$ der "andere".
 \subsection*{(e)}
 Die Bahnkurven des Planeten und des Mondes sind mit laut Aufgabenzettel gegebenen Startparametern
 in Abbildung~\ref{fig:kepler_moon} dargestellt.

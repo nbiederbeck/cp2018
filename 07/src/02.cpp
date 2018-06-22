@@ -79,10 +79,9 @@ void save(struct solutions sol, double T, const std::string &filename)
     file.close();
 }
 
-void c() {
+void c(double h) {
     // setze Start/Rand-bedingugen
     double T = 1. * 24.;  // day = 24 hours
-    double h = 1. / 5000.; //* if slow: */ h*=10.;
     const int dim = 3;
     double mass = 1.;
     double g = 1.;  // gravitational constant
@@ -94,20 +93,22 @@ void c() {
     r_0 << 1.0, 0.0, 0.0;
     v_0 << 0.37, 1.0, 0.0;
 
+    cout << "./bin/02.cpp: (c) 0/2" << endl;
     struct solutions _2c09 = rungekutta(h, T, r_0, v_0, mass, g);
     _2c09 = energy(_2c09, mass, g, alpha);
     save(_2c09, T, "_2c09");
+    cout << "./bin/02.cpp: (c) 1/2" << endl;
 
     alpha = 1.1;
     struct solutions _2c11 = rungekutta(h, T, r_0, v_0, mass, g);
     _2c11 = energy(_2c11, mass, g, alpha);
     save(_2c11, T, "_2c11");
+    cout << "./bin/02.cpp: (c) 2/2" << endl;
 }
 
-void d() {
+void d(double h) {
     // setze Start/Rand-bedingugen
     double T = 1. * 24.;  // day = 24 hours
-    double h = 1. / 5000.; //* if slow: */ h*=10.;
     const int dim = 3;
     double mass_planet = 1.;
     double mass_moon = 0.01 * mass_planet;
@@ -126,19 +127,21 @@ void d() {
     r_0_moon << 1.1, 0.0, 0.0;
     v_0_moon << 0.0, 4.7, 0.0;
 
+    cout << "./bin/02.cpp: (d) 0/1" << endl;
     struct solutions kepler_rungekutta_moon = rungekutta_moon(
         h, T, r_0_planet, v_0_planet, r_0_moon, v_0_moon, mass_planet, mass_moon, g
     );
     // kepler_rungekutta_moon = energy(kepler_rungekutta_moon, mass_planet, g, alpha);
 
     save(kepler_rungekutta_moon, T, "kepler_moon");
+    cout << "./bin/02.cpp: (d) 1/1" << endl;
 }
 
 int main()
 {
     // setze Start/Rand-bedingugen
     double T = 1. * 24.;  // day = 24 hours
-    double h = 1. / 5000.; //* if slow: */ h*=1000.;
+    double h = 1. / 5000.; /* if slow: */ h*=10.;
     const int dim = 3;
     double mass = 1.;
     double g = 1.;  // gravitational constant
@@ -152,20 +155,21 @@ int main()
 
     // calculate and save kepler motion
 
-    cout << "(a,b)" << endl;
+    cout << "./bin/02.cpp: (a,b) 0/2" << endl;
     struct solutions kepler_euler = euler(h, T, r_0, v_0, mass, g);
     kepler_euler = energy(kepler_euler, mass, g, alpha);
+    save(kepler_euler, T, "kepler_euler");
+    cout << "./bin/02.cpp: (a,b) 1/2" << endl;
 
     struct solutions kepler_rungekutta = rungekutta(h, T, r_0, v_0, mass, g);
     kepler_rungekutta = energy(kepler_rungekutta, mass, g, alpha);
-
     save(kepler_rungekutta, T, "kepler_rungekutta");
-    save(kepler_euler, T, "kepler_euler");
+    cout << "./bin/02.cpp: (a,b) 2/2" << endl;
 
     cout << "(c)" << endl;
-    c();
+    c(h);
     cout << "(d)" << endl;
-    d();
+    d(h);
 
 
     return 0;

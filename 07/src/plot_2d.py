@@ -100,23 +100,32 @@ class plotter:
         fig = plt.figure(figsize=(5.78, 3.57))
         ax = fig.add_subplot(111)
 
-        ax.scatter(
-            0, 0, label="Sonne", c="C1", marker="o", s=100,
-        )
-
         ax.plot(
-            self.r_i[dim, :] - self.r_i_moon[dim, :],
-            self.r_i[dim + 1, :] - self.r_i_moon[dim + 1, :],
-            label="Relativbahn",
+            # self.r_i[dim, :] - self.r_i_moon[dim, :],
+            # self.r_i[dim + 1, :] - self.r_i_moon[dim + 1, :],
+            np.linspace(0, self.T, self.r_i_moon.shape[1]),
+            np.sum(self.r_i - self.r_i_moon, axis=0) / np.mean(self.r_i - self.r_i_moon),
+            label="Mond",
+            c="C2",
+        )
+        ax.plot(
+            np.linspace(0, self.T, self.r_i_moon.shape[1]),
+            np.zeros(self.r_i_moon.shape[1]),
+            label="Planet",
             c="C0",
         )
 
-        ax.set_xlabel(r"$x$")
-        ax.set_ylabel(r"$y$")
+        ax.set_xlabel(r"Zeit / $h$")
+        ax.set_ylabel(r"Relativer Abstand zum Planeten")
+        ax.legend(loc="best")
+        ax.set_xticks([6 * i for i in range(int(self.T / 4) - 1)])
+        ax.grid()
+        fig.tight_layout(pad=0.1)
+        fig.savefig(path, dpi=200)
 
 
 def main():
-    print("Plotting (e)")
+    print("src/plot_2d.py: Plotting (e)")
     p_kepler = plotter("build/kepler_moon/")
     lim = p_kepler.make_plot("build/kepler_moon.png", "Keplerbahnen", 0)
     lim = p_kepler.make_diff("build/moon_planet.png", "Relativbahn", 0)
@@ -124,3 +133,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    print("src/plot_2d.py: DONE")

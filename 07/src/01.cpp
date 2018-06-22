@@ -212,12 +212,12 @@ int main()
 
     // setze Start/Randbedingugen
     double T = 20. * M_PI;
-    double h = M_PI / 10000.;
+    double h = M_PI / 1000.;
     const int dim = 3;
     double mass = 1.;
     double k = 1.;
 
-    cout << "(a)" << endl;
+    cout << "./bin/01.cpp: (a) 0/3" << endl;
     // initaliziere Startvektoren
     Eigen::VectorXd r_0(dim);
     Eigen::VectorXd v_0(dim);
@@ -227,22 +227,26 @@ int main()
     struct solutions s_euler = euler(h, T, r_0, v_0, mass, k);
     s_euler = energy(s_euler, mass, k);
     save(s_euler, T, "euler");
+    cout << "./bin/01.cpp: (a) 1/3" << endl;
 
     struct solutions s_runge2 = rungekutta_2(h, T, r_0, v_0, mass, k);
     s_runge2 = energy(s_runge2, mass, k);
     save(s_runge2, T, "runge2");
+    cout << "./bin/01.cpp: (a) 2/3" << endl;
 
     struct solutions s_runge4 = rungekutta_4(h, T, r_0, v_0, mass, k);
     s_runge4 = energy(s_runge4, mass, k);
     save(s_runge4, T, "runge4");
+    cout << "./bin/01.cpp: (a) 3/3" << endl;
 
-    cout << "(b)" << endl;
+    cout << "./bin/01.cpp: (b) 0/3" << endl;
     // r(0) beliebig, v(0) = 0
     r_0 << 1.4, 0, 0;
     v_0 << 0, 0, 0;
     s_runge4 = rungekutta_4(h, T, r_0, v_0, mass, k);
     s_runge4 = energy(s_runge4, mass, k);
     save(s_runge4, T, "b1");
+    cout << "./bin/01.cpp: (b) 1/3" << endl;
 
     // r(0) beliebig, v(0) beliebig
     r_0 << 1.4, 0, 0;
@@ -250,6 +254,7 @@ int main()
     s_runge4 = rungekutta_4(h, T, r_0, v_0, mass, k);
     s_runge4 = energy(s_runge4, mass, k);
     save(s_runge4, T, "b2");
+    cout << "./bin/01.cpp: (b) 2/3" << endl;
 
     // r(0) senkrecht v(0)
     r_0 << 1, 0, 0;
@@ -257,6 +262,7 @@ int main()
     s_runge4 = rungekutta_4(h, T, r_0, v_0, mass, k);
     s_runge4 = energy(s_runge4, mass, k);
     save(s_runge4, T, "b3");
+    cout << "./bin/01.cpp: (b) 3/3" << endl;
 
 
     return 0;

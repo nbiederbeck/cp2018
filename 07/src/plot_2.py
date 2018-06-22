@@ -60,18 +60,19 @@ class plotter:
 
 
 def main():
-    print("Plotting (a,b)")
+    print("src/plot_2.py: Plotting (a,b)")
     p_kepler = plotter("build/kepler_euler/")
     lim = p_kepler.make_plot("build/kepler_e.png", "Planetenbahn", 0)
     p_kepler = plotter("build/kepler_rungekutta/")
     lim = p_kepler.make_plot("build/kepler_rk.png", "Planetenbahn", 0)
 
-    print("Plotting (c)")
-    p_kepler = plotter("build/2c09/")
+    print("src/plot_2.py: Plotting (c)")
+    p_kepler = plotter("build/_2c09/")
     lim = p_kepler.make_plot("build/2c09.png", "Planetenbahn", 0)
-    p_kepler = plotter("build/2c11/")
+    p_kepler = plotter("build/_2c11/")
     lim = p_kepler.make_plot("build/2c11.png", "Planetenbahn", 0)
 
 
 if __name__ == "__main__":
     main()
+    print("src/plot_2.py: DONE")
