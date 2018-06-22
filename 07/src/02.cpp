@@ -89,8 +89,8 @@ void c() {
     double alpha = 0.9;  // exponent of potential
 
     // initialize start vectors
-    Eigen::VectorXd r_0_planet(dim);
-    Eigen::VectorXd v_0_planet(dim);
+    Eigen::VectorXd r_0(dim);
+    Eigen::VectorXd v_0(dim);
     r_0 << 1.0, 0.0, 0.0;
     v_0 << 0.37, 1.0, 0.0;
 
