@@ -84,15 +84,14 @@ void c() {
     double T = 1. * 24.;  // day = 24 hours
     double h = 1. / 5000.; //* if slow: */ h*=10.;
     const int dim = 3;
-    double mass_planet = 1.;
-    double mass_moon = 0.01 * mass_planet;
+    double mass = 1.;
     double g = 1.;  // gravitational constant
     double alpha = 0.9;  // exponent of potential
 
     // initialize start vectors
     Eigen::VectorXd r_0_planet(dim);
     Eigen::VectorXd v_0_planet(dim);
-    r_0_planet << 1.0, 0.0, 0.0;
+    r_0 << 1.0, 0.0, 0.0;
     v_0 << 0.37, 1.0, 0.0;
 
     struct solutions _2c09 = rungekutta(h, T, r_0, v_0, mass, g);
