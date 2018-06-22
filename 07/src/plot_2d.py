@@ -96,10 +96,30 @@ class plotter:
 
         return lim
 
+    def make_diff(self, path, title, dim, lim=None):
+        fig = plt.figure(figsize=(5.78, 3.57))
+        ax = fig.add_subplot(111)
+
+        ax.scatter(
+            0, 0, label="Sonne", c="C1", marker="o", s=100,
+        )
+
+        ax.plot(
+            self.r_i[dim, :] - self.r_i_moon[dim, :],
+            self.r_i[dim + 1, :] - self.r_i_moon[dim + 1, :],
+            label="Relativbahn",
+            c="C0",
+        )
+
+        ax.set_xlabel(r"$x$")
+        ax.set_ylabel(r"$y$")
+
 
 def main():
+    print("Plotting (e)")
     p_kepler = plotter("build/kepler_moon/")
     lim = p_kepler.make_plot("build/kepler_moon.png", "Keplerbahnen", 0)
+    lim = p_kepler.make_diff("build/moon_planet.png", "Relativbahn", 0)
 
 
 if __name__ == "__main__":

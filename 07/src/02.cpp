@@ -2,7 +2,6 @@
 #include <iostream>
 #include <fstream>
 #include <Eigen/Dense>
-// #include <Eigen/Geometry>
 #include <cmath>
 #include <ctime>
 #include "solutions.h"
@@ -80,6 +79,32 @@ void save(struct solutions sol, double T, const std::string &filename)
     file.close();
 }
 
+void c() {
+    // setze Start/Rand-bedingugen
+    double T = 1. * 24.;  // day = 24 hours
+    double h = 1. / 5000.; //* if slow: */ h*=10.;
+    const int dim = 3;
+    double mass_planet = 1.;
+    double mass_moon = 0.01 * mass_planet;
+    double g = 1.;  // gravitational constant
+    double alpha = 0.9;  // exponent of potential
+
+    // initialize start vectors
+    Eigen::VectorXd r_0_planet(dim);
+    Eigen::VectorXd v_0_planet(dim);
+    r_0_planet << 1.0, 0.0, 0.0;
+    v_0 << 0.37, 1.0, 0.0;
+
+    struct solutions 2c09 = rungekutta(h, T, r_0, v_0, mass, g);
+    2c09 = energy(2c09, mass, g, alpha);
+    save(2c09, T, "2c09");
+
+    alpha = 1.1;
+    struct solutions 2c11 = rungekutta(h, T, r_0, v_0, mass, g);
+    2c11 = energy(2c11, mass, g, alpha);
+    save(2c11, T, "2c11");
+}
+
 void d() {
     // setze Start/Rand-bedingugen
     double T = 1. * 24.;  // day = 24 hours
@@ -114,7 +139,7 @@ int main()
 {
     // setze Start/Rand-bedingugen
     double T = 1. * 24.;  // day = 24 hours
-    double h = 1. / 5000.; /* if slow: */ h*=10.;
+    double h = 1. / 5000.; //* if slow: */ h*=1000.;
     const int dim = 3;
     double mass = 1.;
     double g = 1.;  // gravitational constant
@@ -128,6 +153,7 @@ int main()
 
     // calculate and save kepler motion
 
+    cout << "(a,b)" << endl;
     struct solutions kepler_euler = euler(h, T, r_0, v_0, mass, g);
     kepler_euler = energy(kepler_euler, mass, g, alpha);
 
@@ -137,6 +163,9 @@ int main()
     save(kepler_rungekutta, T, "kepler_rungekutta");
     save(kepler_euler, T, "kepler_euler");
 
+    cout << "(c)" << endl;
+    c();
+    cout << "(d)" << endl;
     d();
 
 

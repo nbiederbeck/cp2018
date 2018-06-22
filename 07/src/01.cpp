@@ -3,39 +3,40 @@
 #include <fstream>
 #include <Eigen/Dense>
 #include <cmath>
-#include <vector>
+// #include <vector>
 #include <string>
+#include "solutions.h"
 
 using std::cout;
 using std::endl;
-using std::vector;
+// using std::vector;
 
-vector<double> diskretisierung(double t_0, double T, int h)
-{
-    vector<double> t = {t_0};
-    for(int i=1; i<=h; i++){
-        t.push_back(t_0 + T/h * i);
-    }
-    return t;
-}
+// vector<double> diskretisierung(double t_0, double T, int h)
+// {
+//     vector<double> t = {t_0};
+//     for(int i=1; i<=h; i++){
+//         t.push_back(t_0 + T/h * i);
+//     }
+//     return t;
+// }
 
-double stepsize(vector<double> t, int i)
-{
-    return t[i+1] - t[i];
-}
+// double stepsize(vector<double> t, int i)
+// {
+//     return t[i+1] - t[i];
+// }
 
-struct solutions {
-    Eigen::MatrixXd r_i;
-    Eigen::MatrixXd v_i;
-    Eigen::VectorXd energy;
-};
+// struct solutions {
+//     Eigen::MatrixXd r_i;
+//     Eigen::MatrixXd v_i;
+//     Eigen::VectorXd energy;
+// };
 
-Eigen::VectorXd func(double t, Eigen::VectorXd x_i)
-{
-    // die funktion haengt explizit nicht von t ab
-    double omega = 1;
-    return pow(omega,2) * x_i;
-}
+// Eigen::VectorXd func(double t, Eigen::VectorXd x_i)
+// {
+//     // die funktion haengt explizit nicht von t ab
+//     double omega = 1;
+//     return pow(omega,2) * x_i;
+// }
 
 Eigen::VectorXd force(Eigen::VectorXd r, double k)
 {
@@ -209,19 +210,19 @@ void save(struct solutions sol, double T, const std::string &filename)
 int main()
 {
 
-    // setze Start/Rand-bedingugen
-    double t_0 = 0;
+    // setze Start/Randbedingugen
     double T = 20. * M_PI;
-    double h = M_PI / 10.;
+    double h = M_PI / 10000.;
     const int dim = 3;
     double mass = 1.;
     double k = 1.;
 
+    cout << "(a)" << endl;
     // initaliziere Startvektoren
     Eigen::VectorXd r_0(dim);
     Eigen::VectorXd v_0(dim);
-    r_0 << 0, 0, 0;
-    v_0 << 1, 1, 1;
+    r_0 << 1, 0, 0;
+    v_0 << 0, 0, 0;
 
     struct solutions s_euler = euler(h, T, r_0, v_0, mass, k);
     s_euler = energy(s_euler, mass, k);
@@ -234,6 +235,28 @@ int main()
     struct solutions s_runge4 = rungekutta_4(h, T, r_0, v_0, mass, k);
     s_runge4 = energy(s_runge4, mass, k);
     save(s_runge4, T, "runge4");
+
+    cout << "(b)" << endl;
+    // r(0) beliebig, v(0) = 0
+    r_0 << 1.4, 0, 0;
+    v_0 << 0, 0, 0;
+    s_runge4 = rungekutta_4(h, T, r_0, v_0, mass, k);
+    s_runge4 = energy(s_runge4, mass, k);
+    save(s_runge4, T, "b1");
+
+    // r(0) beliebig, v(0) beliebig
+    r_0 << 1.4, 0, 0;
+    v_0 << 0.6, 0, 0;
+    s_runge4 = rungekutta_4(h, T, r_0, v_0, mass, k);
+    s_runge4 = energy(s_runge4, mass, k);
+    save(s_runge4, T, "b2");
+
+    // r(0) senkrecht v(0)
+    r_0 << 1, 0, 0;
+    v_0 << 0, 1, 0;
+    s_runge4 = rungekutta_4(h, T, r_0, v_0, mass, k);
+    s_runge4 = energy(s_runge4, mass, k);
+    save(s_runge4, T, "b3");
 
 
     return 0;

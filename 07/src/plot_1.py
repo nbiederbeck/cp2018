@@ -49,12 +49,21 @@ class plotter:
         return lim
 
 def main():
+    print("Plotting (a)")
     p_euler = plotter("build/euler/")
     lim = p_euler.make_plot("build/euler.png", "Euler Verfahren", 0)
     p_runge = plotter("build/runge2/")
     p_runge.make_plot("build/runge2.png", "Runge Verfahren 2. Ordnung", 0, lim)
     p_runge = plotter("build/runge4/")
     p_runge.make_plot("build/runge4.png", "Runge Verfahren 4. Ordnung", 0, lim)
+
+    print("Plotting (b)")
+    p_runge = plotter("build/b1/")
+    p_runge.make_plot("build/b1.png", "r(0) beliebig, v(0) = 0", 0, lim)
+    p_runge = plotter("build/b2/")
+    p_runge.make_plot("build/b2.png", "r(0) beliebig, v(0) beliebig", 0, lim)
+    p_runge = plotter("build/b3/")
+    p_runge.make_plot("build/b3.png", "r(0) senkrecht v(0)", 0, lim)
 
 
 if __name__ == "__main__":
