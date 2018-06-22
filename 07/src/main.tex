@@ -39,8 +39,8 @@ In Abbildungen~\ref{fig:euler} bis~\ref{fig:rk4}
 sind die Amplituden der Geschwindigkeit und Auslenkung (in $x$-Richtung) im oberen, die Energie im unteren Plot gegen die Zeitschritte aufgetragen.
 Es ist zu erkennen, dass bei allen Verfahren die maximale Auslenkung jedes Mal erreicht wird, und
 die Energie erhalten ist.
-Es wird für eine Zeit von $T = 20\pi$ eine Schrittweite von $h = \frac{\pi}{10000}$ gewählt,
-sodass $N = 200000$ Simulationsschritte durchgeführt werden.
+Es wird für eine Zeit von $T = 4\pi$ eine Schrittweite von $h = \frac{\pi}{10000}$ gewählt,
+sodass $N = 40000$ Simulationsschritte durchgeführt werden.
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.8\linewidth]{build/euler.png}
@@ -143,6 +143,9 @@ Die Bahn des Mondes relativ zum Planeten ist in Abbildung~\ref{fig:moon_planet} 
   \caption{Bahn des Mondes Relativ zum Planeten.}%
   \label{fig:moon_planet}
 \end{figure}
+
+Offensichtlich erreicht unser Programm keine stabile Bahn mit gegebenen Parametern, der Mond
+stürzt nach 24 Stunden in die Sonne.
 
 Die Bahnkurve des Planeten mit Mond ist anders als die ohne Mond, da dieser gravitative Einflüsse auf den
 Planeten ausübt.
