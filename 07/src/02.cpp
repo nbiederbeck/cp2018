@@ -141,7 +141,7 @@ int main()
 {
     // setze Start/Rand-bedingugen
     double T = 1. * 24.;  // day = 24 hours
-    double h = 1. / 5000.; /* if slow: */ h*=10.;
+    double h = 1. / 5000.; //* if slow: */ h*=10.;
     const int dim = 3;
     double mass = 1.;
     double g = 1.;  // gravitational constant
@@ -166,9 +166,7 @@ int main()
     save(kepler_rungekutta, T, "kepler_rungekutta");
     cout << "./bin/02.cpp: (a,b) 2/2" << endl;
 
-    cout << "(c)" << endl;
     c(h);
-    cout << "(d)" << endl;
     d(h);
 
 

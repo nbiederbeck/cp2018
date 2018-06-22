@@ -212,7 +212,7 @@ int main()
 
     // setze Start/Randbedingugen
     double T = 20. * M_PI;
-    double h = M_PI / 1000.;
+    double h = M_PI / 10000.;
     const int dim = 3;
     double mass = 1.;
     double k = 1.;
