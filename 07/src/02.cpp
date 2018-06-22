@@ -95,14 +95,14 @@ void c() {
     r_0_planet << 1.0, 0.0, 0.0;
     v_0 << 0.37, 1.0, 0.0;
 
-    struct solutions 2c09 = rungekutta(h, T, r_0, v_0, mass, g);
-    2c09 = energy(2c09, mass, g, alpha);
-    save(2c09, T, "2c09");
+    struct solutions _2c09 = rungekutta(h, T, r_0, v_0, mass, g);
+    _2c09 = energy(_2c09, mass, g, alpha);
+    save(_2c09, T, "_2c09");
 
     alpha = 1.1;
-    struct solutions 2c11 = rungekutta(h, T, r_0, v_0, mass, g);
-    2c11 = energy(2c11, mass, g, alpha);
-    save(2c11, T, "2c11");
+    struct solutions _2c11 = rungekutta(h, T, r_0, v_0, mass, g);
+    _2c11 = energy(_2c11, mass, g, alpha);
+    save(_2c11, T, "_2c11");
 }
 
 void d() {
