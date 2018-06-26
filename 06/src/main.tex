@@ -1,0 +1,138 @@
+\documentclass{scrartcl}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{subcaption}
+\usepackage{physics}
+\usepackage[
+section, % Floats innerhalb der Section halten
+below,   % unterhalb der Section aber auf der selben Seite ist ok
+]{placeins}
+
+\title{Übungsblatt 06}
+\author{%
+		Noah Biederbeck, Maximilian Sackel, Jan Spinne
+}
+\date{Abgabe: 15. Juni 2018}
+
+
+
+\begin{document}
+\maketitle
+\section*{Aufgabe 1: Matrixdiagonalisierung}
+\subsection*{(a)}
+Für das Lanczos-Verfahren wird iterativ folgendes bestimmt:
+\begin{align}
+		A \vec{q}_{i} &= \beta_{i+1} \vec{q}_{i+1} + \alpha_{i} \vec{q}_{i} + \beta_{i} \vec{q}_{i-1} \\
+		\alpha_{i} &= \vec{q}_{i}^{\dagger} A \vec{q}_{i} \\
+		\beta_{i+1} &= \vec{q}_{i+1} A \vec{q}_{i}
+\end{align}
+Es wird die Matrix
+\begin{align}
+		Q_{N} &= \left\{ \vec{q}_{1} \cdots \vec{q}_{n} \right\}
+\end{align}
+bestimmt, die die Tridiagonalmatrix liefert:
+\begin{align}
+		A Q_{n} &= Q_{n} T_{n} \\
+		T_{n} &= 
+		\left(\begin{matrix}
+						\alpha_{1} & \beta_{2}  & 0          & 0         & 0           & \vdots     \\
+						\beta_{2}  & \alpha_{2} & \beta_{3}  & 0         & 0           & \vdots     \\
+						0          & \beta_{3}  & \alpha_{3} & \beta_{4} & 0           & \vdots     \\
+						\cdots     & \cdots     & \cdots     & \cdots    & \beta_{n-1} & \alpha_{_{}n} \\
+		\end{matrix}\right) \\
+		Q_{n}^{\dagger} A Q_{n} &= T_{n}
+\end{align}
+Da dies eine Ähnlichkeitstransformation ist, haben $A$ und $T_{n}$ dieselben Eigenwerte.
+
+So ist mit
+\begin{align}
+		\vec{q}_{0} &= \left(\begin{matrix}\input{build/q0.tex}\end{matrix}\right) \\
+		T_{0} &= \left(\begin{matrix}\input{build/T0.tex}\end{matrix}\right) \\
+		\intertext{und}
+		\vec{q}_{1} &= \left(\begin{matrix}\input{build/q1.tex}\end{matrix}\right) \\
+		T_{1} &= \left(\begin{matrix}\input{build/T1.tex}\end{matrix}\right)
+\end{align}
+
+Für mehr siehe \texttt{Mitschrift.pdf} Seite 98.
+
+
+\subsection*{(b)}
+Die QR-Iteration wird verwendet, um Eigenwerte zu berechnen.
+Die Genauigkeit wird auf $\varepsilon = 100$ gestellt, um Zeit zu sparen fuer die Abgabe (sorry).
+Diese werden in Abbildung~\ref{fig:1b} mit denen von \texttt{Eigen::Eigensolver()} berechneten verglichen.
+\begin{figure}[ht]
+		\centering
+		\includegraphics[width=0.8\linewidth]{build/plot1b.png}
+		\caption{Vergleich der Eigenwerte von QR-Iteration und \texttt{Eigen::Eigensolver()}.}%
+		\label{fig:1b}
+\end{figure}
+
+\subsection*{(c)}
+Die Laufzeiten der Verfahren wird über 50 zufällige Matrizen gemittelt und in Abbildung~\ref{fig:1c} aufgetragen.
+\begin{figure}[ht]
+		\centering
+		\includegraphics[width=0.8\linewidth]{build/plot1c.png}
+		\caption{Laufzeitunterschiede der verschiedenen Verfahren.}%
+		\label{fig:1c}
+\end{figure}
+
+\section*{Aufgabe 2: Anharmonischer Oszillator}
+\subsection*{(a)}
+
+\begin{equation}
+		\bar{H} = - \frac{\hbar^2}{2m} \partial^2_x + \frac{1}{2} m \omega^2 x^2
+		+ \lambda x^4
+\end{equation}
+
+\begin{equation}
+		\left( - \partial_x^2 + \frac{m^2 \omega^2}{\hbar^2} x^2 + \frac{2m}{h^2}
+		\lambda x^4 \right) \Psi = \frac{2 m  E}{\hbar^2} \Psi
+\end{equation}
+
+\begin{equation}
+		- \frac{1}{\alpha^2} \frac{\partial^2}{\partial \xi^2} + \frac{m^2
+		\omega^2}{\hbar^2} \alpha^2 \xi^2 + \frac{2m}{\hbar^2} \lambda \alpha^4
+		\xi^4 = \frac{2m}{\hbar^2} \beta \epsilon
+\end{equation}
+
+\begin{equation}
+		- \frac{\partial^2}{\partial \xi^2} + \frac{m^2
+		\omega^2}{\hbar^2} \alpha^4 \xi^2 + \frac{2m}{\hbar^2} \lambda \alpha^6
+		\xi^4 = \frac{2m}{\hbar^2} \alpha^2 \beta \epsilon
+\end{equation}
+
+\begin{equation}
+		\alpha = \sqrt{\frac{\hbar}{m \omega}}, \hspace{1cm} \bar{\lambda} =
+		\frac{2 \hbar}{m^2 \omega^3} \lambda, \hspace{1cm} \beta = \frac{\hbar
+		\omega}{2}
+\end{equation}
+\subsection*{(b)}
+\begin{figure}[ht]
+		\centering
+		\includegraphics[width=0.8\linewidth]{build/plot2b.png}
+		\caption{Vergleich der Eigenwerte fuer verschiedene $\lambda$.}%
+		\label{fig:2b}
+\end{figure}
+
+\subsection*{(c)}
+
+\begin{align}
+		\xi^2 &= \frac{(a + a^\dagger)(a + a^\dagger)}{2} \\
+			  &= \frac{1}{2} (
+		\sqrt{n(n-1)} \delta_\text{m,n-2} + \sqrt{(n+1)(n+1)} \delta_\text{m,n} \\
+		&+ \sqrt{n \cdot n} \delta_\text{m,n} +  \sqrt{(n+1)(n+2)}
+		\delta_\text{m,n+2} )
+\end{align}
+
+\subsection*{(d)}
+Fuer hohe $N$ konvergieren die Eigenwerte.
+Dies bedeutet, dass die Berechnungen genauer werden.
+In Abbildung~\ref{fig:2d} sind die drei kleinsten Eigenwerte beispielhaft dargestellt.
+\begin{figure}[ht]
+		\centering
+		\includegraphics[width=0.8\linewidth]{build/plot2d.png}
+		\caption{Eigenwerte fuer verschiedene $N$ bzw. $\Delta \xi$.}%
+		\label{fig:2d}
+\end{figure}
+
+\end{document}
