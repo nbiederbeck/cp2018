@@ -20,6 +20,12 @@ bin/02.out: src/02.cpp | bin build
 build:
 	mkdir -p build
 
+build/pendulum_data_b.txt: bin/01.out
+	./bin/01.out
+
+build/pendulum_b.png build/pendulum_xy_b.png: src/plot_pendulum_b.py build/pendulum_data_b.txt
+	python $<
+
 
 build/main.pdf: src/main.tex FORCE | build
 	latexmk --lualatex \
