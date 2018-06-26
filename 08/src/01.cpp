@@ -6,68 +6,81 @@
 using std::cout;
 using std::endl;
 
-struct pendulum {
-    Eigen::MatrixXd theta;
-    Eigen::MatrixXd theta_;
-};
-
-Eigen::VectorXd force(Eigen::VectorXd vec, double k)
+Eigen::Vector4d initialize(bool sign)
 {
-    return vec;
-}
-#include "rungekutta.h"
+    Eigen::Vector4d init;
 
-pendulum initialize(bool sign)
-{
-    // Startbedingungen
-    struct pendulum init;
-    Eigen::VectorXd theta0(2);
-    Eigen::VectorXd theta_0(2);
-
-    theta_0 << 0, 0;
-    init.theta_ = theta_0;
-
-    if (!sign) {
-        theta0 << 0.1, std::sqrt(2.0) * 0.1;
-    } else {
-        theta0 << 0.1, - std::sqrt(2.0) * 0.1;
-    }
-    init.theta = theta0;
+    init(0) = 0.1;
+    init(1) = std::sqrt(2.0) * init(0);
+    if (sign)
+        init(1) *= -1.0;
+    init(2) = 0.0;
+    init(3) = 0.0;
 
     return init;
 }
 
-pendulum euler(pendulum state, double h)
+Eigen::Vector4d euler(Eigen::Vector4d state, double h)
 {
     double g = 1.0;
-    pendulum next;
-    // Temporary stuff
-    Eigen::VectorXd temp(2);
-    temp << 0, 0;
-    next.theta = temp;
-    next.theta_ = temp;
-    // Physics
-    next.theta(0) = state.theta(0) + h * state.theta_(0);
-    next.theta(1) = state.theta(1) + h * state.theta_(1);
-    next.theta_(0) = state.theta_(0) + h * 2.0 * g * (state.theta(1) - 2.0 * state.theta(0));
-    next.theta_(1) = state.theta_(1) + h * 2.0 * g * (state.theta(0) - 1.0 * state.theta(1));
+    Eigen::Vector4d next;
+
+    next(0) = state(0) + h * state(2);
+    next(1) = state(1) + h * state(3);
+    next(2) = state(2) + h * 2.0 * g * (state(1) - 2.0 * state(0));
+    next(3) = state(3) + h * 2.0 * g * (state(0) - 1.0 * state(1));
+
     return next;
 }
 
+// double phi_1(vector<double> y){
+//   double phi1;
+
+//   double Vorfaktor = mu * cos(y[1] - y[0]) * cos(y[1] - y[0]);
+//   Vorfaktor = 1 - Vorfaktor;
+//   Vorfaktor = 1 / Vorfaktor;
+
+//   double f1 = mu * g1 * sin(y[1]) * cos(y[1] - y[0]);
+//   double f2 = mu * y[2] * y[2] * sin(y[1] - y[0]) * cos(y[1] - y[0]);
+//   double f3 = -g1 * sin(y[0]);
+//   double f4 = (mu / lambda) * y[3] * y[3] * sin(y[1] - y[0]);
+
+//   phi1 = Vorfaktor * (f1 + f2 + f3 + f4);
+//   return phi1;
+// }
+
+// double phi_2(vector<double> y){
+//   double phi2;
+
+//   double Vorfaktor = mu * cos(y[1] - y[0]) * cos(y[1] - y[0]);
+//   Vorfaktor = 1 - Vorfaktor;
+//   Vorfaktor = 1 / Vorfaktor;
+
+//   double f1 = g2 * sin(y[0]) * cos(y[1] - y[0]);
+//   double f2 = -mu * y[3] * y[3] * sin(y[1] - y[0]) * cos(y[1] - y[0]);
+//   double f3 = -g2 * sin(y[1]);
+//   double f4 = -lambda * y[2] * y[2] * sin(y[1] - y[0]);
+
+//   phi2 = Vorfaktor * (f1 + f2 + f3 + f4);
+//   return phi2;
+// }
+
 void b()
 {
-    cout << "Testen, ob System in der Naeherung schwingt." << endl;
-    pendulum init = initialize(false);
+    cout << "b) Testen, ob System in der Naeherung schwingt." << endl;
 
-    pendulum state = init;
+    Eigen::Vector4d init = initialize(false);
+    Eigen::Vector4d state = init;
 
     std::ofstream pendulum_data;
     pendulum_data.open("build/pendulum_data_b.txt");
+
     for (int i; i < 100000; ++i) {
         state = euler(state, 0.001);
 
-        pendulum_data << state.theta(0) << " " << state.theta(1) << endl;
+        pendulum_data << state(0) << " " << state(1) << endl;
     }
+
     cout << "Done" << endl << endl;
 }
 
