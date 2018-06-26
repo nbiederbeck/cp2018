@@ -32,7 +32,10 @@ MatrixXd prune_matrix(MatrixXd M, double eps = 1e-15) {
     return M;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> maxi
 MatrixXd householder(MatrixXd M) {
     cout << "Householder Algorithm: " << endl;
     cout << "====================================" << endl << endl;
@@ -50,7 +53,10 @@ MatrixXd householder(MatrixXd M) {
         a = M.row(a_row);
         alpha = -1.0 * copysign(a.tail(dim - a_row - 1).norm(), a(a_row + 1));
         r = std::sqrt(0.5 * (std::pow(alpha, 2) - a(a_row + 1) * alpha));
+<<<<<<< HEAD
 
+=======
+>>>>>>> maxi
         v(a_row) = 0.;
         v(a_row + 1) = (a(a_row + 1) - alpha) / (2 * r);
 

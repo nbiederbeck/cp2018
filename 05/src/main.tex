@@ -2,6 +2,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{subcaption}
+\usepackage{physics}
 \usepackage[
 section, % Floats innerhalb der Section halten
 below,   % unterhalb der Section aber auf der selben Seite ist ok
@@ -47,6 +48,20 @@ Es macht keinen Unterschied in der Anzahl Sweeps, ob die Jacobi-Rotation mit $\m
 
 \section*{Aufgabe 2: 1D-Hamiltonkette}
 \subsection*{(a)}
+Zuerst werden Spinzustaende erstellt.
+Diese werden in Binaerschreibweise gespeichert ($0 = \downarrow, 1 = \uparrow$) und mit einer eindeutigen Repraesentation verwiesen:
+\begin{align*}
+  \ket{0 0 1 1} &= \ket{3} \\
+  \ket{1 0 0 0} &= \ket{8} \\
+\end{align*}
+
+Fuer die Hamiltonmatrix mit $H = \frac{J}{4} \sum_{i}^{N} \left(2 P_{i,i+1} - 1\right)$ wird ueberprueft,
+welche Vektoren durch den Permutationsoperator $P_{i,j}$ entstehen:
+\begin{align}
+  P_{12}\ket{0 1 0 1} &= \ket{1 0 0 1} \\
+        P_{12}\ket{5} &= \ket{9} \\
+\end{align}
+Die entsprechenen Faktoren werden in der Hamiltonmatrix gespeichert.
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.8\linewidth]{build/hamiltonian.png}
@@ -55,6 +70,7 @@ Es macht keinen Unterschied in der Anzahl Sweeps, ob die Jacobi-Rotation mit $\m
 \end{figure}
 
 \subsection*{(b)}
+Die Eigenwerte der Hamiltonmatrix werden mittels \texttt{Eigen::EigenSolver()} berechnet.
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.8\linewidth]{build/hamiltonian_eigenvalues.png}
@@ -63,8 +79,21 @@ Es macht keinen Unterschied in der Anzahl Sweeps, ob die Jacobi-Rotation mit $\m
 \end{figure}
 
 \subsection*{(c)}
+Die Laufzeiten der Berechnungen der Eigenwerte werden fuer unterschiedliche Größen bestimmt und gegeneinander aufgetragen.
+Der Fit $t\left(N\right) \propto N^x$ passt nicht auf die Werte, da insbesondere der letzte Wert extrem aus der Reihe tanzt.
 \begin{figure}[ht]
   \centering
+<<<<<<< HEAD
+  \includegraphics[width=0.8\linewidth]{build/hamiltonian_eigenvalues.png}
+  \caption{Eigenwerte der Hamiltonmatrix der 1D-Hamiltonkette.}%
+  \label{fig:hamiltonkette_eigenvalues}
+\end{figure}
+
+\subsection*{(c)}
+\begin{figure}[ht]
+  \centering
+=======
+>>>>>>> maxi
   \includegraphics[width=0.8\linewidth]{build/hamilton_eigenvalues_N.png}
   \caption{%
     Laufzeiten der Diagonalisierung mit \texttt{Eigen::EigenSolver()} für verschiedene Dimensionen der Hamiltonmatrix $N$.

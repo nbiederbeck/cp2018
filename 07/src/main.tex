@@ -1,0 +1,44 @@
+\documentclass{scrartcl}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{subcaption}
+\usepackage{physics}
+\usepackage[
+section, % Floats innerhalb der Section halten
+below,   % unterhalb der Section aber auf der selben Seite ist ok
+]{placeins}
+
+\title{Übungsblatt 07}
+\author{%
+		Noah Biederbeck, Maximilian Sackel, Jan Spinne
+}
+\date{Abgabe: 22. Juni 2018}
+
+
+
+\begin{document}
+\maketitle
+\section*{Aufgabe 1: Harmonischer Oszillator}
+\subsection*{a)}
+Beim Euler Algor werden aus der Differentialgleichung zweiter Ordnung
+\begin{equation}
+		m \ddot{r} = F(r)
+\end{equation}
+zwei lineare DGLs
+\begin{eqnarray}
+		\dot{r} &= v,  \\
+		\dot{v} &= \frac{1}{m} F(r). \\ 
+\end{eqnarray}
+Diese werden ueber den Ansatz 
+\begin{equation}
+		r(i+1) = r(i) + h f(t_i, x_i)
+\end{equation}
+geloest. Dabei wird die Zeit in diskretisiert und deren Schrittweite 
+betraegt $h$.
+\begin{figure}[ht]
+		\centering
+		\includegraphics[width=0.8\linewidth]{build/euler.pdf}
+		\caption{Euler Algo}
+		\label{fig:euler}
+\end{figure}
+\end{document}

@@ -19,6 +19,7 @@ using Eigen::EigenSolver;
 using Eigen::MatrixXd;
 using Eigen::MatrixXcd;
 
+<<<<<<< HEAD
 MatrixXi init_zustaende(int); // Erstelle Alle Spins in Binaerschreibweise
 MatrixXi spin_sum(MatrixXi m , int spin); // Berechne Spinsumme der Zustaende
 int zustandssumme(VectorXi);
@@ -28,6 +29,16 @@ int spin_encoder(MatrixXi, int);
 void test();
 void save_matrices_to_file(MatrixXi, const char *filename);
 void run_b();
+=======
+MatrixXi init_zustaende(int);               // Erstelle Alle Spins in Binaerschreibweise
+MatrixXi spin_sum(MatrixXi m , int spin);   // Berechne Spinsumme der Zustaende
+int zustandssumme(VectorXi);                // Berechnet die Zustandsumme 
+VectorXi permutation(VectorXi, int);        // Permutiert zwei benachbarten Spins des Zustande
+MatrixXd hamilton_matrix_from_spins(MatrixXi, double J = 1.0);
+int spin_encoder(MatrixXi, int);            // Encoded Spinsumme in Spinzustaende
+void save_matrices_to_file(MatrixXd, const char *filename);
+void run_b(int);
+>>>>>>> maxi
 void run_c();
 
 int main() {
@@ -35,24 +46,41 @@ int main() {
     cout << "Aufgabe 2: 1D Heisenbergkette" << endl;
     cout << "=============================" << endl << endl;
 
+<<<<<<< HEAD
     run_b();
+=======
+    int N = 10;
+    run_b(N);
+>>>>>>> maxi
     run_c();
 
     return 0;
 }
 
+<<<<<<< HEAD
 void run_b() {
     int N = 10;
+=======
+void run_b(int N) {
+>>>>>>> maxi
     MatrixXi spins;
     spins = init_zustaende(N);
     spins = spin_sum(spins, 0);
 
+<<<<<<< HEAD
     MatrixXi H;
+=======
+    MatrixXd H;
+>>>>>>> maxi
     H = hamilton_matrix_from_spins(spins);
 
     save_matrices_to_file(H, "build/hamiltonian.txt");
 
+<<<<<<< HEAD
     EigenSolver<MatrixXd> es(H.cast<double>());
+=======
+    EigenSolver<MatrixXd> es(H);
+>>>>>>> maxi
 
     MatrixXcd ev = es.eigenvalues();
     std::ofstream file ("build/hamiltonian_eigenvalues.txt");
@@ -62,11 +90,19 @@ void run_b() {
 void run_c() {
     std::ofstream file ("build/hamilton_eigenvalues_N.txt");
 
+<<<<<<< HEAD
+=======
+    cout << "Code being run per iteration and time measurement: " << endl;
+    cout << "EigenSolver<MatrixXd> es(H);" << endl;
+    cout << "es.eigenvalues();" << endl;
+
+>>>>>>> maxi
     for (int N = 2; N <= 14; N+=2) {
         MatrixXi spins;
         spins = init_zustaende(N);
         spins = spin_sum(spins, 0);
 
+<<<<<<< HEAD
         MatrixXi H;
         H = hamilton_matrix_from_spins(spins);
 
@@ -75,10 +111,23 @@ void run_c() {
         clock_t end = clock();
         double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 
+=======
+        MatrixXd H;
+        H = hamilton_matrix_from_spins(spins);
+
+        clock_t begin = clock();
+        EigenSolver<MatrixXd> es(H);
+        es.eigenvalues();
+        clock_t end = clock();
+        double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+
+        cout << "N=" << N << ", t=" << elapsed_secs << "s" << endl;
+>>>>>>> maxi
         file << N << " " << elapsed_secs << endl;
     }
 }
 
+<<<<<<< HEAD
 // Eine Testfunktion
 void test() {
     int N = 4;
@@ -101,13 +150,19 @@ void test() {
     }
 }
 
+=======
+>>>>>>> maxi
 // Erstelle Alle Spins in Binaerschreibweise
 MatrixXi init_zustaende(int N) {
     int dim = (int)pow(2,N);
     MatrixXi mat(dim, N);
     for(int d = 0; d < dim; d++) {
         for(int n = 0; n < N; n++) {
+<<<<<<< HEAD
             mat(d, N - n - 1) = d / (int)pow(2, n) % 2;
+=======
+            mat(d, N - n - 1) = d / (int)pow(2, n) % 2; // Binaer Zahlen Zerlegung
+>>>>>>> maxi
         }
     }
     return mat;
@@ -117,6 +172,10 @@ MatrixXi init_zustaende(int N) {
 MatrixXi spin_sum(MatrixXi m , int spin) {
     // Spins have value 0 or 1 and not +-1/2
     double bias = m.cols() / 2;
+<<<<<<< HEAD
+=======
+    // addiere deswegen bias drauf
+>>>>>>> maxi
     VectorXi m_spin = m.rowwise().sum().array() - (int)bias;
 
     vector<int> z;
@@ -125,6 +184,10 @@ MatrixXi spin_sum(MatrixXi m , int spin) {
             z.push_back(i);
         }
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> maxi
     MatrixXi spinsums(z.size(), m.cols());
     for(int i = 0; i < z.size(); i++) {
         spinsums.row(i) = m.row(z[i]);
@@ -134,6 +197,7 @@ MatrixXi spin_sum(MatrixXi m , int spin) {
 }
 
 // Berechne die Hamiltonmatrix aus gegebenen Spins
+<<<<<<< HEAD
 MatrixXi hamilton_matrix_from_spins(MatrixXi spins) {
     int dim = spins.rows();
     MatrixXi H(dim, dim) ;
@@ -152,6 +216,20 @@ MatrixXi hamilton_matrix_from_spins(MatrixXi spins) {
             y = spin_encoder(spins, zustandssumme(permutation(spins.row(i), j)));
             H(i, y) += 2;  // Permutationsteil von $H = sum( 2P - 1 )$
             H(i, i) -= 1;  // -1 Teil vom Hamiltonian
+=======
+MatrixXd hamilton_matrix_from_spins(MatrixXi spins, double J) {
+    int dim = spins.rows();
+    MatrixXd H(dim, dim) ;
+    H = MatrixXd::Zero(dim, dim);
+
+    int y;
+
+    for (int i = 0; i < dim; i++) {
+        for (int j = 0; j < spins.cols(); j++) {
+            y = spin_encoder(spins, zustandssumme(permutation(spins.row(i), j)));
+            H(i, y) += J / 4.0 * 2.0;  // Permutationsteil von $H = J/4 sum( 2P - 1 )$
+            H(i, i) -= J / 4.0 * 1.0;  // -1 Teil vom Hamiltonian
+>>>>>>> maxi
         }
     }
 
@@ -194,7 +272,11 @@ VectorXi permutation(VectorXi vec, int i) {
 }
 
 // Save Matrix to Filename
+<<<<<<< HEAD
 void save_matrices_to_file(MatrixXi mat, const char *filename) {
+=======
+void save_matrices_to_file(MatrixXd mat, const char *filename) {
+>>>>>>> maxi
     std::ofstream file (filename);
     file << mat << endl;
 }
