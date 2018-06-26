@@ -1,0 +1,71 @@
+\documentclass{scrartcl}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{subcaption}
+\usepackage{physics}
+
+
+\begin{document}
+\section*{Aufgabe 1: Doppelpendel}
+\subsection*{a)}
+
+Koordinaten:
+\begin{align*}
+	x_1 &= L_1  \sin{\theta_1} \\
+	y_1 &= -L_1  \cos{\theta_1} \\
+	x_2 &= L_2  \sin{\theta_2} + x_1 \\
+	y_2 &= -L_2  \cos{\theta_2} + y_1 \\
+\end{align*}
+
+Ableitungen
+\begin{align*}
+	\dot{x_1} &= \dot{\theta_1} L_1  \cos{\theta_1} \\
+	\dot{y_1} &= \dot{\theta_1 }L_1  \sin{\theta_1} \\
+	\dot{x_2} &= \dot{\theta_2 }L_2  \cos{\theta_2} + \dot{x_1} \\
+	\dot{y_2} &= \dot{\theta_2} L_2  \sin{\theta_2} + \dot{y_1} \\
+\end{align*}
+
+
+Potentielle Energie:
+\begin{align*}
+	V &= m_1 g y_1 + m_2 g y_2 \\
+	 &= -\left( m_1 + m_2 \right) g  L_1  \cos{\theta_1}-m_2  g  L_2  \cos{\theta_2} \\
+\end{align*}
+
+
+Kinetische Energie:
+\begin{align*}
+	T &= \frac 1 2 m_1 v_1^2 + \frac 1 2 m_2 v_2^2 \\
+	&= \frac 1 2 m_1 \left(\dot{x_1}^2 + \dot{y_1}^2 \right) \frac 1 2 m_2 \left(\dot{x_2}^2 + \dot{y_2}^2 \right) \\
+	&= \frac { 1 } { 2 } m _ { 1 } L _ { 1 } ^ { 2 } \dot { \theta } _ { 1 } ^ { 2 } + \frac { 1 } { 2 } m _ { 2 } \left[ L _ { 1 } ^ { 2 } \dot { \theta } _ { 1 } ^ { 2 } + L _ { 2 } ^ { 2 } \dot { \theta } _ { 2 } ^ { 2 } + 2 L _ { 1 } L _ { 2 } \dot { \theta } _ { 1 } \dot { \theta } _ { 2 } \cos \left( \theta _ { 1 } - \theta _ { 2 } \right) \right]  \\
+\end{align*}
+
+\subsection*{b)}
+Winkelbeschleunigung in Kleinwinkelnäherung:
+\begin{align*}
+	\ddot{\theta_1} &= -\frac{g}{L} \left(2 \theta_1 - \theta_2 \right) \\
+	\ddot{\theta_2} &= 2 \frac{g}{L} \left( \theta_1 - \theta_2 \right) \\
+\end{align*}
+
+Ableiten von $\theta_i = a_i \cos{\omega t}$ und einsetzen liefert:
+
+\begin{align*}
+	0 &= - \omega^2 a_1 + \frac g l \left( 2 a_1-a_2\right)  \\
+	0 &= - \omega^2 a_2 - 2 \frac g l \left(a_1-a_2\right)  \\
+\end{align*}
+
+Umformen nach bspw $a_1$, einsetzen und umformen nach $\omega$ liefert dann:
+
+
+\begin{equation*}
+	 \omega _ { \pm } = \sqrt { \frac { g } { \ell } ( 2 \pm \sqrt { 2 } ) } 
+\end{equation*}
+
+
+
+
+
+
+
+
+\end{document}
