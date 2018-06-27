@@ -21,7 +21,7 @@ def plot_theta_time():
     ax2.legend()
 
     fig.tight_layout()
-    fig.savefig("build/pendulum_b.png")
+    fig.savefig("build/pendulum_b.png", dpi=200)
 
 
 def plot_xy():
@@ -42,7 +42,7 @@ def plot_xy():
     ax.set_xlim([-1, 1])
     ax.set_aspect(1)
     fig.tight_layout()
-    fig.savefig("build/pendulum_xy_b.png")
+    fig.savefig("build/pendulum_xy_b.png", dpi=200)
 
 
 def main():
