@@ -53,10 +53,12 @@ def plot_xy(sign):
 
 
 def main():
+    print("src/plot_pendulum_c.py:  Plotting (c)")
     plot_theta_time("plus")
     plot_xy("plus")
     plot_theta_time("minus")
     plot_xy("minus")
+    print("src/plot_pendulum_c.py:  Done")
 
 
 if __name__ == "__main__":

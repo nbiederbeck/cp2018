@@ -46,8 +46,10 @@ def plot_xy():
 
 
 def main():
+    print("src/plot_pendulum_b.py:  Plotting (b)")
     plot_theta_time()
     plot_xy()
+    print("src/plot_pendulum_b.py:  Done")
 
 
 if __name__ == "__main__":
