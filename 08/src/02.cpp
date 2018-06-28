@@ -66,6 +66,9 @@ void a(int N, double h)
     std::ofstream poincare_data_chaos;
     poincare_data_chaos.open("build/poincare_data_chaos.txt");
 
+    std::ofstream poincare_data_chaos_cut;
+    poincare_data_chaos_cut.open("build/poincare_data_chaos_cut.txt");
+
 
     for (int i = 0; i < N; ++i) {
         periodic = rungekutta(periodic, h);
@@ -97,6 +100,17 @@ void a(int N, double h)
             << Epot(chaos) << " "
             << Ekin(chaos) << " "
             << endl;
+
+        if (chaos(1) == 0 && chaos(3) + 1.0 * chaos(2) * std::cos(chaos(0)) > 0) {
+            poincare_data_chaos_cut
+                << chaos(0) << " "
+                << chaos(1) << " "
+                << chaos(2) << " "
+                << chaos(3) << " "
+                << Epot(chaos) << " "
+                << Ekin(chaos) << " "
+                << endl;
+        }
     }
     cout << "src/02.cpp:  Done" << endl;
 }
