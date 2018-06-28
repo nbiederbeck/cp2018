@@ -73,7 +73,7 @@ Eigen::Vector4d rungekutta(
     Eigen::Vector4d k3 = h * f(state + 0.5 * k2);
     Eigen::Vector4d k4 = h * f(state + k3);
 
-    return state + k4;
+    return state + 1.0 / 6.0 * (k1 + 2.0 * k2 + 2.0 * k3 + k4);
 }
 
 // Potentielle Energie
