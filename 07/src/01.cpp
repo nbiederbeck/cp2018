@@ -24,7 +24,8 @@ double stepsize(vector<double> t, int i)
     return t[i+1] - t[i];
 }
 
-struct solutions {
+struct solutions 
+{
     Eigen::MatrixXd r_i;
     Eigen::MatrixXd v_i;
     Eigen::VectorXd energy;
@@ -212,7 +213,7 @@ int main()
     // setze Start/Rand-bedingugen
     double t_0 = 0;
     double T = 20. * M_PI;
-    double h = M_PI / 10.;
+    double h = M_PI / 100.;
     const int dim = 3;
     double mass = 1.;
     double k = 1.;
@@ -234,7 +235,6 @@ int main()
     struct solutions s_runge4 = rungekutta_4(h, T, r_0, v_0, mass, k);
     s_runge4 = energy(s_runge4, mass, k);
     save(s_runge4, T, "runge4");
-
 
     return 0;
 }
