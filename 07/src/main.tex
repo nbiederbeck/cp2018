@@ -10,7 +10,11 @@ below,   % unterhalb der Section aber auf der selben Seite ist ok
 
 \title{Übungsblatt 07}
 \author{%
+<<<<<<< HEAD
 		Noah Biederbeck, Maximilian Sackel, Jan Spinne
+=======
+  Noah Biederbeck, Maximilian Sackel, Jan Spinne
+>>>>>>> noah
 }
 \date{Abgabe: 22. Juni 2018}
 
@@ -19,6 +23,7 @@ below,   % unterhalb der Section aber auf der selben Seite ist ok
 \begin{document}
 \maketitle
 \section*{Aufgabe 1: Harmonischer Oszillator}
+<<<<<<< HEAD
 \subsection*{a)}
 Beim Euler Algor werden aus der Differentialgleichung zweiter Ordnung
 \begin{equation}
@@ -41,4 +46,138 @@ betraegt $h$.
 		\caption{Euler Algo}
 		\label{fig:euler}
 \end{figure}
+=======
+\subsection*{(a)}
+Beim Euler Algorithmus werden aus der Differentialgleichung zweiter Ordnung
+\begin{equation}
+  m \ddot{r} = F(r)
+\end{equation}
+zwei lineare DGLs
+\begin{eqnarray}
+  \dot{r} &= v,  \\
+  \dot{v} &= \frac{1}{m} F(r). \\
+\end{eqnarray}
+Diese werden über den Ansatz
+\begin{equation}
+  r(i+1) = r(i) + h f(t_i, x_i)
+\end{equation}
+gelöst. Dabei wird die Zeit in diskretisiert und die Schrittweite
+beträgt $h$.
+In Abbildungen~\ref{fig:euler} bis~\ref{fig:rk4}
+sind die Amplituden der Geschwindigkeit und Auslenkung (in $x$-Richtung) im oberen, die Energie im unteren Plot gegen die Zeitschritte aufgetragen.
+Es ist zu erkennen, dass bei allen Verfahren die maximale Auslenkung jedes Mal erreicht wird, und
+die Energie erhalten ist.
+Es wird für eine Zeit von $T = 4\pi$ eine Schrittweite von $h = \frac{\pi}{10000}$ gewählt,
+sodass $N = 40000$ Simulationsschritte durchgeführt werden.
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\linewidth]{build/euler.png}
+  \caption{Euler}%
+  \label{fig:euler}
+\end{figure}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\linewidth]{build/runge2.png}
+  \caption{Runge Kutta 2. Ordnung}%
+  \label{fig:rk2}
+\end{figure}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\linewidth]{build/runge4.png}
+  \caption{Runge Kutta 4. Ordnung}%
+  \label{fig:rk4}
+\end{figure}
+\subsection*{(b)}
+In Abbildungen~\ref{fig:b1} bis~\ref{fig:b3} sind verschiedene Anfangsbedingungen getestet.
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\linewidth]{build/b1.png}
+  \caption{$r(0)$ beliebig, $v(0) = 0$}%
+  \label{fig:b1}
+\end{figure}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\linewidth]{build/b2.png}
+  \caption{$r(0)$ beliebig, $v(0)$ beliebig}%
+  \label{fig:b2}
+\end{figure}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\linewidth]{build/b3.png}
+  \caption{$r(0)$ senkrecht $v(0)$}%
+  \label{fig:b3}
+\end{figure}
+
+\section*{Aufgabe 2: Kepler-Ellipsen}
+Für bessere Darstellungsmöglichkeiten wird im Folgenden $z = 0$ gehalten.
+\subsection*{(a)}
+
+In Abbildung~\ref{fig:kepler} (links) ist die Bahn eines Planeten um die Sonne dargestellt.
+Es werden $T= 24$h simuliert mit einer Schrittweite von $h = \frac{1}{5000}$.
+Es ist $r(0) = (1, 0, 0)$ und $v(0) = (0.27, 1, 0)$
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\linewidth]{build/kepler_rk.png}
+  \caption{Planetenbahn und Energie-/Impulserhaltung.}%
+  \label{fig:kepler}
+\end{figure}
+\subsection*{(b)}
+In Abbildung~\ref{fig:kepler} (rechts) ist ausserdem die Energie und der Drehimpuls aufgetragen.
+Offenbar ist beides erhalten.
+\subsection*{(c)}
+Das Potential wird geändert zu
+\begin{equation}
+  V(r) = \frac{-mG}{r^\alpha}
+\end{equation}
+mit $\alpha = 0.9$ (Abbildung~\ref{fig:2c09}),
+und $\alpha = 1.1$ (Abbildung~\ref{fig:2c11}).
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\linewidth]{build/2c09.png}
+  \caption{Planetenbahn und Energie-/Impulserhaltung für $\alpha = 0.9$}%
+  \label{fig:2c09}
+\end{figure}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\linewidth]{build/2c11.png}
+  \caption{Planetenbahn und Energie-/Impulserhaltung für $\alpha = 1.1$}%
+  \label{fig:2c11}
+\end{figure}
+\subsection*{(d)}
+In einem 3-Körper-Problem wirkt die Gravitation zwischen Erde-Sonne, Erde-Mond, Mond-Sonne.
+Deswegen wird die wirkende Kraft
+\begin{align}
+  r &= r_2 - r_1 \\
+  F &= - G \cdot \left(\frac{- m_1 \cdot m_2 \cdot r}{r^3} + \frac{m_1 \cdot m_{\text{sun}} \cdot
+    r_1}{r_1^3}\right)\text{,}
+\end{align}
+siehe \texttt{src/rungekutta\_moon.h}.
+Hierbei ist der Index ${}_1$ der "eigene" Körper,
+der Index ${}_2$ der "andere".
+\subsection*{(e)}
+Die Bahnkurven des Planeten und des Mondes sind mit laut Aufgabenzettel gegebenen Startparametern
+in Abbildung~\ref{fig:kepler_moon} dargestellt.
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\linewidth]{build/kepler_moon.png}
+  \caption{Bahnkurven von Planet und Mond.}%
+  \label{fig:kepler_moon}
+\end{figure}
+
+Die Bahn des Mondes relativ zum Planeten ist in Abbildung~\ref{fig:moon_planet} dargestellt.
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\linewidth]{build/moon_planet.png}
+  \caption{Bahn des Mondes Relativ zum Planeten.}%
+  \label{fig:moon_planet}
+\end{figure}
+
+Offensichtlich erreicht unser Programm keine stabile Bahn mit gegebenen Parametern, der Mond
+stürzt nach 24 Stunden in die Sonne.
+Um das zu verdeutlichen, wurde $h = \frac{1}{5500}$ gesetzt, andernfalls ($h$ nach Aufgabe) wird
+auch keine stabile Bahn erreicht, jedoch sieht man den Mond nicht abstürzen.
+
+Die Bahnkurve des Planeten mit Mond ist anders als die ohne Mond, da dieser gravitative Einflüsse auf den
+Planeten ausübt.
+>>>>>>> noah
 \end{document}
