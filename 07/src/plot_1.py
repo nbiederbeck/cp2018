@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 class plotter:
     def __init__(self, path):
         data = np.genfromtxt(path, delimiter=';')
@@ -28,6 +29,8 @@ def main():
 if __name__ == '__main__':
     main()
 =======
+=======
+>>>>>>> origin/maxi
 
 class plotter:
     def __init__(self, path):

@@ -31,6 +31,7 @@ build:
 build/euler.txt: bin/01.out
 	./bin/01.out
 
+<<<<<<< HEAD
 build/euler.pdf: src/plot_1.py build/euler.txt
 	python src/plot_1.py
 
@@ -45,9 +46,13 @@ build/.02.data.new: bin/02.out | build
 	touch build/.02.data.new
 
 build/.01.plot.new: build/.01.data.new src/plot_1.py
+=======
+build/euler.png: src/plot_1.py build/euler.txt
+>>>>>>> origin/maxi
 	python src/plot_1.py
 	touch build/.01.plot.new
 
+<<<<<<< HEAD
 build/.02.plot.new: build/.02.data.new src/plot_2.py src/plot_2d.py
 	python src/plot_2.py
 	python src/plot_2d.py
@@ -73,6 +78,9 @@ build/.02.plot.new: build/.02.data.new src/plot_2.py src/plot_2d.py
 
 build/main.pdf: src/main.tex build/.01.plot.new build/.02.plot.new FORCE | build
 >>>>>>> noah
+=======
+build/main.pdf: src/main.tex build/euler.png | build
+>>>>>>> origin/maxi
 	latexmk --lualatex \
 		--output-directory=build \
 		--interaction=nonstopmode \

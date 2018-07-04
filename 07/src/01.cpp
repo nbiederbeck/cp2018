@@ -4,15 +4,25 @@
 #include <Eigen/Dense>
 #include <cmath>
 <<<<<<< HEAD
+<<<<<<< HEAD
 #include <ctime>
 #include <vector>
 
+=======
+#include <vector>
+#include <string>
+>>>>>>> origin/maxi
 
 using std::cout;
 using std::endl;
 using std::vector;
 
+<<<<<<< HEAD
 vector<double> diskretisierung(double t_0, double T, int h){
+=======
+vector<double> diskretisierung(double t_0, double T, int h)
+{
+>>>>>>> origin/maxi
     vector<double> t = {t_0};
     for(int i=1; i<=h; i++){
         t.push_back(t_0 + T/h * i);
@@ -20,6 +30,7 @@ vector<double> diskretisierung(double t_0, double T, int h){
     return t;
 }
 
+<<<<<<< HEAD
 double func(double x){
     return std::pow(x,2);
 }
@@ -69,6 +80,18 @@ struct solutions runge(vector<double> t_i, double r_0, double v_0){
 // #include <vector>
 #include <string>
 #include "solutions.h"
+=======
+double stepsize(vector<double> t, int i)
+{
+    return t[i+1] - t[i];
+}
+
+struct solutions {
+    Eigen::MatrixXd r_i;
+    Eigen::MatrixXd v_i;
+    Eigen::VectorXd energy;
+};
+>>>>>>> origin/maxi
 
 using std::cout;
 using std::endl;
@@ -226,13 +249,17 @@ struct solutions rungekutta_4(double h, int T, Eigen::VectorXd r_0, Eigen::Vecto
         r_i = joined_r_i;
         joined_v_i << v_i, v_n;
         v_i = joined_v_i;
+<<<<<<< HEAD
 >>>>>>> noah
+=======
+>>>>>>> origin/maxi
     }
     solutions s_euler ;
     s_euler.r_i = r_i; s_euler.v_i = v_i;
     return s_euler;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 int main(int argc, char *argv[])
 {
@@ -253,6 +280,8 @@ int main(int argc, char *argv[])
     }
     
 =======
+=======
+>>>>>>> origin/maxi
 struct solutions energy(struct solutions sol, double m, double k) {
     Eigen::VectorXd energy(sol.r_i.cols());
 
@@ -349,6 +378,9 @@ int main()
     cout << "./bin/01.cpp: (b) 3/3" << endl;
 
 
+<<<<<<< HEAD
 >>>>>>> noah
+=======
+>>>>>>> origin/maxi
     return 0;
 }
