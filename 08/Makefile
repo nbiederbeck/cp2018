@@ -65,7 +65,7 @@ build/main.pdf: src/main.tex $(PLOTS1) $(PLOTS2) FORCE | build
 
 FORCE:
 
-archive.tar.gz: build/main.pdf Makefile $(wildcard src/*) $(wildcard build/*data*) $(wildcard build/poincare_c_*.txt)
+archive.tar.gz: build/main.pdf Makefile $(wildcard src/*)
 	tar czf $@ $^
 
 clean:
