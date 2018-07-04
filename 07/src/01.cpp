@@ -172,22 +172,24 @@ struct solutions rungekutta_2(double h, int T, Eigen::VectorXd r_0, Eigen::Vecto
     Eigen::VectorXd r_n(r_0.rows());
     Eigen::VectorXd v_n(r_0.rows());
 
-    Eigen::VectorXd k1(r_0.rows());
-    Eigen::VectorXd k2(r_0.rows());
+    Eigen::VectorXd k1(r_0.rows() + v_0.rows());
+    Eigen::VectorXd k2(r_0.rows() + v_0.rows());
 
     for (int i = 0; i < T / h; i++) {
         Eigen::MatrixXd joined_r_i(r_i.rows(), r_i.cols()+1);
         Eigen::MatrixXd joined_v_i(r_i.rows(), r_i.cols()+1);
 
         // physics
-        // v, y_1
-        k1 = h * force(r_i.col(i), k) / mass;
-        k2 = h * force(r_i.col(i) + 0.5 * k1, k) / mass;
-        v_n << v_i.col(i) + k2;
-        // r, y_0
-        k1 = h * v_i.col(i);
-        k2 = h * (v_i.col(i) + 0.5 * k1);
-        r_n << r_i.col(i) + k2;
+        r_n << r_i.col(i) + h * v_i.col(i) - h * h / 2.0 * r_i.col(i);
+        v_n << v_i.col(i) - h * r_i.col(i) - h * h / 2.0 * v_i.col(i);
+        // // v, y_1
+        // k1 = h * force(r_i.col(i), k) / mass;
+        // k2 = h * force(r_i.col(i) + 0.5 * k1, k) / mass;
+        // v_n << v_i.col(i) + k2;
+        // // r, y_0
+        // k1 = h * v_i.col(i);
+        // k2 = h * (v_i.col(i) + 0.5 * k1);
+        // r_n << r_i.col(i) + k2;
 
         // fill old var with new values
         joined_r_i << r_i, r_n;
@@ -325,7 +327,7 @@ int main()
 
     // setze Start/Randbedingugen
     double T = 4. * M_PI;
-    double h = M_PI / 10000.;
+    double h = 0.01;
     const int dim = 3;
     double mass = 1.;
     double k = 1.;
@@ -377,9 +379,12 @@ int main()
     save(s_runge4, T, "b3");
     cout << "./bin/01.cpp: (b) 3/3" << endl;
 
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 >>>>>>> noah
+=======
+>>>>>>> origin/maxi
 =======
 >>>>>>> origin/maxi
     return 0;

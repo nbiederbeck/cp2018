@@ -1,0 +1,183 @@
+\documentclass{scrartcl}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{subcaption}
+\usepackage{physics}
+\usepackage{subcaption}
+\usepackage[
+section, % Floats innerhalb der Section halten
+below,   % unterhalb der Section aber auf der selben Seite ist ok
+]{placeins}
+
+\title{Übungsblatt 08}
+\author{%
+		Noah Biederbeck, Maximilian Sackel, Jan Spinne
+}
+\date{Abgabe: 29. Juni 2018}
+
+
+
+\begin{document}
+\maketitle
+\section*{Aufgabe 1: Doppelpendel}
+\subsection*{(a)}
+
+Koordinaten:
+\begin{align*}
+	x_1 &= L_1  \sin{\theta_1} \\
+	y_1 &= -L_1  \cos{\theta_1} \\
+	x_2 &= L_2  \sin{\theta_2} + x_1 \\
+	y_2 &= -L_2  \cos{\theta_2} + y_1 \\
+\end{align*}
+
+Ableitungen
+\begin{align*}
+	\dot{x_1} &= \dot{\theta_1} L_1  \cos{\theta_1} \\
+	\dot{y_1} &= \dot{\theta_1 }L_1  \sin{\theta_1} \\
+	\dot{x_2} &= \dot{\theta_2 }L_2  \cos{\theta_2} + \dot{x_1} \\
+	\dot{y_2} &= \dot{\theta_2} L_2  \sin{\theta_2} + \dot{y_1} \\
+\end{align*}
+
+
+Potentielle Energie:
+\begin{align*}
+	V &= m_1 g y_1 + m_2 g y_2 \\
+	 &= -\left( m_1 + m_2 \right) g  L_1  \cos{\theta_1}-m_2  g  L_2  \cos{\theta_2} \\
+\end{align*}
+
+
+Kinetische Energie:
+\begin{align*}
+	T &= \frac 1 2 m_1 v_1^2 + \frac 1 2 m_2 v_2^2 \\
+	&= \frac 1 2 m_1 \left(\dot{x_1}^2 + \dot{y_1}^2 \right) \frac 1 2 m_2 \left(\dot{x_2}^2 + \dot{y_2}^2 \right) \\
+	&= \frac { 1 } { 2 } m _ { 1 } L _ { 1 } ^ { 2 } \dot { \theta } _ { 1 } ^ { 2 } + \frac { 1 } { 2 } m _ { 2 } \left[ L _ { 1 } ^ { 2 } \dot { \theta } _ { 1 } ^ { 2 } + L _ { 2 } ^ { 2 } \dot { \theta } _ { 2 } ^ { 2 } + 2 L _ { 1 } L _ { 2 } \dot { \theta } _ { 1 } \dot { \theta } _ { 2 } \cos \left( \theta _ { 1 } - \theta _ { 2 } \right) \right]  \\
+\end{align*}
+
+\subsection*{(b)}
+Winkelbeschleunigung in Kleinwinkelnäherung:
+\begin{align*}
+	\ddot{\theta_1} &= -\frac{g}{L} \left(2 \theta_1 - \theta_2 \right) \\
+	\ddot{\theta_2} &= 2 \frac{g}{L} \left( \theta_1 - \theta_2 \right) \\
+\end{align*}
+
+Ableiten von $\theta_i = a_i \cos{\omega t}$ und einsetzen liefert:
+
+\begin{align*}
+	0 &= - \omega^2 a_1 + \frac g l \left( 2 a_1-a_2\right)  \\
+	0 &= - \omega^2 a_2 - 2 \frac g l \left(a_1-a_2\right)  \\
+\end{align*}
+
+Umformen nach bspw $a_1$, einsetzen und umformen nach $\omega$ liefert dann:
+
+\begin{equation*}
+	 \omega _ { \pm } = \sqrt { \frac { g } { \ell } ( 2 \pm \sqrt { 2 } ) }
+\end{equation*}
+
+Test der genäherten Schwingungen sind in Abbildung~\ref{fig:b1} dargestellt.
+\begin{figure}[ht]
+  \centering
+  \begin{subfigure}{0.8\textwidth}
+    \centering
+    \includegraphics[width=1\linewidth]{build/pendulum_b.png}
+  \end{subfigure}
+
+  \begin{subfigure}{0.8\textwidth}
+    \centering
+    \includegraphics[width=1\linewidth]{build/pendulum_xy_b.png}
+  \end{subfigure}
+  \caption{Genäherte Schwingungen.}
+  \label{fig:b1}
+\end{figure}
+
+\subsection*{(c)}
+Das Runge Kutta Verfahren 4. Ordnung wird fuer die Startparameter
+\begin{align*}
+  \theta_1 &= 0.1  & \dot\theta_1 &= 0 \\
+  \theta_2 &= \pm \sqrt{2} \theta_1  & \dot\theta_2 &= 0
+\end{align*}
+durchgefuhrt.
+
+Die Winkel, Winkelgeschwindigkeit, potentielle, kinetische und Gesamtenergie sind in
+Abbildungen~\ref{fig:cp} und~\ref{fig:cm} dargestellt.
+\begin{figure}[ht]
+  \centering
+  \begin{subfigure}{0.8\textwidth}
+    \centering
+    \includegraphics[width=1\linewidth]{build/pendulum_c_plus.png}
+    \caption{$\theta_2 = +\sqrt{2}\theta_1$}
+    \label{fig:cp}
+  \end{subfigure}
+
+  \begin{subfigure}{0.8\textwidth}
+    \centering
+    \includegraphics[width=1\linewidth]{build/pendulum_c_minus.png}
+    \caption{$\theta_2 = -\sqrt{2}\theta_1$}
+    \label{fig:cm}
+  \end{subfigure}
+  \caption{Winkel, Winkelgeschwindigkeit, potentielle, kinetische und Gesamtenergie.}
+\end{figure}
+
+\subsection*{(d)}
+Die Trajektorien der Pendelmassen sind in Abbildungen~\ref{fig:dp} und~\ref{fig:dm} dargestellt.
+\begin{figure}[ht]
+  \centering
+  \begin{subfigure}{0.8\textwidth}
+    \centering
+    \includegraphics[width=1\linewidth]{build/pendulum_xy_c_plus.png}
+    \caption{$\theta_2 = +\sqrt{2}\theta_1$}
+    \label{fig:dp}
+  \end{subfigure}
+
+  \begin{subfigure}{0.8\textwidth}
+    \centering
+    \includegraphics[width=1\linewidth]{build/pendulum_xy_c_minus.png}
+    \caption{$\theta_2 = -\sqrt{2}\theta_1$}
+    \label{fig:dm}
+  \end{subfigure}
+  \caption{Trajektorien.}
+\end{figure}
+
+
+
+
+\section*{Aufgabe 2: Poincar\'e Schnitt}
+\subsection*{(a)}
+Die Phasenr\"aume der drei Startbedingungen sind in Abbildung~\ref{fig:2a} dargestellt.
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height=0.96\textheight]{build/poincare_a.png}
+  \caption{Phasenr\"aume f\"ur verschiedene Startbedingungen.}%
+  \label{fig:2a}
+\end{figure}
+Es ist zu erkennen, dass sich im periodischen Fall geschlossene Bahnen ergeben.
+Hingegen im chaotischen Fall ist der Phasenraum beinahe komplett ausgef\"ullt.
+
+\subsection*{(b)}
+Die drei Pendel werden gest\"ort.
+Zu jedem Parameter der gegebenes Anfangsbedingungen wird $0.01$ addiert.
+
+Die Abst\"ande der gest\"orten und ungest\"orten L\"osung sind in Abbildung~\ref{fig:2b}
+dargestellt.
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height=0.96\textheight]{build/poincare_b.png}
+  \caption{Vergleich der gest\"orten und ungest\"orten L\"osung.}%
+  \label{fig:2b}
+\end{figure}
+
+Es ist eindeutig zu erkennen, dass das periodische und quasi-periodische System stabil ist.
+Hingegen ist das chaotische System hochgradig instabil, was an der gro{\ss}en Differenz deutlich
+wird.
+
+\subsection*{(c)}
+Bei geringen Energien sieht man geschlossene Bahnen im Phasenraum. 
+Mit zunehmender Energien werden die Bahnen im Phasenraum chaotischer bis sie
+irgendwann nicht mehr zu erkennen sind.
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height=0.96\textheight]{build/poincare_c.png}
+  \caption{Poincare-Schnitte bei den Energien 1, 10 und 70 J.}%
+  \label{fig:2b}
+\end{figure}
+
+\end{document}
