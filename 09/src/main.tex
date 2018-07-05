@@ -21,5 +21,26 @@ below,   % unterhalb der Section aber auf der selben Seite ist ok
 \maketitle
 \section*{Aufgabe 1: 2D Lennard-Jones Fluid}
 \subsection*{(a)}
-Fuuu
+
+Ist
+\begin{align*}
+  V(r) &= 4 \cdot \left[\left(\frac{1}{r}\right)^{12} - \left(\frac{1}{r}\right)^{6}\right] \\
+       &= 4 \cdot \left[{r}^{-12} - {r}^{-6}\right] \\
+  \intertext{so ist}
+  F(r) &= - \nabla V \\
+       &= - 4 \cdot \left[-12 {r}^{-13} + 6 {r}^{-7}\right] \\
+       &= - 4 \cdot \left[- 12 \left(\frac{1}{r}\right)^{13} + 6 \left(\frac{1}{r}\right)^{7}\right] \\
+\end{align*}
+
+Außerdem ist
+\begin{align*}
+  \dot{r} &= v \\
+  \ddot{r} &= \dot{v} = a = \frac{1}{m} \cdot F(r)
+\end{align*}
+
+Algorithmus ist also
+\begin{align*}
+  \left(\begin{matrix} r_x \\ r_y \\ v_x \\ v_y \\ \end{matrix}\right)_{n+1} = todo
+\end{align*}
+
 \end{document}

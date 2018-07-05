@@ -15,7 +15,7 @@ all: archive.tar.gz
 bin:
 	mkdir -p bin
 
-bin/01.out: src/01.cpp | bin build
+bin/01.out: src/01.cpp src/physics.hpp | bin build
 	g++ -O2 -std=c++11 -I $(EIGENPATH) -o $@ $<
 
 build:
